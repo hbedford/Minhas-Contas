@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'project_model.dart';
+part of 'creditcard_model.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,8 +8,8 @@ part of 'project_model.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$ProjectModel on _ProjectModelBase, Store {
-  final _$idAtom = Atom(name: '_ProjectModelBase.id');
+mixin _$CreditCardModel on _CreditCardModelBase, Store {
+  final _$idAtom = Atom(name: '_CreditCardModelBase.id');
 
   @override
   int get id {
@@ -24,7 +24,7 @@ mixin _$ProjectModel on _ProjectModelBase, Store {
     });
   }
 
-  final _$nameAtom = Atom(name: '_ProjectModelBase.name');
+  final _$nameAtom = Atom(name: '_CreditCardModelBase.name');
 
   @override
   String get name {
@@ -39,7 +39,7 @@ mixin _$ProjectModel on _ProjectModelBase, Store {
     });
   }
 
-  final _$colorAtom = Atom(name: '_ProjectModelBase.color');
+  final _$colorAtom = Atom(name: '_CreditCardModelBase.color');
 
   @override
   Color get color {

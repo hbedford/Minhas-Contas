@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'project_model.g.dart';
 
@@ -8,5 +9,7 @@ abstract class _ProjectModelBase with Store {
   int id;
   @observable
   String name;
-  _ProjectModelBase({this.id});
+  @observable
+  Color color;
+  _ProjectModelBase({this.id, this.name, this.color = Colors.white});
 }
