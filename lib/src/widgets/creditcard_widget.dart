@@ -6,10 +6,8 @@ class CreditCardWidget extends StatelessWidget {
   CreditCardWidget({this.creditCard});
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (c, constraints) => Container(
-        decoration: BoxDecoration(color: creditCard.color),
-      ),
+    return Container(
+      decoration: BoxDecoration(color: creditCard.color),
     );
   }
 }

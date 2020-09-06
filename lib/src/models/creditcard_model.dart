@@ -11,5 +11,21 @@ abstract class _CreditCardModelBase with Store {
   String name;
   @observable
   Color color;
+  @observable
+  double limit = 0;
+  @observable
+  ObservableList payments = [].asObservable();
   _CreditCardModelBase({this.id, this.name, this.color = Colors.white});
+  @computed
+  double get totalPayments {
+    double total = 0;
+    payments.forEach((element) {
+      total = total + element.value;
+    });
+    return total;
+  }
+
+  @computed
+  String get actualTotalLimit =>
+      totalPayments.toString() + ' de ' + limit.toString();
 }
