@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
+import 'package:minhasconta/src/widgets/creditcard_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<ProjectModel> projects = [];
@@ -61,13 +62,16 @@ class HomeScreen extends StatelessWidget {
                   children: creditCards
                       .map(
                         (e) => InkWell(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CreditCardScreen(
-                                        creditCard: e,
-                                      ))),
-                          child: Container(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CreditCardScreen(
+                                          creditCard: e,
+                                        ))),
+                            child: CreditCardWidget(
+                                constrainedBox: constraints,
+                                creditCard:
+                                    e) /* Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: constraints.maxWidth * 0.04,
                                 vertical: constraints.maxWidth * 0.02),
@@ -81,8 +85,8 @@ class HomeScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20)),
                             width: constraints.maxWidth * 0.9,
                             height: constraints.maxWidth * 0.2,
-                          ),
-                        ),
+                          ), */
+                            ),
                       )
                       .toList(),
                 ),

@@ -15,38 +15,15 @@ class CreditCardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(15.0),
-              children: [
-                Container(
-                  child: CreditCardWidget(
-                    creditCard: creditCard,
-                  ),
-                ),
-                /* Expanded(
-                  flex: 4,
-                  child: Column(children: [
-                    /* Flexible(
-              child: Row(
-                children: menu
-                    .map(
-                      (e) => IconButton(
-                        icon: e.icon,
-                        onPressed: () =>
-                            controller.changeActualWidget(listWidget()),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-            Expanded(child: controller.actualWidget ?? listWidget()) */
-                  ]),
-                ) */
-              ]),
-        ));
+        body: ListView(
+      children: [
+        Flexible(
+            child: Center(
+          child: CreditCardWidget(creditCard: creditCard),
+        )),
+        Flexible(child: Container())
+      ],
+    ));
   }
 
   listWidget() => Column(children: []);
