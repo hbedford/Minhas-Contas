@@ -3,18 +3,36 @@ import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/widgets/creditcard_widget.dart';
+import 'package:mobx/mobx.dart';
+
+import '../models/payment_model.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<ProjectModel> projects = [];
   final List<CreditCardModel> creditCards = [
-    CreditCardModel(id: 1, name: 'Teste', color: Colors.green),
+    CreditCardModel(
+      id: 1,
+      name: 'Teste',
+      color: Colors.green,
+      payments: ObservableList.of(
+        [
+          PaymentModel(
+              name: 'McDonald', date: DateTime.utc(2020, 09, 05), value: 200.0),
+          PaymentModel(
+              name: 'BurguerKing',
+              date: DateTime.utc(2020, 09, 05),
+              value: 10.0),
+          PaymentModel(
+              name: 'Bobs', date: DateTime.utc(2020, 09, 07), value: 203.0),
+        ],
+      ),
+    ),
     CreditCardModel(id: 1, name: 'Teste', color: Colors.blue),
     CreditCardModel(id: 1, name: 'Teste', color: Colors.blue),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: Text('Minhas Contas'),
         centerTitle: true,

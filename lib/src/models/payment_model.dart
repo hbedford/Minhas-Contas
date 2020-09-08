@@ -16,6 +16,14 @@ abstract class _PaymentModelBase with Store {
   @observable
   TimeOfDay time;
   @observable
+  bool tPayment;
+  @observable
   ObservableList categories = [].asObservable();
-  _PaymentModelBase({this.id, this.name = '', this.categories});
+  _PaymentModelBase(
+      {this.id,
+      this.name = '',
+      this.categories,
+      this.date,
+      this.value,
+      this.tPayment = false});
 }

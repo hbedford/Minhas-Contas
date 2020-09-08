@@ -9,11 +9,14 @@ class CreditCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (c, constraint) => Container(
-        margin:
-            EdgeInsets.symmetric(horizontal: constrainedBox.maxWidth * 0.02),
+        margin: EdgeInsets.symmetric(
+            horizontal:
+                constrainedBox != null ? constrainedBox.maxWidth * 0.02 : 10),
         padding: EdgeInsets.symmetric(
-            vertical: constrainedBox.maxWidth * 0.01,
-            horizontal: constrainedBox.maxWidth * 0.02),
+            vertical:
+                constrainedBox != null ? constrainedBox.maxWidth * 0.01 : 10,
+            horizontal:
+                constrainedBox != null ? constrainedBox.maxWidth * 0.02 : 10),
         height: constrainedBox != null
             ? constrainedBox.maxWidth * 0.3
             : constraint.maxWidth * 0.3,
