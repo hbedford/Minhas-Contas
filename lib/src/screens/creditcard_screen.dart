@@ -23,40 +23,93 @@ class CreditCardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.changeActualWidget(listWidget());
     return Scaffold(
-        appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0.0),
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              leading: Container(),
-              expandedHeight: 100,
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              flexibleSpace: CreditCardWidget(creditCard: creditCard),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        title: Text('Cartão de credito'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Gastos do mês'),
+                    Text("R\$" + creditCard.totalThisMonth.toString())
+                  ],
+                ),
+                IconButton(icon: Icon(Icons.visibility), onPressed: () => null)
+              ],
             ),
-            SliverFillRemaining(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Flexible(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: menu
-                        .map(
-                          (e) => IconButton(
-                            icon: e.icon,
-                            onPressed: () => null,
-                          ),
-                        )
-                        .toList(),
-                  )),
-                  Flexible(child: controller.actualWidget)
-                ],
-              ),
-            ))
-          ],
-        ));
+          ),
+          Flexible(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: menu
+                    .map(
+                      (e) => IconButton(
+                        icon: e.icon,
+                        onPressed: () => null,
+                      ),
+                    )
+                    .toList(),
+              )),
+          Flexible(
+            flex: 8,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: controller.actualWidget,
+              decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20))),
+            ),
+          ),
+        ],
+      ),
+    );
   }
+  //   controller.changeActualWidget(listWidget());
+  //   return Scaffold(
+  //       body: CustomScrollView(
+  //     slivers: [
+  //       SliverAppBar(
+  //         floating: true,
+  //         expandedHeight: 100,
+  //         elevation: 0.0,
+  //         backgroundColor: creditCard.color,
+  //         collapsedHeight: 80,
+  //       ),
+  //       SliverFillRemaining(
+  //           child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Column(
+  //           children: [
+  //             Flexible(
+  //                 child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //               children: menu
+  //                   .map(
+  //                     (e) => IconButton(
+  //                       icon: e.icon,
+  //                       onPressed: () => null,
+  //                     ),
+  //                   )
+  //                   .toList(),
+  //             )),
+  //             Flexible(child: controller.actualWidget)
+  //           ],
+  //         ),
+  //       ))
+  //     ],
+  //   ));
+  // }
 
   Widget listWidget() {
     Converting converting = Converting();

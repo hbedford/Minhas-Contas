@@ -33,37 +33,45 @@ abstract class _CreditCardModelBase with Store {
   String get actualTotalLimit =>
       totalPayments.toString() + ' de ' + limit.toString();
   @computed
+  double get totalThisMonth {
+    DateTime d = DateTime.now();
+    double total = 0.0;
+    payments.forEach((e) {
+      if (d.month == e.date.month && d.year == e.date.year)
+        return total = total + e.value;
+    });
+    return total;
+  }
+
+  @computed
   List<PaymentsOfDay> get paymentsPerDate {
-    Converting converting = Converting();
-    List<PaymentsOfDay> paymentsOfDays = [];
-    List<PaymentModel> paymentsActual = [];
+    Converting c = Converting();
+    List<PaymentsOfDay> pOfDays = [];
+    List<PaymentModel> pActual = [];
     DateTime actual = DateTime.now();
 
-    List paymentsSorted = payments;
-    paymentsSorted.sort((a, b) => converting
-        .dateToString(a.date)
-        .compareTo(converting.dateToString(b.date)));
-    paymentsSorted = paymentsSorted.reversed.toList();
-    paymentsSorted.forEach((element) {
-      print(converting.dateToString(element.date) + ' ' + element.name);
+    List pSorted = payments;
+    pSorted.sort(
+        (a, b) => c.dateToString(a.date).compareTo(c.dateToString(b.date)));
+    pSorted = pSorted.reversed.toList();
+    pSorted.forEach((element) {
+      print(c.dateToString(element.date) + ' ' + element.name);
     });
 
-    paymentsSorted.forEach((element) {
-      if (converting.dateToString(element.date) ==
-          converting.dateToString(actual)) {
-        paymentsActual.add(element);
+    pSorted.forEach((element) {
+      if (c.dateToString(element.date) == c.dateToString(actual)) {
+        pActual.add(element);
         print(element.name);
       } else {
-        paymentsOfDays
-            .add(PaymentsOfDay(date: actual, payments: paymentsActual));
+        pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
         actual = element.date;
-        paymentsActual = [];
-        paymentsActual.add(element);
+        pActual = [];
+        pActual.add(element);
       }
     });
 
-    paymentsOfDays.add(PaymentsOfDay(date: actual, payments: paymentsActual));
-    return paymentsOfDays;
+    pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
+    return pOfDays;
   }
 }
 

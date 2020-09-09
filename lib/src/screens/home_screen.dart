@@ -40,16 +40,31 @@ class HomeScreen extends StatelessWidget {
         elevation: 0.0,
       ),
       body: LayoutBuilder(
-        builder: (context, constraint) => Column(
-          children: [
-            Flexible(child: Container()),
-            creditCardsInfo(constraint, context),
-            Flexible(
-                child: LayoutBuilder(
-              builder: (c, constraints) => Container(),
-            ))
-          ],
-        ),
+        builder: (context, constraint) => Stack(children: [
+          Column(
+            children: [
+              Flexible(child: Container()),
+              creditCardsInfo(constraint, context),
+              Flexible(
+                  child: LayoutBuilder(
+                builder: (c, constraints) => Container(),
+              ))
+            ],
+          ),
+          Positioned(
+              bottom: constraint.maxHeight * 0.2,
+              right: constraint.maxWidth * 0.1,
+              child: Row(
+                children: [
+                  Text('Gasto/Ganho'),
+                  IconButton(icon: Icon(Icons.payment), onPressed: () => null)
+                ],
+              ))
+        ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => null,
+        child: Icon(Icons.add),
       ),
     );
   }
