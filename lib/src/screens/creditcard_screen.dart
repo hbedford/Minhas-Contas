@@ -135,9 +135,65 @@ class CreditCardScreen extends StatelessWidget {
   Widget chartsWidget() => LayoutBuilder(
       builder: (context, constraints) => Column(
             children: [
-              Card(
-                child: Row(),
-              )
+              Container(
+                child: Row(
+                  children: [
+                  Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              height: constraints.maxHeight * 0.1,
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                            Column(
+                              children: [Text('Mercado'), Text('R\$1000.00')],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: constraints.maxHeight * 0.1,
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                            Column(
+                              children: [Text('Mercado'), Text('R\$1000.00')],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(children:[ new Center(
+      child: new Container(
+        height: 200.0,
+        width: 200.0,
+        child: new CustomPaint(
+          foregroundPainter: new MyPainter(
+              lineColor: Colors.amber,
+              completeColor: Colors.blueAccent,
+              completePercent: percentage,
+              width: 8.0
+          ),
+          child: new Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: new RaisedButton(
+                color: Colors.purple,
+                splashColor: Colors.blueAccent,
+                shape: new CircleBorder(),
+                child: new Text("Click"),
+                onPressed: (){
+                  
+                }),
+          ),
+        ),
+      ),
+    )])
+                  ],
+                ),
+              ),
             ],
           ));
   Widget configWidget() =>
