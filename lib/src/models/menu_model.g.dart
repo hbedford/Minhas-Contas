@@ -54,6 +54,20 @@ mixin _$MenuModel on _MenuModelBase, Store {
     });
   }
 
+  final _$_MenuModelBaseActionController =
+      ActionController(name: '_MenuModelBase');
+
+  @override
+  dynamic cW(Widget w) {
+    final _$actionInfo =
+        _$_MenuModelBaseActionController.startAction(name: '_MenuModelBase.cW');
+    try {
+      return super.cW(w);
+    } finally {
+      _$_MenuModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

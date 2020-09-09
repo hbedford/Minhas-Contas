@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
@@ -8,6 +10,7 @@ import 'package:mobx/mobx.dart';
 import '../models/payment_model.dart';
 
 class HomeScreen extends StatelessWidget {
+  final HomeController c = HomeController();
   final List<ProjectModel> projects = [];
   final List<CreditCardModel> creditCards = [
     CreditCardModel(
@@ -40,30 +43,34 @@ class HomeScreen extends StatelessWidget {
         elevation: 0.0,
       ),
       body: LayoutBuilder(
-        builder: (context, constraint) => Stack(children: [
-          Column(
-            children: [
-              Flexible(child: Container()),
-              creditCardsInfo(constraint, context),
-              Flexible(
-                  child: LayoutBuilder(
-                builder: (c, constraints) => Container(),
-              ))
-            ],
-          ),
-          Positioned(
-              bottom: constraint.maxHeight * 0.2,
-              right: constraint.maxWidth * 0.1,
-              child: Row(
-                children: [
-                  Text('Gasto/Ganho'),
-                  IconButton(icon: Icon(Icons.payment), onPressed: () => null)
-                ],
-              ))
-        ]),
+        builder: (context, constraint) => Stack(
+          children: [
+            Column(
+              children: [
+                Flexible(child: Container()),
+                creditCardsInfo(constraint, context),
+                Flexible(
+                    child: LayoutBuilder(
+                  builder: (c, constraints) => Container(),
+                ))
+              ],
+            ),
+            Observer(
+                builder: (_) => Visibility(
+                    visible: c.actionButton,
+                    child: Positioned(
+                        bottom: constraint.maxHeight * 0.2,
+                        right: constraint.maxWidth * 0.1,
+                        child: Row(children: [
+                          Text('Gasto/Ganho'),
+                          IconButton(
+                              icon: Icon(Icons.payment), onPressed: () => null)
+                        ]))))
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => null,
+        onPressed: () => (c.changeAButton(!c.actionButton)),
         child: Icon(Icons.add),
       ),
     );
@@ -99,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CreditCardScreen(
-                                          creditCard: e,
+                                          cCard: e,
                                         ))),
                             child: CreditCardWidget(
                                 constrainedBox: constraints,

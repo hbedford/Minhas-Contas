@@ -12,4 +12,6 @@ abstract class _MenuModelBase with Store {
   @observable
   Widget widget;
   _MenuModelBase({this.name, this.icon, this.widget});
+  @action
+  cW(Widget w) => widget = w;
 }

@@ -8,7 +8,7 @@ class CreditCardController = _CreditCardControllerBase
 
 abstract class _CreditCardControllerBase with Store {
   @observable
-  Widget actualWidget = Container();
+  Widget actualWidget;
   @observable
   CreditCardModel creditCard = CreditCardModel();
   _CreditCardControllerBase({this.actualWidget, this.creditCard});

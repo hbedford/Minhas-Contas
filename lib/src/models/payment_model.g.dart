@@ -84,6 +84,21 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
     });
   }
 
+  final _$tPaymentAtom = Atom(name: '_PaymentModelBase.tPayment');
+
+  @override
+  bool get tPayment {
+    _$tPaymentAtom.reportRead();
+    return super.tPayment;
+  }
+
+  @override
+  set tPayment(bool value) {
+    _$tPaymentAtom.reportWrite(value, super.tPayment, () {
+      super.tPayment = value;
+    });
+  }
+
   final _$categoriesAtom = Atom(name: '_PaymentModelBase.categories');
 
   @override
@@ -107,6 +122,7 @@ name: ${name},
 value: ${value},
 date: ${date},
 time: ${time},
+tPayment: ${tPayment},
 categories: ${categories}
     ''';
   }

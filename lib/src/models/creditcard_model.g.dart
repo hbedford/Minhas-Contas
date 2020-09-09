@@ -23,6 +23,20 @@ mixin _$CreditCardModel on _CreditCardModelBase, Store {
           Computed<String>(() => super.actualTotalLimit,
               name: '_CreditCardModelBase.actualTotalLimit'))
       .value;
+  Computed<double> _$totalThisMonthComputed;
+
+  @override
+  double get totalThisMonth =>
+      (_$totalThisMonthComputed ??= Computed<double>(() => super.totalThisMonth,
+              name: '_CreditCardModelBase.totalThisMonth'))
+          .value;
+  Computed<List<PaymentsOfDay>> _$paymentsPerDateComputed;
+
+  @override
+  List<PaymentsOfDay> get paymentsPerDate => (_$paymentsPerDateComputed ??=
+          Computed<List<PaymentsOfDay>>(() => super.paymentsPerDate,
+              name: '_CreditCardModelBase.paymentsPerDate'))
+      .value;
 
   final _$idAtom = Atom(name: '_CreditCardModelBase.id');
 
@@ -108,7 +122,9 @@ color: ${color},
 limit: ${limit},
 payments: ${payments},
 totalPayments: ${totalPayments},
-actualTotalLimit: ${actualTotalLimit}
+actualTotalLimit: ${actualTotalLimit},
+totalThisMonth: ${totalThisMonth},
+paymentsPerDate: ${paymentsPerDate}
     ''';
   }
 }

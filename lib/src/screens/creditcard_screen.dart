@@ -1,32 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:minhasconta/src/controllers/creditcard_controller.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
-import 'package:minhasconta/src/widgets/creditcard_widget.dart';
 
 import '../models/menu_model.dart';
 
 class CreditCardScreen extends StatelessWidget {
-  final CreditCardModel creditCard;
-  CreditCardScreen({this.creditCard});
+  final CreditCardModel cCard;
+  CreditCardScreen({this.cCard});
+
+  final Converting converting = Converting();
   final List<MenuModel> menu = [
-    MenuModel(icon: Icon(Icons.format_list_bulleted), name: 'Lista'),
+    MenuModel(
+      icon: Icon(Icons.format_list_bulleted),
+      name: 'Lista',
+    ),
     MenuModel(
       icon: Icon(Icons.insert_chart),
     ),
     MenuModel(icon: Icon(Icons.settings))
   ];
-  final CreditCardController controller = CreditCardController();
+  final CreditCardController c = CreditCardController();
 
   @override
   Widget build(BuildContext context) {
-    controller.changeActualWidget(listWidget());
+    menu[0].cW(listWidget());
+    menu[1].cW(chartsWidget());
+    if (c.actualWidget == null) c.changeActualWidget(menu[0].widget);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         title: Text('Cartão de credito'),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +48,7 @@ class CreditCardScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Gastos do mês'),
-                    Text("R\$" + creditCard.totalThisMonth.toString())
+                    Text("R\$" + cCard.totalThisMonth.toString())
                   ],
                 ),
                 IconButton(icon: Icon(Icons.visibility), onPressed: () => null)
@@ -55,89 +63,83 @@ class CreditCardScreen extends StatelessWidget {
                     .map(
                       (e) => IconButton(
                         icon: e.icon,
-                        onPressed: () => null,
+                        onPressed: () => c.changeActualWidget(e.widget),
                       ),
                     )
                     .toList(),
               )),
           Flexible(
             flex: 8,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: controller.actualWidget,
-              decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(20))),
-            ),
+            child: Observer(
+                builder: (_) => Container(
+                      padding: EdgeInsets.all(20),
+                      child: c.actualWidget,
+                      decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20))),
+                    )),
           ),
         ],
       ),
     );
   }
-  //   controller.changeActualWidget(listWidget());
-  //   return Scaffold(
-  //       body: CustomScrollView(
-  //     slivers: [
-  //       SliverAppBar(
-  //         floating: true,
-  //         expandedHeight: 100,
-  //         elevation: 0.0,
-  //         backgroundColor: creditCard.color,
-  //         collapsedHeight: 80,
-  //       ),
-  //       SliverFillRemaining(
-  //           child: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Column(
-  //           children: [
-  //             Flexible(
-  //                 child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //               children: menu
-  //                   .map(
-  //                     (e) => IconButton(
-  //                       icon: e.icon,
-  //                       onPressed: () => null,
-  //                     ),
-  //                   )
-  //                   .toList(),
-  //             )),
-  //             Flexible(child: controller.actualWidget)
-  //           ],
-  //         ),
-  //       ))
-  //     ],
-  //   ));
-  // }
 
   Widget listWidget() {
-    Converting converting = Converting();
     List<Widget> list = [];
-    creditCard.paymentsPerDate.map((element) {
-      print(element.payments.length);
+    cCard.paymentsPerDate.map((element) {
       list.add(
-        Row(
-          children: [
-            Text(converting.dateIsToday(element.date)
-                ? 'Hoje'
-                : converting.dateDMtoS(element.date))
-          ],
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Text(
+                converting.dateIsToday(element.date)
+                    ? 'Hoje'
+                    : converting.dateDMtoS(element.date),
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
         ),
       );
-      element.payments.forEach((e) {
-        print(e.name);
-        return list.add(ListTile(
-          // leading: Icon(e.categories[0]),
-          title: Text(e.name),
-          trailing: Text(
-            e.tPayment ? '+' : '-' + "R\$" + e.value.toString(),
-            style: TextStyle(color: e.tPayment ? Colors.green : Colors.red),
-          ),
-        ));
-      });
+      element.payments.forEach((e) => list.add(Card(
+            color: Colors.white,
+            child: ListTile(
+              title: Text(e.name),
+              trailing: Text(
+                e.tPayment ? '+' : '-' + "R\$" + e.value.toString(),
+                style: TextStyle(color: e.tPayment ? Colors.green : Colors.red),
+              ),
+            ),
+          )));
     }).toList();
 
-    return Column(children: list);
+    return LayoutBuilder(
+      builder: (context, constraints) =>
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+          height: constraints.maxHeight * 0.08,
+          child: Text(
+            'Atividades',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        Expanded(
+          child: ListView(children: list),
+        )
+      ]),
+    );
   }
+
+  Widget chartsWidget() => LayoutBuilder(
+      builder: (context, constraints) => Column(
+            children: [
+              Card(
+                child: Row(),
+              )
+            ],
+          ));
+  Widget configWidget() =>
+      LayoutBuilder(builder: (context, constraints) => Column(children: []));
 }

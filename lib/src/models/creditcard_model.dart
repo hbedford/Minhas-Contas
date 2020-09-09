@@ -63,7 +63,8 @@ abstract class _CreditCardModelBase with Store {
         pActual.add(element);
         print(element.name);
       } else {
-        pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
+        if (pActual.length != 0)
+          pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
         actual = element.date;
         pActual = [];
         pActual.add(element);
