@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/creditcard_controller.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
+import 'package:minhasconta/src/widgets/chartcircle_widget.dart';
 
 import '../models/menu_model.dart';
 
 class CreditCardScreen extends StatelessWidget {
   final CreditCardModel cCard;
   CreditCardScreen({this.cCard});
+  final c = GetIt.instance<CreditCardController>();
 
   final Converting converting = Converting();
   final List<MenuModel> menu = [
@@ -22,12 +25,12 @@ class CreditCardScreen extends StatelessWidget {
     ),
     MenuModel(icon: Icon(Icons.settings))
   ];
-  final CreditCardController c = CreditCardController();
+  // final CreditCardController c = CreditCardController();
 
   @override
   Widget build(BuildContext context) {
-    menu[0].cW(listWidget());
-    menu[1].cW(chartsWidget());
+    menu[0].cW(0);
+    menu[1].cW(1);
     if (c.actualWidget == null) c.changeActualWidget(menu[0].widget);
     return Scaffold(
       appBar: AppBar(
@@ -73,7 +76,8 @@ class CreditCardScreen extends StatelessWidget {
             child: Observer(
                 builder: (_) => Container(
                       padding: EdgeInsets.all(20),
-                      child: c.actualWidget,
+                      child:
+                          c.actualWidget == 1 ? chartsWidget() : listWidget(),
                       decoration: BoxDecoration(
                           color: Colors.black45,
                           borderRadius:
@@ -136,61 +140,93 @@ class CreditCardScreen extends StatelessWidget {
       builder: (context, constraints) => Column(
             children: [
               Container(
+                height: constraints.maxHeight * 0.3,
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(40),
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                  Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: constraints.maxHeight * 0.1,
-                              color: Colors.white,
-                              width: 2,
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Flexible(
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: constraints.maxHeight * 0.1,
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Mercado'),
+                                      Text('R\$1000.00')
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Column(
-                              children: [Text('Mercado'), Text('R\$1000.00')],
+                          ),
+                          Flexible(
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: constraints.maxHeight * 0.1,
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                                Column(
+                                  children: [
+                                    Text('Mercado'),
+                                    Text('R\$1000.00')
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: constraints.maxHeight * 0.1,
-                              color: Colors.white,
-                              width: 2,
-                            ),
-                            Column(
-                              children: [Text('Mercado'), Text('R\$1000.00')],
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(children:[ new Center(
-      child: new Container(
-        height: 200.0,
-        width: 200.0,
-        child: new CustomPaint(
-          foregroundPainter: new MyPainter(
-              lineColor: Colors.amber,
-              completeColor: Colors.blueAccent,
-              completePercent: percentage,
-              width: 8.0
-          ),
-          child: new Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: new RaisedButton(
-                color: Colors.purple,
-                splashColor: Colors.blueAccent,
-                shape: new CircleBorder(),
-                child: new Text("Click"),
-                onPressed: (){
-                  
-                }),
-          ),
-        ),
-      ),
-    )])
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            new Center(
+                              child: new Container(
+                                height: constraints.maxHeight * 0.2,
+                                width: constraints.maxHeight * 0.2,
+                                child: new CustomPaint(
+                                  foregroundPainter: new MyPainter(
+                                      lineColor: Colors.amber,
+                                      completeColor: Colors.blueAccent,
+                                      completePercent: 20,
+                                      width: 4.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Center(child: Text('Teste')),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text('é 40% de todos os gastos do mês.',
+                                style: TextStyle(fontSize: 10))
+                          ]),
+                    )
                   ],
                 ),
               ),

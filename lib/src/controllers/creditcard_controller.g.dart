@@ -21,13 +21,13 @@ mixin _$CreditCardController on _CreditCardControllerBase, Store {
       Atom(name: '_CreditCardControllerBase.actualWidget');
 
   @override
-  Widget get actualWidget {
+  int get actualWidget {
     _$actualWidgetAtom.reportRead();
     return super.actualWidget;
   }
 
   @override
-  set actualWidget(Widget value) {
+  set actualWidget(int value) {
     _$actualWidgetAtom.reportWrite(value, super.actualWidget, () {
       super.actualWidget = value;
     });
@@ -52,7 +52,7 @@ mixin _$CreditCardController on _CreditCardControllerBase, Store {
       ActionController(name: '_CreditCardControllerBase');
 
   @override
-  dynamic changeActualWidget(Widget widget) {
+  dynamic changeActualWidget(int widget) {
     final _$actionInfo = _$_CreditCardControllerBaseActionController
         .startAction(name: '_CreditCardControllerBase.changeActualWidget');
     try {

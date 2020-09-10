@@ -42,13 +42,13 @@ mixin _$MenuModel on _MenuModelBase, Store {
   final _$widgetAtom = Atom(name: '_MenuModelBase.widget');
 
   @override
-  Widget get widget {
+  int get widget {
     _$widgetAtom.reportRead();
     return super.widget;
   }
 
   @override
-  set widget(Widget value) {
+  set widget(int value) {
     _$widgetAtom.reportWrite(value, super.widget, () {
       super.widget = value;
     });
@@ -58,7 +58,7 @@ mixin _$MenuModel on _MenuModelBase, Store {
       ActionController(name: '_MenuModelBase');
 
   @override
-  dynamic cW(Widget w) {
+  dynamic cW(int w) {
     final _$actionInfo =
         _$_MenuModelBaseActionController.startAction(name: '_MenuModelBase.cW');
     try {

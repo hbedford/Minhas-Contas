@@ -10,8 +10,8 @@ abstract class _MenuModelBase with Store {
   @observable
   Icon icon;
   @observable
-  Widget widget;
+  int widget;
   _MenuModelBase({this.name, this.icon, this.widget});
   @action
-  cW(Widget w) => widget = w;
+  cW(int w) => widget = w;
 }

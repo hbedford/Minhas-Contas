@@ -31,7 +31,7 @@ dependencies:
   mobx: ^1.2.1+2
   flutter_mobx: ^1.1.0+2
   mobx_codegen: ^1.1.0+1
-  get: ^3.8.0
+  get_it: ^4.0.4
 
 dev_dependencies:
   build_runner:
