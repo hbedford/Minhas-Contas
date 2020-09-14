@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
 
@@ -8,6 +9,7 @@ part 'creditcard_model.g.dart';
 class CreditCardModel = _CreditCardModelBase with _$CreditCardModel;
 
 abstract class _CreditCardModelBase with Store {
+  Converting c = Converting();
   @observable
   int id;
   @observable
@@ -17,11 +19,44 @@ abstract class _CreditCardModelBase with Store {
   @observable
   double limit = 0;
   @observable
+  DateTime validate;
+  @observable
+  DateTime dueDate;
+  @observable
+  int last4Digits;
+  @observable
+  String mark;
+  @observable
+  String company;
+  @observable
+  DateTime bestDateToPay;
+
+  @observable
   ObservableList payments = [].asObservable();
   _CreditCardModelBase(
       {this.id, this.name, this.color = Colors.white, this.payments});
+  @action
+  changeName(String n) => name = n;
+  @action
+  changeColor(Color c) => color = c;
+  @action
+  changeLimit(double l) => limit = l;
+  @action
+  changeValidate(DateTime v) => validate = v;
+  @action
+  changeDueDate(DateTime d) => dueDate = d;
+  @action
+  changeLast4Digits(int l) => last4Digits = l;
+  @action
+  changeMark(String m) => mark = m;
+  @action
+  changeCompany(String c) => company = c;
+  @action
+  changeBestDateToPay(DateTime b) => bestDateToPay = b;
+  @action
+  addPayment(PaymentModel p) => payments.add(p);
   @computed
-  double get totalPayments {
+  double get totalOfPayments {
     double total = 0;
     payments.forEach((element) {
       total = total + element.value;
@@ -31,53 +66,134 @@ abstract class _CreditCardModelBase with Store {
 
   @computed
   String get actualTotalLimit =>
-      totalPayments.toString() + ' de ' + limit.toString();
+      totalOfPayments.toString() + ' de ' + limit.toString();
   @computed
   double get totalThisMonth {
     DateTime d = DateTime.now();
     double total = 0.0;
     payments.forEach((e) {
       if (d.month == e.date.month && d.year == e.date.year)
-        return total = total + e.value;
+        total = total + e.value;
     });
     return total;
   }
 
   @computed
+  List<PaymentModel> get pThisMonth {
+    DateTime d = DateTime.now();
+    List<PaymentModel> list = [];
+    payments.forEach((e) {
+      if (d.month == e.date.month && d.year == e.date.year) list.add(e);
+    });
+    return list;
+  }
+
+  @computed
+  List<CategoryModel> get orderByCategory {
+    List<CategoryModel> list = [];
+    print(pThisMonth.length);
+    for (PaymentModel e in pThisMonth) {
+      if (list.firstWhere((element) => element.name == e.category.name,
+              orElse: () => null) !=
+          null) {
+        int i = list.indexWhere((element) => element.name == e.category.name);
+        list[i].payments.add(e);
+      } else {
+        list.add(CategoryModel(
+            color: e.category.color,
+            name: e.category.name,
+            payments: [e].asObservable()));
+      }
+    }
+    return list;
+  }
+
+  /* @computed
+  List<CategoryModel> get orderByCategory {
+    List<CategoryModel> list = [];
+    print(pThisMonth.length);
+    for (PaymentModel element in pThisMonth) {
+      print(element.name);
+      if (list.length != 0 &&
+          list.firstWhere((e) => e.name == element.name) != null) {
+        print('b');
+        int i = list.indexWhere((e) => element.category.name == e.name);
+        list[i].payments.add(element);
+      } else {
+        print('c');
+        list.add(CategoryModel(
+            name: element.category.name,
+            color: element.category.color,
+            payments: [element].asObservable()));
+      }
+    }
+    pThisMonth.forEach((element) {
+      print(list.length != 0 &&
+          list.firstWhere((e) => e.name == element.name) != null);
+      if (list.length != 0 &&
+          list.firstWhere((e) => e.name == element.name) != null) {
+        print('b');
+        int i = list.indexWhere((e) => element.category.name == e.name);
+        return list[i].payments.add(element);
+      } else {
+        print('c');
+        return list.add(CategoryModel(
+            name: element.category.name,
+            color: element.category.color,
+            payments: [element].asObservable()));
+      }
+    });
+    list.sort((a, b) => a.total.compareTo(b.total));
+    list.forEach((element) {
+      print(element.name + ' ' + element.total.toString());
+    });
+    return list;
+  } */
+
+  @computed
+  List get pSortedPayments {
+    List list = [];
+    payments.forEach((element) {
+      list.add(element);
+    });
+    list.sort(
+        (a, b) => c.dateToString(b.date).compareTo(c.dateToString(a.date)));
+    return list;
+  }
+
+  @computed
   List<PaymentsOfDay> get paymentsPerDate {
-    Converting c = Converting();
     List<PaymentsOfDay> pOfDays = [];
     List<PaymentModel> pActual = [];
     DateTime actual = DateTime.now();
 
-    List pSorted = payments;
-    pSorted.sort(
-        (a, b) => c.dateToString(a.date).compareTo(c.dateToString(b.date)));
-    pSorted = pSorted.reversed.toList();
-    pSorted.forEach((element) {
-      print(c.dateToString(element.date) + ' ' + element.name);
-    });
-
-    pSorted.forEach((element) {
+    pSortedPayments.forEach((element) {
       if (c.dateToString(element.date) == c.dateToString(actual)) {
         pActual.add(element);
-        print(element.name);
       } else {
-        if (pActual.length != 0)
-          pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
-        actual = element.date;
-        pActual = [];
+        pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
+        /* if (pActual.length != 0) */
         pActual.add(element);
+        actual = element.date;
       }
     });
-
     pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
+
     return pOfDays;
+  }
+
+  @computed
+  int get amountPaymentsThisMonth {
+    int amount = 0;
+    pThisMonth.forEach((element) {
+      amount++;
+    });
+    return amount;
   }
 }
 
 class PaymentsOfDay {
   DateTime date;
-  List<PaymentModel> payments = [];
+  List payments = [];
   PaymentsOfDay({this.date, this.payments});
 }

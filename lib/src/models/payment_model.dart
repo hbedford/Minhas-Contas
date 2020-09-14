@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
+
+import 'category_model.dart';
 part 'payment_model.g.dart';
 
 class PaymentModel = _PaymentModelBase with _$PaymentModel;
@@ -18,12 +21,15 @@ abstract class _PaymentModelBase with Store {
   @observable
   bool tPayment;
   @observable
-  ObservableList categories = [].asObservable();
+  CategoryModel category = CategoryModel(name: '', color: Colors.red);
   _PaymentModelBase(
       {this.id,
       this.name = '',
-      this.categories,
+      this.category,
       this.date,
-      this.value,
+      this.value = 0,
       this.tPayment = false});
+
+  @computed
+  String get dateToString => Converting().dateToString(date);
 }

@@ -24,10 +24,11 @@ class CreditCardWidget extends StatelessWidget {
             ? constrainedBox.maxWidth * 0.7
             : constraint.maxWidth * 0.8,
         decoration: BoxDecoration(
-            color: creditCard.color, borderRadius: BorderRadius.circular(15)),
+            color: creditCard != null ? creditCard.color : Colors.white,
+            borderRadius: BorderRadius.circular(15)),
         child: Column(children: [
           Row(
-            children: [Text(creditCard.name)],
+            children: [Text(creditCard != null ? creditCard.name : ' ')],
           )
         ]),
       ),

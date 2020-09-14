@@ -9,14 +9,6 @@ part of 'creditcard_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CreditCardController on _CreditCardControllerBase, Store {
-  Computed<List<dynamic>> _$listPaymentsComputed;
-
-  @override
-  List<dynamic> get listPayments => (_$listPaymentsComputed ??=
-          Computed<List<dynamic>>(() => super.listPayments,
-              name: '_CreditCardControllerBase.listPayments'))
-      .value;
-
   final _$actualWidgetAtom =
       Atom(name: '_CreditCardControllerBase.actualWidget');
 
@@ -30,21 +22,6 @@ mixin _$CreditCardController on _CreditCardControllerBase, Store {
   set actualWidget(int value) {
     _$actualWidgetAtom.reportWrite(value, super.actualWidget, () {
       super.actualWidget = value;
-    });
-  }
-
-  final _$creditCardAtom = Atom(name: '_CreditCardControllerBase.creditCard');
-
-  @override
-  CreditCardModel get creditCard {
-    _$creditCardAtom.reportRead();
-    return super.creditCard;
-  }
-
-  @override
-  set creditCard(CreditCardModel value) {
-    _$creditCardAtom.reportWrite(value, super.creditCard, () {
-      super.creditCard = value;
     });
   }
 
@@ -65,9 +42,7 @@ mixin _$CreditCardController on _CreditCardControllerBase, Store {
   @override
   String toString() {
     return '''
-actualWidget: ${actualWidget},
-creditCard: ${creditCard},
-listPayments: ${listPayments}
+actualWidget: ${actualWidget}
     ''';
   }
 }

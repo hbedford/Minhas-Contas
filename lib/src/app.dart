@@ -6,7 +6,16 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: HomeScreen(),
-      theme: ThemeData(scaffoldBackgroundColor: Colors.blueGrey[700]),
+      darkTheme: ThemeData.dark(),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Colors.grey[200],
+          appBarTheme: AppBarTheme(
+              iconTheme: IconThemeData(color: Colors.black),
+              textTheme: TextTheme(
+                  headline6: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700)))),
     );
   }
 }

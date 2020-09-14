@@ -1,38 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
-import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/widgets/creditcard_widget.dart';
-import 'package:mobx/mobx.dart';
-
-import '../models/payment_model.dart';
+import 'creditcards_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController c = HomeController();
+  final creditCardsController = GetIt.instance<CreditCardsController>();
+
   final List<ProjectModel> projects = [];
-  final List<CreditCardModel> creditCards = [
-    CreditCardModel(
-      id: 1,
-      name: 'Teste',
-      color: Colors.green,
-      payments: ObservableList.of(
-        [
-          PaymentModel(
-              name: 'McDonald', date: DateTime.utc(2020, 09, 05), value: 200.0),
-          PaymentModel(
-              name: 'BurguerKing',
-              date: DateTime.utc(2020, 09, 05),
-              value: 10.0),
-          PaymentModel(
-              name: 'Bobs', date: DateTime.utc(2020, 09, 07), value: 203.0),
-        ],
-      ),
-    ),
-    CreditCardModel(id: 1, name: 'Teste', color: Colors.blue),
-    CreditCardModel(id: 1, name: 'Teste', color: Colors.blue),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,10 +65,18 @@ class HomeScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Cartões'),
+                    Text(
+                      'Cartões',
+                      style: TextStyle(),
+                    ),
                     FlatButton(
                       child: Text('ver detalhes'),
-                      onPressed: () => null,
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreditCardsScreen(),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -99,19 +87,21 @@ class HomeScreen extends StatelessWidget {
                 builder: (c, constraints) => ListView(
                   physics: PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  children: creditCards
+                  children: creditCardsController.creditCards
                       .map(
                         (e) => InkWell(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreditCardScreen(
-                                          cCard: e,
-                                        ))),
+                            onTap: () {
+                              creditCardsController.cCreditCard(e);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreditCardScreen()));
+                            },
                             child: CreditCardWidget(
-                                constrainedBox: constraints,
-                                creditCard:
-                                    e) /* Container(
+                              creditCard: e,
+                              constrainedBox: constraints,
+                            ) /* Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: constraints.maxWidth * 0.04,
                                 vertical: constraints.maxWidth * 0.02),
