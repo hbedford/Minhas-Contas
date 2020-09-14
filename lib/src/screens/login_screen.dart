@@ -3,6 +3,8 @@ import 'package:minhasconta/src/db/database.dart';
 
 class LoginScreen extends StatelessWidget {
   final dbHelper = DatabaseHelper.instance;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

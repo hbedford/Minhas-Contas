@@ -32,10 +32,11 @@ class DatabaseHelper {
     return await db.insert('users', row);
   }
 
-  Future<List<Map<String, dynamic>>> getUserWithEmail(String email) async {
+  Future<List<Map<String, dynamic>>> getUserWithEmailAndPassword(
+      String email, String password) async {
     Database db = await instance.database;
-    return await db
-        .query('select * from users', where: 'email = ?', whereArgs: [email]);
+    return await db.query('select * from users',
+        where: 'email = ? and password = ? ', whereArgs: [email, password]);
   }
 
   Future<int> updateUser(Map<String, dynamic> row) async {
