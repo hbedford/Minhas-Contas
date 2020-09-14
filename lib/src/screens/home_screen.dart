@@ -91,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                       .map(
                         (e) => InkWell(
                             onTap: () {
-                              creditCardsController.cCreditCard(e);
+                              creditCardsController.changeCreditCard(e);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

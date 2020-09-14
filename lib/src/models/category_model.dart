@@ -12,8 +12,12 @@ abstract class _CategoryModelBase with Store {
   @observable
   Color color;
   @observable
-  ObservableList categories = [].asObservable();
+  ObservableList subCategories = [].asObservable();
   _CategoryModelBase({this.name, this.payments, this.color});
+  @action
+  addSubCategory(CategoryModel c) => subCategories.add(c);
+  @action
+  removeSubCategory(CategoryModel c) => subCategories.remove(c);
   @computed
   double get total {
     double t = 0;

@@ -122,11 +122,11 @@ mixin _$CreditCardsController on _CreditCardsControllerBase, Store {
   }
 
   @override
-  dynamic cCreditCard(CreditCardModel c) {
+  dynamic changeCreditCard(CreditCardModel c) {
     final _$actionInfo = _$_CreditCardsControllerBaseActionController
-        .startAction(name: '_CreditCardsControllerBase.cCreditCard');
+        .startAction(name: '_CreditCardsControllerBase.changeCreditCard');
     try {
-      return super.cCreditCard(c);
+      return super.changeCreditCard(c);
     } finally {
       _$_CreditCardsControllerBaseActionController.endAction(_$actionInfo);
     }

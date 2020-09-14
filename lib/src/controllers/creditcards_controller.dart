@@ -29,5 +29,5 @@ abstract class _CreditCardsControllerBase with Store {
   @action
   changeLimit(bool v) => cLimit = v;
   @action
-  cCreditCard(CreditCardModel c) => creditCard = c;
+  changeCreditCard(CreditCardModel c) => creditCard = c;
 }

@@ -55,7 +55,10 @@ main() {
   );
   test('Testando pagamentos por data', () {
     c.creditCard.paymentsPerDate.forEach((element) {
-      print(element.dateToString;
+      print(element.dateToString);
+      element.payments.forEach((e) {
+        print(e.name);
+      });
     });
   });
 }

@@ -201,6 +201,21 @@ mixin _$CreditCardModel on _CreditCardModelBase, Store {
     });
   }
 
+  final _$typeAtom = Atom(name: '_CreditCardModelBase.type');
+
+  @override
+  CardTypeModel get type {
+    _$typeAtom.reportRead();
+    return super.type;
+  }
+
+  @override
+  set type(CardTypeModel value) {
+    _$typeAtom.reportWrite(value, super.type, () {
+      super.type = value;
+    });
+  }
+
   final _$bestDateToPayAtom = Atom(name: '_CreditCardModelBase.bestDateToPay');
 
   @override
@@ -213,6 +228,21 @@ mixin _$CreditCardModel on _CreditCardModelBase, Store {
   set bestDateToPay(DateTime value) {
     _$bestDateToPayAtom.reportWrite(value, super.bestDateToPay, () {
       super.bestDateToPay = value;
+    });
+  }
+
+  final _$activeAtom = Atom(name: '_CreditCardModelBase.active');
+
+  @override
+  bool get active {
+    _$activeAtom.reportRead();
+    return super.active;
+  }
+
+  @override
+  set active(bool value) {
+    _$activeAtom.reportWrite(value, super.active, () {
+      super.active = value;
     });
   }
 
@@ -345,6 +375,28 @@ mixin _$CreditCardModel on _CreditCardModelBase, Store {
   }
 
   @override
+  dynamic changeToActived() {
+    final _$actionInfo = _$_CreditCardModelBaseActionController.startAction(
+        name: '_CreditCardModelBase.changeToActived');
+    try {
+      return super.changeToActived();
+    } finally {
+      _$_CreditCardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeToDeactived() {
+    final _$actionInfo = _$_CreditCardModelBaseActionController.startAction(
+        name: '_CreditCardModelBase.changeToDeactived');
+    try {
+      return super.changeToDeactived();
+    } finally {
+      _$_CreditCardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 id: ${id},
@@ -356,7 +408,9 @@ dueDate: ${dueDate},
 last4Digits: ${last4Digits},
 mark: ${mark},
 company: ${company},
+type: ${type},
 bestDateToPay: ${bestDateToPay},
+active: ${active},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
 actualTotalLimit: ${actualTotalLimit},

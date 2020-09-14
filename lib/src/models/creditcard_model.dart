@@ -3,7 +3,9 @@ import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
 
+import 'cardtype_model.dart';
 import 'payment_model.dart';
+import 'paymentsofday_model.dart';
 part 'creditcard_model.g.dart';
 
 class CreditCardModel = _CreditCardModelBase with _$CreditCardModel;
@@ -29,12 +31,20 @@ abstract class _CreditCardModelBase with Store {
   @observable
   String company;
   @observable
+  CardTypeModel type;
+  @observable
   DateTime bestDateToPay;
+  @observable
+  bool active = false;
 
   @observable
   ObservableList payments = [].asObservable();
   _CreditCardModelBase(
-      {this.id, this.name, this.color = Colors.white, this.payments});
+      {this.id,
+      this.name,
+      this.color = Colors.white,
+      this.payments,
+      this.active = false});
   @action
   changeName(String n) => name = n;
   @action
@@ -55,6 +65,10 @@ abstract class _CreditCardModelBase with Store {
   changeBestDateToPay(DateTime b) => bestDateToPay = b;
   @action
   addPayment(PaymentModel p) => payments.add(p);
+  @action
+  changeToActived() => active = true;
+  @action
+  changeToDeactived() => active = false;
   @computed
   double get totalOfPayments {
     double total = 0;
@@ -171,13 +185,14 @@ abstract class _CreditCardModelBase with Store {
       if (c.dateToString(element.date) == c.dateToString(actual)) {
         pActual.add(element);
       } else {
-        pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
+        pOfDays
+            .add(PaymentsOfDay(date: actual, payments: pActual.asObservable()));
         /* if (pActual.length != 0) */
         pActual.add(element);
         actual = element.date;
       }
     });
-    pOfDays.add(PaymentsOfDay(date: actual, payments: pActual));
+    pOfDays.add(PaymentsOfDay(date: actual, payments: pActual.asObservable()));
 
     return pOfDays;
   }
@@ -190,10 +205,4 @@ abstract class _CreditCardModelBase with Store {
     });
     return amount;
   }
-}
-
-class PaymentsOfDay {
-  DateTime date;
-  List payments = [];
-  PaymentsOfDay({this.date, this.payments});
 }

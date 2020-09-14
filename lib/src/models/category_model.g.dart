@@ -61,19 +61,44 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
     });
   }
 
-  final _$categoriesAtom = Atom(name: '_CategoryModelBase.categories');
+  final _$subCategoriesAtom = Atom(name: '_CategoryModelBase.subCategories');
 
   @override
-  ObservableList<dynamic> get categories {
-    _$categoriesAtom.reportRead();
-    return super.categories;
+  ObservableList<dynamic> get subCategories {
+    _$subCategoriesAtom.reportRead();
+    return super.subCategories;
   }
 
   @override
-  set categories(ObservableList<dynamic> value) {
-    _$categoriesAtom.reportWrite(value, super.categories, () {
-      super.categories = value;
+  set subCategories(ObservableList<dynamic> value) {
+    _$subCategoriesAtom.reportWrite(value, super.subCategories, () {
+      super.subCategories = value;
     });
+  }
+
+  final _$_CategoryModelBaseActionController =
+      ActionController(name: '_CategoryModelBase');
+
+  @override
+  dynamic addSubCategory(CategoryModel c) {
+    final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
+        name: '_CategoryModelBase.addSubCategory');
+    try {
+      return super.addSubCategory(c);
+    } finally {
+      _$_CategoryModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic removeSubCategory(CategoryModel c) {
+    final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
+        name: '_CategoryModelBase.removeSubCategory');
+    try {
+      return super.removeSubCategory(c);
+    } finally {
+      _$_CategoryModelBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
@@ -82,7 +107,7 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
 name: ${name},
 payments: ${payments},
 color: ${color},
-categories: ${categories},
+subCategories: ${subCategories},
 total: ${total}
     ''';
   }
