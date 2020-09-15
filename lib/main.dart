@@ -9,11 +9,13 @@ import 'package:mobx/mobx.dart';
 
 import 'src/app.dart';
 import 'src/controllers/creditcard_controller.dart';
+import 'src/controllers/user_controller.dart';
 
 void main() {
   GetIt getIt = GetIt.instance;
   getIt.registerSingleton<HomeController>(HomeController());
   getIt.registerSingleton<CreditCardController>(CreditCardController());
+  getIt.registerSingleton<UserController>(UserController());
   getIt.registerSingleton<CreditCardsController>(
     CreditCardsController(
       creditCards: ObservableList.of(

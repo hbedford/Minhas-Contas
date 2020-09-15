@@ -215,6 +215,28 @@ mixin _$ProjectModel on _ProjectModelBase, Store {
   }
 
   @override
+  dynamic changeCategory(CategoryModel c) {
+    final _$actionInfo = _$_ProjectModelBaseActionController.startAction(
+        name: '_ProjectModelBase.changeCategory');
+    try {
+      return super.changeCategory(c);
+    } finally {
+      _$_ProjectModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addExpense(PaymentModel p) {
+    final _$actionInfo = _$_ProjectModelBaseActionController.startAction(
+        name: '_ProjectModelBase.addExpense');
+    try {
+      return super.addExpense(p);
+    } finally {
+      _$_ProjectModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 id: ${id},
