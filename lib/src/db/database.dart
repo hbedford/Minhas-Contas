@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:minhasconta/src/models/user_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -27,9 +28,10 @@ class DatabaseHelper {
     ''');
   }
 
-  Future<int> insertUser(Map<String, dynamic> row) async {
+  Future<int> registerUser(UserModel user) async {
     Database db = await instance.database;
-    return await db.insert('users', row);
+    int id = await db.insert('users', user.registerToMap);
+    return id;
   }
 
   Future<List<Map<String, dynamic>>> getUserWithEmailAndPassword(

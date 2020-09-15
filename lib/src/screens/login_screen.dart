@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
@@ -15,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = TextEditingController();
 
   TextEditingController password = TextEditingController();
+  TextEditingController repeatPassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Row(
                 children: [
-                  FlatButton(onPressed: () => null, child: Text('Acessar')),
-                  FlatButton(
-                      onPressed: () => null, child: Text('Registrar-ses'))
+                  InkWell(
+                      onTap: () => c.changeWidget(0), child: Text('Acessar')),
+                  Text(' / '),
+                  InkWell(
+                      onTap: () => c.changeWidget(1),
+                      child: Text('Registrar-se'))
                 ],
               ),
+              Observer(
+                  builder: (_) => c.widget == 0
+                      ? loginWidget(context)
+                      : c.widget == 1
+                          ? registerWidget(context)
+                          : recoverPassword())
             ],
           ),
         ),
@@ -39,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  loginWidget() => Column(children: [
+  loginWidget(BuildContext context) => Column(children: [
         TextField(
           controller: email,
           decoration: InputDecoration(hintText: 'Email'),
@@ -53,17 +64,29 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text('Entrar'),
         ),
       ]);
-  registerWidget() => Column(
+  registerWidget(BuildContext context) => Column(
         children: [
           TextField(
+            decoration: InputDecoration(hintText: 'Nome'),
             controller: name,
           ),
           TextField(
+            decoration: InputDecoration(hintText: 'Email'),
             controller: email,
           ),
           TextField(
+            decoration: InputDecoration(hintText: 'Senha'),
             controller: password,
           ),
+          TextField(
+            decoration: InputDecoration(hintText: 'Repetir senha'),
+            controller: repeatPassword,
+          ),
+          RaisedButton(
+              child: Text('Registrar'),
+              onPressed: () => c.register(email.text, name.text, password.text,
+                  repeatPassword.text, context))
         ],
       );
+  recoverPassword() => Column(children: []);
 }

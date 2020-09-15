@@ -9,33 +9,33 @@ part of 'user_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserController on _UserControllerBase, Store {
-  final _$emailAtom = Atom(name: '_UserControllerBase.email');
+  final _$userAtom = Atom(name: '_UserControllerBase.user');
 
   @override
-  String get email {
-    _$emailAtom.reportRead();
-    return super.email;
+  UserModel get user {
+    _$userAtom.reportRead();
+    return super.user;
   }
 
   @override
-  set email(String value) {
-    _$emailAtom.reportWrite(value, super.email, () {
-      super.email = value;
+  set user(UserModel value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
     });
   }
 
-  final _$passwordAtom = Atom(name: '_UserControllerBase.password');
+  final _$widgetAtom = Atom(name: '_UserControllerBase.widget');
 
   @override
-  String get password {
-    _$passwordAtom.reportRead();
-    return super.password;
+  int get widget {
+    _$widgetAtom.reportRead();
+    return super.widget;
   }
 
   @override
-  set password(String value) {
-    _$passwordAtom.reportWrite(value, super.password, () {
-      super.password = value;
+  set widget(int value) {
+    _$widgetAtom.reportWrite(value, super.widget, () {
+      super.widget = value;
     });
   }
 
@@ -46,11 +46,34 @@ mixin _$UserController on _UserControllerBase, Store {
     return _$logInAsyncAction.run(() => super.logIn(email, password));
   }
 
+  final _$registerAsyncAction = AsyncAction('_UserControllerBase.register');
+
+  @override
+  Future register(String email, String name, String password,
+      String repeatPassword, BuildContext context) {
+    return _$registerAsyncAction.run(
+        () => super.register(email, name, password, repeatPassword, context));
+  }
+
+  final _$_UserControllerBaseActionController =
+      ActionController(name: '_UserControllerBase');
+
+  @override
+  dynamic changeWidget(int i) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changeWidget');
+    try {
+      return super.changeWidget(i);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-email: ${email},
-password: ${password}
+user: ${user},
+widget: ${widget}
     ''';
   }
 }
