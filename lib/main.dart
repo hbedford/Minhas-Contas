@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
+import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
@@ -76,4 +77,7 @@ void main() {
     ),
   );
   runApp(App());
+
+  final dbHelper = DatabaseHelper.instance;
+  dbHelper.database;
 }

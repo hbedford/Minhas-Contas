@@ -42,8 +42,8 @@ mixin _$UserController on _UserControllerBase, Store {
   final _$logInAsyncAction = AsyncAction('_UserControllerBase.logIn');
 
   @override
-  Future logIn(String email, String password) {
-    return _$logInAsyncAction.run(() => super.logIn(email, password));
+  Future logIn(String email, String password, BuildContext context) {
+    return _$logInAsyncAction.run(() => super.logIn(email, password, context));
   }
 
   final _$registerAsyncAction = AsyncAction('_UserControllerBase.register');
@@ -57,6 +57,17 @@ mixin _$UserController on _UserControllerBase, Store {
 
   final _$_UserControllerBaseActionController =
       ActionController(name: '_UserControllerBase');
+
+  @override
+  dynamic changeUser(UserModel u) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changeUser');
+    try {
+      return super.changeUser(u);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeWidget(int i) {

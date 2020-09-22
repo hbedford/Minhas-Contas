@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: InputDecoration(hintText: 'Senha'),
         ),
         RaisedButton(
-          onPressed: () => c.logIn(email.text, password.text),
+          onPressed: () => c.logIn(email.text, password.text, context),
           child: Text('Entrar'),
         ),
       ]);

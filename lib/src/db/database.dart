@@ -18,13 +18,15 @@ class DatabaseHelper {
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, 'mywallet.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    return await openDatabase(path, version: 2, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-    CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL)
-    CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL)
+    CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL,password TEXT NOT NULL);
+    CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,type_id INTEGET NOT NULL, FOREIGN KEY (type_id)REFERENCES category_types);
+    CREATE TABLE category_types(id INTEGER PRIMARY KEY,)
+    CREATE TABLE creditcards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users)
     ''');
   }
 
@@ -37,7 +39,7 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getUserWithEmailAndPassword(
       String email, String password) async {
     Database db = await instance.database;
-    return await db.query('select * from users',
+    return await db.query('users',
         where: 'email = ? and password = ? ', whereArgs: [email, password]);
   }
 

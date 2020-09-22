@@ -1,8 +1,8 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:minhasconta/src/screens/home_screen.dart';
+import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
 part 'user_controller.g.dart';
 
@@ -15,13 +15,20 @@ abstract class _UserControllerBase with Store {
   int widget = 0;
   _UserControllerBase({this.user});
   @action
-  logIn(String email, String password) async {
+  logIn(String email, String password, BuildContext context) async {
     final db = DatabaseHelper.instance;
     if (email != null && email.contains('@') && password != null) {
-      Map map = (await db.getUserWithEmailAndPassword(email, password)).first;
-      if(map ==null){
-        Flushbar()
-      }
+      List list = (await db.getUserWithEmailAndPassword(email, password));
+
+      if (list.length == 1) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else
+        flushBar(
+          color: Colors.blue,
+          title: 'Dados incorretos',
+          message: 'Por favor verifique suas informação e tente novamente.',
+        ).show(context);
     }
   }
 
@@ -38,19 +45,22 @@ abstract class _UserControllerBase with Store {
       int i = (await db.registerUser(
           UserModel(email: email, name: name, password: password)));
       if (i != null) {
-        user.changeId(i);
+        changeUser(
+            UserModel(email: email, password: password, name: name, id: i));
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => HomeScreen()));
       } else {
-        Flushbar(
-          flushbarPosition: FlushbarPosition.BOTTOM,
-          padding: EdgeInsets.all(8),
-          flushbarStyle: FlushbarStyle.FLOATING,
-        );
+        flushBar(
+                title: 'Esse usuario ja existe no banco',
+                message: '',
+                color: Colors.red)
+            .show(context);
       }
     }
   }
 
+  @action
+  changeUser(UserModel u) => user = u;
   @action
   changeWidget(int i) => widget = i;
 }
