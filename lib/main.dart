@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/category_controller.dart';
 import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
@@ -18,7 +19,8 @@ void main() async {
   getIt.registerSingleton<HomeController>(HomeController());
   getIt.registerSingleton<CreditCardController>(CreditCardController());
   getIt.registerSingleton<UserController>(UserController(user: UserModel()));
-
+  getIt.registerSingleton<CategoryController>(
+      CategoryController(categories: [].asObservable()));
   getIt.registerSingleton<CreditCardsController>(
     CreditCardsController(
       creditCards: ObservableList.of(

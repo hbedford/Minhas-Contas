@@ -10,6 +10,7 @@ class ConfigsScreen extends StatelessWidget {
             Container(
               color: Colors.green,
               child: ListTile(
+                onTap: () => Navigator.pushNamed(context, '/categories'),
                 title: Text('Editar Categorias'),
               ),
             ),

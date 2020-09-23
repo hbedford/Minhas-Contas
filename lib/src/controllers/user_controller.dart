@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home_controller.dart';
 part 'user_controller.g.dart';
 
 class UserController = _UserControllerBase with _$UserController;

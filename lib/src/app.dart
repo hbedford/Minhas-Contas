@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/home_screen.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
 import 'package:minhasconta/src/screens/login_screen.dart';
@@ -18,7 +19,8 @@ class App extends StatelessWidget {
       routes: {
         '/': (context) => LoadingScreen(),
         '/login': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen()
+        '/home': (context) => HomeScreen(),
+        '/categories': (context) => CategoriesScreen(),
       },
       /* home: LoginScreen(), */
       darkTheme: ThemeData.dark(),

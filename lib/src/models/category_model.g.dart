@@ -46,6 +46,36 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
     });
   }
 
+  final _$typeAtom = Atom(name: '_CategoryModelBase.type');
+
+  @override
+  bool get type {
+    _$typeAtom.reportRead();
+    return super.type;
+  }
+
+  @override
+  set type(bool value) {
+    _$typeAtom.reportWrite(value, super.type, () {
+      super.type = value;
+    });
+  }
+
+  final _$stepAtom = Atom(name: '_CategoryModelBase.step');
+
+  @override
+  int get step {
+    _$stepAtom.reportRead();
+    return super.step;
+  }
+
+  @override
+  set step(int value) {
+    _$stepAtom.reportWrite(value, super.step, () {
+      super.step = value;
+    });
+  }
+
   final _$colorAtom = Atom(name: '_CategoryModelBase.color');
 
   @override
@@ -91,6 +121,28 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
   }
 
   @override
+  dynamic changeType(bool v) {
+    final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
+        name: '_CategoryModelBase.changeType');
+    try {
+      return super.changeType(v);
+    } finally {
+      _$_CategoryModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic selectType(bool v) {
+    final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
+        name: '_CategoryModelBase.selectType');
+    try {
+      return super.selectType(v);
+    } finally {
+      _$_CategoryModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic removeSubCategory(CategoryModel c) {
     final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
         name: '_CategoryModelBase.removeSubCategory');
@@ -106,6 +158,8 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
     return '''
 name: ${name},
 payments: ${payments},
+type: ${type},
+step: ${step},
 color: ${color},
 subCategories: ${subCategories},
 total: ${total}

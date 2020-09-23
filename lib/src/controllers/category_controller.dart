@@ -12,6 +12,7 @@ abstract class _CategoryControllerBase with Store {
   _CategoryControllerBase({this.categories, this.category});
   @action
   addCategory(CategoryModel c) => categories.add(c);
+
   @action
   removeCategory(CategoryModel c) => categories.remove(c);
   @action

@@ -10,12 +10,25 @@ abstract class _CategoryModelBase with Store {
   @observable
   ObservableList payments = [].asObservable();
   @observable
+  bool type;
+  @observable
+  int step;
+  @observable
   Color color;
   @observable
   ObservableList subCategories = [].asObservable();
-  _CategoryModelBase({this.name, this.payments, this.color});
+  _CategoryModelBase(
+      {this.name, this.payments, this.color, this.type = false, this.step = 0});
   @action
   addSubCategory(CategoryModel c) => subCategories.add(c);
+  @action
+  changeType(bool v) => type = v;
+  @action
+  selectType(bool v) {
+    step = 1;
+    changeType(v);
+  }
+
   @action
   removeSubCategory(CategoryModel c) => subCategories.remove(c);
   @computed
