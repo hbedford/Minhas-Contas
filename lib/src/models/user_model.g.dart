@@ -9,6 +9,27 @@ part of 'user_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserModel on _UserModelBase, Store {
+  Computed<bool> _$emailIsValidComputed;
+
+  @override
+  bool get emailIsValid =>
+      (_$emailIsValidComputed ??= Computed<bool>(() => super.emailIsValid,
+              name: '_UserModelBase.emailIsValid'))
+          .value;
+  Computed<bool> _$passwordIsValidComputed;
+
+  @override
+  bool get passwordIsValid =>
+      (_$passwordIsValidComputed ??= Computed<bool>(() => super.passwordIsValid,
+              name: '_UserModelBase.passwordIsValid'))
+          .value;
+  Computed<bool> _$repeatPasswordIsValidComputed;
+
+  @override
+  bool get repeatPasswordIsValid => (_$repeatPasswordIsValidComputed ??=
+          Computed<bool>(() => super.repeatPasswordIsValid,
+              name: '_UserModelBase.repeatPasswordIsValid'))
+      .value;
   Computed<Map<String, dynamic>> _$registerToMapComputed;
 
   @override
@@ -147,6 +168,9 @@ name: ${name},
 email: ${email},
 password: ${password},
 repeatPassword: ${repeatPassword},
+emailIsValid: ${emailIsValid},
+passwordIsValid: ${passwordIsValid},
+repeatPasswordIsValid: ${repeatPasswordIsValid},
 registerToMap: ${registerToMap}
     ''';
   }

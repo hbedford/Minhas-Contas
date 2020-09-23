@@ -6,17 +6,19 @@ import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
 
 import 'src/app.dart';
 import 'src/controllers/creditcard_controller.dart';
 import 'src/controllers/user_controller.dart';
 
-void main() {
+void main() async {
   GetIt getIt = GetIt.instance;
   getIt.registerSingleton<HomeController>(HomeController());
   getIt.registerSingleton<CreditCardController>(CreditCardController());
-  getIt.registerSingleton<UserController>(UserController());
+  getIt.registerSingleton<UserController>(UserController(user: UserModel()));
+
   getIt.registerSingleton<CreditCardsController>(
     CreditCardsController(
       creditCards: ObservableList.of(

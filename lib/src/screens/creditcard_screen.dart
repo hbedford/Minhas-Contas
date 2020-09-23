@@ -179,7 +179,7 @@ class CreditCardScreen extends StatelessWidget {
                           ),
                           Flexible(
                             child: cInfoLeft(
-                                title: 'Comparado ao mes passado',
+                                title: 'Categorias',
                                 info: '',
                                 icon: Icon(Icons.email)),
                           ),

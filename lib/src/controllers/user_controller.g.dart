@@ -9,6 +9,14 @@ part of 'user_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserController on _UserControllerBase, Store {
+  Computed<Future<bool>> _$getUserInfoComputed;
+
+  @override
+  Future<bool> get getUserInfo =>
+      (_$getUserInfoComputed ??= Computed<Future<bool>>(() => super.getUserInfo,
+              name: '_UserControllerBase.getUserInfo'))
+          .value;
+
   final _$userAtom = Atom(name: '_UserControllerBase.user');
 
   @override
@@ -39,11 +47,18 @@ mixin _$UserController on _UserControllerBase, Store {
     });
   }
 
+  final _$startLogInAsyncAction = AsyncAction('_UserControllerBase.startLogIn');
+
+  @override
+  Future startLogIn(BuildContext context) {
+    return _$startLogInAsyncAction.run(() => super.startLogIn(context));
+  }
+
   final _$logInAsyncAction = AsyncAction('_UserControllerBase.logIn');
 
   @override
-  Future logIn(String email, String password, BuildContext context) {
-    return _$logInAsyncAction.run(() => super.logIn(email, password, context));
+  Future logIn(BuildContext context) {
+    return _$logInAsyncAction.run(() => super.logIn(context));
   }
 
   final _$registerAsyncAction = AsyncAction('_UserControllerBase.register');
@@ -84,7 +99,8 @@ mixin _$UserController on _UserControllerBase, Store {
   String toString() {
     return '''
 user: ${user},
-widget: ${widget}
+widget: ${widget},
+getUserInfo: ${getUserInfo}
     ''';
   }
 }

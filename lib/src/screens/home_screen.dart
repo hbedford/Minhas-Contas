@@ -9,7 +9,7 @@ import 'package:minhasconta/src/widgets/creditcard_widget.dart';
 import 'creditcards_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final HomeController c = HomeController();
+  final c = GetIt.instance<HomeController>();
   final creditCardsController = GetIt.instance<CreditCardsController>();
 
   final List<ProjectModel> projects = [];
@@ -49,10 +49,11 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+
+      /* floatingActionButton: FloatingActionButton(
         onPressed: () => (c.changeAButton(!c.actionButton)),
         child: Icon(Icons.add),
-      ),
+      ), */
     );
   }
 

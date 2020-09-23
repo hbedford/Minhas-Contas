@@ -37,6 +37,7 @@ dependencies:
   path:
   get_it:
   path_provider:
+  shared_preferences: ^0.5.11
 
 dev_dependencies:
   mobx_codegen: 

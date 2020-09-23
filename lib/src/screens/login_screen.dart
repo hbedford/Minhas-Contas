@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
+import 'package:minhasconta/src/models/user_model.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -60,7 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: InputDecoration(hintText: 'Senha'),
         ),
         RaisedButton(
-          onPressed: () => c.logIn(email.text, password.text, context),
+          onPressed: () {
+            c.changeUser(UserModel(email: email.text, password: password.text));
+            c.logIn(context);
+          },
           child: Text('Entrar'),
         ),
       ]);
