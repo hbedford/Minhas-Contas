@@ -44,40 +44,69 @@ class StepsCategory extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return Observer(
-        builder: (_) => c.category.step == 0
-            ? step0()
-            : c.category.step == 1 ? step1(context) : Container());
+    return LayoutBuilder(
+      builder: (context, constraints) => Container(
+        decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        padding: EdgeInsets.symmetric(
+            vertical: constraints.maxHeight * 0.03,
+            horizontal: constraints.maxWidth * 0.04),
+        child: Observer(
+            builder: (_) => c.category.step == 0
+                ? step0(context, constraints)
+                : c.category.step == 1
+                    ? step1(context, constraints)
+                    : Container()),
+      ),
+    );
   }
 
-  step0() => Container(
+  step0(BuildContext context, BoxConstraints constraints) => Container(
         height: 120,
-        decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: BorderRadius.circular(25)),
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          Text('Pretende criar uma'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              RaisedButton(
-                onPressed: () => c.category.selectType(false),
-                child: Text('Categoria'),
-              ),
-              RaisedButton(
-                  onPressed: () => c.category.selectType(true),
-                  child: Text('SubCategoria'))
-            ],
-          ),
-          Container()
-        ]),
-      );
-  step1(BuildContext context) => Container(
-        height: 200,
-        color: Colors.blue,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(c.category.type == true ? 'SubCategoria' : 'Categoria'),
+            Text('Pretende criar uma'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                RaisedButton(
+                  onPressed: () => c.category.selectType(false),
+                  child: Text('Categoria'),
+                ),
+                RaisedButton(
+                    onPressed: c.categories.length > 0
+                        ? () => c.category.selectType(true)
+                        : null,
+                    child: Text('SubCategoria'))
+              ],
+            ),
+            Container()
+          ],
+        ),
+      );
+  step1(BuildContext context, BoxConstraints constraints) => Container(
+        height: constraints.maxHeight * 0.4,
+        margin:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(c.category.type == true ? 'SubCategoria' : 'Categoria'),
+              ],
+            ),
+            Visibility(
+                visible: c.category.type,
+                child: DropdownButton(
+                    items: c.categories
+                        .map((item) => DropdownMenuItem(child: Text('A')))
+                        .toList(),
+                    onChanged: null)),
             Text('De um nome'),
             TextField(),
             ListTile(
@@ -100,15 +129,17 @@ class StepsCategory extends StatelessWidget {
                       child: Column(
                     children: [
                       Text('Escolha uma cor'),
+                      Spacer(),
                       Expanded(
                           child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
+                                      crossAxisSpacing: 2, crossAxisCount: 10),
                               itemCount: list.length,
                               itemBuilder: (context, int index) => CircleAvatar(
                                     backgroundColor: list[index],
-                                  )))
+                                  ))),
+                      Spacer(),
                     ],
                   )),
                 ),
