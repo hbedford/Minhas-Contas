@@ -6,7 +6,11 @@ class HomeController = _HomeControllerBase with _$HomeController;
 abstract class _HomeControllerBase with Store {
   @observable
   bool actionButton;
-  _HomeControllerBase({this.actionButton = false});
+  @observable
+  int index;
+  _HomeControllerBase({this.actionButton = false, this.index = 0});
   @action
   changeAButton(bool v) => actionButton = v;
+  @action
+  changeIndex(int i) => index = i;
 }

@@ -24,6 +24,21 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$indexAtom = Atom(name: '_HomeControllerBase.index');
+
+  @override
+  int get index {
+    _$indexAtom.reportRead();
+    return super.index;
+  }
+
+  @override
+  set index(int value) {
+    _$indexAtom.reportWrite(value, super.index, () {
+      super.index = value;
+    });
+  }
+
   final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase');
 
@@ -39,9 +54,21 @@ mixin _$HomeController on _HomeControllerBase, Store {
   }
 
   @override
+  dynamic changeIndex(int i) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.changeIndex');
+    try {
+      return super.changeIndex(i);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-actionButton: ${actionButton}
+actionButton: ${actionButton},
+index: ${index}
     ''';
   }
 }
