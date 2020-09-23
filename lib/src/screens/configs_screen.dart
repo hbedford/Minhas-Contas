@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/user_controller.dart';
 
 class ConfigsScreen extends StatelessWidget {
+  final c = GetIt.instance<UserController>();
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -27,8 +30,9 @@ class ConfigsScreen extends StatelessWidget {
               ),
             ),
             Container(
-              color: Colors.green,
+              color: Colors.red,
               child: ListTile(
+                onTap: () => c.logOut(context),
                 title: Text('Deslogar da conta'),
               ),
             ),

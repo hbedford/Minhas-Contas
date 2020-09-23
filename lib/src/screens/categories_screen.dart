@@ -33,8 +33,15 @@ class CategoriesScreen extends StatelessWidget {
   item(CategoryModel category) => Container(child: Text(category.name));
 }
 
-class StepsCategory extends StatelessWidget {
+class StepsCategory extends StatefulWidget {
+  @override
+  _StepsCategoryState createState() => _StepsCategoryState();
+}
+
+class _StepsCategoryState extends State<StepsCategory> {
   final c = GetIt.instance<CategoryController>();
+  TextEditingController name = TextEditingController();
+
   List<Color> list = [
     Colors.orange,
     Colors.deepOrange,
@@ -42,12 +49,13 @@ class StepsCategory extends StatelessWidget {
     Colors.pink,
     Colors.red
   ];
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
         decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         padding: EdgeInsets.symmetric(
             vertical: constraints.maxHeight * 0.03,
@@ -86,6 +94,7 @@ class StepsCategory extends StatelessWidget {
           ],
         ),
       );
+
   step1(BuildContext context, BoxConstraints constraints) => Container(
         height: constraints.maxHeight * 0.4,
         margin:
@@ -108,16 +117,22 @@ class StepsCategory extends StatelessWidget {
                         .toList(),
                     onChanged: null)),
             Text('De um nome'),
-            TextField(),
+            TextField(
+              controller: name,
+            ),
             ListTile(
               title: Text(
                 'Escolha uma cor',
               ),
               onTap: () => showDialogColor(context),
+              trailing: CircleAvatar(
+                backgroundColor: c.category.color,
+              ),
             )
           ],
         ),
       );
+
   showDialogColor(BuildContext context) {
     showDialog(
         context: context,
