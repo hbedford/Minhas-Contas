@@ -19,7 +19,8 @@ abstract class _PaymentModelBase with Store {
   @observable
   TimeOfDay time;
   @observable
-  bool tPayment;
+  int tPayment;
+  //0 - credito / 1 - debito / 2 - dinheiro/transf
   @observable
   CategoryModel category = CategoryModel(name: '', color: Colors.red);
   _PaymentModelBase(
@@ -28,7 +29,17 @@ abstract class _PaymentModelBase with Store {
       this.category,
       this.date,
       this.value = 0,
-      this.tPayment = false});
+      this.tPayment});
+  @action
+  changeName(String n) => name = n;
+  @action
+  changeValue(double v) => value = v;
+  @action
+  changeDate(DateTime d) => date = d;
+  @action
+  changeTime(TimeOfDay t) => time = t;
+  @action
+  changeTypePayment(int t) => tPayment = t;
 
   @computed
   String get dateToString => Converting().dateToString(date);

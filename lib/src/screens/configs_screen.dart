@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/category_controller.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
 
 class ConfigsScreen extends StatelessWidget {
   final c = GetIt.instance<UserController>();
+  final cc = GetIt.instance<CategoryController>();
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -13,7 +15,10 @@ class ConfigsScreen extends StatelessWidget {
             Container(
               color: Colors.green,
               child: ListTile(
-                onTap: () => Navigator.pushNamed(context, '/categories'),
+                onTap: () {
+                  cc.getCategories();
+                  Navigator.pushNamed(context, '/categories');
+                },
                 title: Text('Editar Categorias'),
               ),
             ),

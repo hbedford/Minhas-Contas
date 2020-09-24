@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/category_controller.dart';
 import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
+import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/creditcard_model.dart';
@@ -21,6 +22,7 @@ void main() async {
   getIt.registerSingleton<UserController>(UserController(user: UserModel()));
   getIt.registerSingleton<CategoryController>(
       CategoryController(categories: [].asObservable()));
+  getIt.registerSingleton<PaymentController>(PaymentController());
   getIt.registerSingleton<CreditCardsController>(
     CreditCardsController(
       creditCards: ObservableList.of(
@@ -28,7 +30,7 @@ void main() async {
           CreditCardModel(
             id: 1,
             name: 'Teste',
-            color: Colors.white,
+            color: Colors.green,
             payments: ObservableList.of(
               [
                 PaymentModel(

@@ -95,13 +95,13 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   final _$tPaymentAtom = Atom(name: '_PaymentModelBase.tPayment');
 
   @override
-  bool get tPayment {
+  int get tPayment {
     _$tPaymentAtom.reportRead();
     return super.tPayment;
   }
 
   @override
-  set tPayment(bool value) {
+  set tPayment(int value) {
     _$tPaymentAtom.reportWrite(value, super.tPayment, () {
       super.tPayment = value;
     });
@@ -120,6 +120,64 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
     _$categoryAtom.reportWrite(value, super.category, () {
       super.category = value;
     });
+  }
+
+  final _$_PaymentModelBaseActionController =
+      ActionController(name: '_PaymentModelBase');
+
+  @override
+  dynamic changeName(String n) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeName');
+    try {
+      return super.changeName(n);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeValue(double v) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeValue');
+    try {
+      return super.changeValue(v);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeDate(DateTime d) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeDate');
+    try {
+      return super.changeDate(d);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeTime(TimeOfDay t) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeTime');
+    try {
+      return super.changeTime(t);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeTypePayment(int t) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeTypePayment');
+    try {
+      return super.changeTypePayment(t);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

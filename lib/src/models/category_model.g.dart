@@ -15,6 +15,37 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
   double get total => (_$totalComputed ??=
           Computed<double>(() => super.total, name: '_CategoryModelBase.total'))
       .value;
+  Computed<Map<String, dynamic>> _$registerToMapCategoryComputed;
+
+  @override
+  Map<String, dynamic> get registerToMapCategory =>
+      (_$registerToMapCategoryComputed ??= Computed<Map<String, dynamic>>(
+              () => super.registerToMapCategory,
+              name: '_CategoryModelBase.registerToMapCategory'))
+          .value;
+  Computed<Map<String, dynamic>> _$registerToMapSubCategoryComputed;
+
+  @override
+  Map<String, dynamic> get registerToMapSubCategory =>
+      (_$registerToMapSubCategoryComputed ??= Computed<Map<String, dynamic>>(
+              () => super.registerToMapSubCategory,
+              name: '_CategoryModelBase.registerToMapSubCategory'))
+          .value;
+
+  final _$idAtom = Atom(name: '_CategoryModelBase.id');
+
+  @override
+  int get id {
+    _$idAtom.reportRead();
+    return super.id;
+  }
+
+  @override
+  set id(int value) {
+    _$idAtom.reportWrite(value, super.id, () {
+      super.id = value;
+    });
+  }
 
   final _$nameAtom = Atom(name: '_CategoryModelBase.name');
 
@@ -43,36 +74,6 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
   set payments(ObservableList<dynamic> value) {
     _$paymentsAtom.reportWrite(value, super.payments, () {
       super.payments = value;
-    });
-  }
-
-  final _$typeAtom = Atom(name: '_CategoryModelBase.type');
-
-  @override
-  bool get type {
-    _$typeAtom.reportRead();
-    return super.type;
-  }
-
-  @override
-  set type(bool value) {
-    _$typeAtom.reportWrite(value, super.type, () {
-      super.type = value;
-    });
-  }
-
-  final _$stepAtom = Atom(name: '_CategoryModelBase.step');
-
-  @override
-  int get step {
-    _$stepAtom.reportRead();
-    return super.step;
-  }
-
-  @override
-  set step(int value) {
-    _$stepAtom.reportWrite(value, super.step, () {
-      super.step = value;
     });
   }
 
@@ -121,22 +122,22 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
   }
 
   @override
-  dynamic changeType(bool v) {
+  dynamic changeColor(Color c) {
     final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
-        name: '_CategoryModelBase.changeType');
+        name: '_CategoryModelBase.changeColor');
     try {
-      return super.changeType(v);
+      return super.changeColor(c);
     } finally {
       _$_CategoryModelBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic selectType(bool v) {
+  dynamic changeName(String n) {
     final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
-        name: '_CategoryModelBase.selectType');
+        name: '_CategoryModelBase.changeName');
     try {
-      return super.selectType(v);
+      return super.changeName(n);
     } finally {
       _$_CategoryModelBaseActionController.endAction(_$actionInfo);
     }
@@ -156,13 +157,14 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
   @override
   String toString() {
     return '''
+id: ${id},
 name: ${name},
 payments: ${payments},
-type: ${type},
-step: ${step},
 color: ${color},
 subCategories: ${subCategories},
-total: ${total}
+total: ${total},
+registerToMapCategory: ${registerToMapCategory},
+registerToMapSubCategory: ${registerToMapSubCategory}
     ''';
   }
 }

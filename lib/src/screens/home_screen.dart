@@ -3,17 +3,19 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
+import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/configs_screen.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
+import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 import 'package:minhasconta/src/widgets/creditcard_widget.dart';
 import 'creditcards_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final c = GetIt.instance<HomeController>();
   final creditCardsController = GetIt.instance<CreditCardsController>();
-
+  final cp = GetIt.instance<PaymentController>();
   final List<ProjectModel> projects = [];
   final List<MenuModel> list = [
     MenuModel(
@@ -75,7 +77,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => null,
+        onPressed: () => showDialogAdd(context),
         child: Icon(Icons.add),
       ),
     );
@@ -112,28 +114,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       );
-  /* bottomMenu(BoxConstraints constraints) => Positioned(
-      bottom: constraints.maxHeight * 0.01,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.075),
-        height: constraints.maxHeight * 0.08,
-        width: constraints.maxWidth * 0.85,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(100)),
-        child: LayoutBuilder(
-          builder: (context, constraint) => Stack(children: [
-            Positioned(
-              right: constraint.maxWidth * 0.45,
-              child: CircleAvatar(radius: 25, child: Icon(Icons.add)),
-            ),
-            Positioned(
-                top: constraint.maxHeight * 0.25,
-                right: constraint.maxWidth * 0.1,
-                left: constraint.maxWidth * 0.1,
-                child: Row(children: [Icon(Icons.credit_card)]))
-          ]),
-        ),
-      ),); */
+
   BottomNavigationBarItem bottomItem() =>
       BottomNavigationBarItem(icon: Icon(Icons.credit_card));
   creditCardsInfo(BoxConstraints constraint, BuildContext context) => Flexible(
@@ -181,22 +162,7 @@ class HomeScreen extends StatelessWidget {
                             child: CreditCardWidget(
                               creditCard: e,
                               constrainedBox: constraints,
-                            ) /* Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: constraints.maxWidth * 0.04,
-                                vertical: constraints.maxWidth * 0.02),
-                            child: Column(
-                              children: [
-                                Row(children: [Text(e.name)])
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                                color: e.color,
-                                borderRadius: BorderRadius.circular(20)),
-                            width: constraints.maxWidth * 0.9,
-                            height: constraints.maxWidth * 0.2,
-                          ), */
-                            ),
+                            )),
                       )
                       .toList(),
                 ),
@@ -205,4 +171,11 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       );
+  showDialogAdd(BuildContext context) {
+    cp.initiatePayment();
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (_) => AddNewPaymentWidget());
+  }
 }

@@ -70,6 +70,13 @@ mixin _$UserController on _UserControllerBase, Store {
         () => super.register(email, name, password, repeatPassword, context));
   }
 
+  final _$logOutAsyncAction = AsyncAction('_UserControllerBase.logOut');
+
+  @override
+  Future logOut(BuildContext context) {
+    return _$logOutAsyncAction.run(() => super.logOut(context));
+  }
+
   final _$_UserControllerBaseActionController =
       ActionController(name: '_UserControllerBase');
 

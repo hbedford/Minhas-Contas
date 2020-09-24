@@ -11,9 +11,11 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Categorias')),
-      body: ListView.builder(
-          itemCount: c.categories.length,
-          itemBuilder: (context, int index) => item(c.categories[index])),
+      body: Observer(
+        builder: (_) => ListView.builder(
+            itemCount: c.categories.length,
+            itemBuilder: (context, int index) => item(c.categories[index])),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => initiateNewCategory(context),
         child: Icon(Icons.add),
@@ -22,7 +24,8 @@ class CategoriesScreen extends StatelessWidget {
   }
 
   initiateNewCategory(BuildContext context) {
-    c.changeCategory(CategoryModel(step: 0));
+    c.changeCategory(CategoryModel());
+    c.changeStep(0);
     showDialog(context);
   }
 
@@ -43,11 +46,20 @@ class _StepsCategoryState extends State<StepsCategory> {
   TextEditingController name = TextEditingController();
 
   List<Color> list = [
-    Colors.orange,
-    Colors.deepOrange,
-    Colors.purple,
+    Colors.red,
     Colors.pink,
-    Colors.red
+    Colors.purple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.brown,
+    Colors.grey
   ];
 
   @override
@@ -61,17 +73,17 @@ class _StepsCategoryState extends State<StepsCategory> {
             vertical: constraints.maxHeight * 0.03,
             horizontal: constraints.maxWidth * 0.04),
         child: Observer(
-            builder: (_) => c.category.step == 0
+            builder: (_) => c.step == 0
                 ? step0(context, constraints)
-                : c.category.step == 1
-                    ? step1(context, constraints)
-                    : Container()),
+                : c.step == 1 ? step1(context, constraints) : Container()),
       ),
     );
   }
 
   step0(BuildContext context, BoxConstraints constraints) => Container(
         height: 120,
+        margin:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -80,12 +92,12 @@ class _StepsCategoryState extends State<StepsCategory> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 RaisedButton(
-                  onPressed: () => c.category.selectType(false),
+                  onPressed: () => c.selectTypeStep(true),
                   child: Text('Categoria'),
                 ),
                 RaisedButton(
                     onPressed: c.categories.length > 0
-                        ? () => c.category.selectType(true)
+                        ? () => c.selectTypeStep(false)
                         : null,
                     child: Text('SubCategoria'))
               ],
@@ -96,7 +108,7 @@ class _StepsCategoryState extends State<StepsCategory> {
       );
 
   step1(BuildContext context, BoxConstraints constraints) => Container(
-        height: constraints.maxHeight * 0.4,
+        height: constraints.maxHeight * 0.6,
         margin:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
@@ -106,11 +118,11 @@ class _StepsCategoryState extends State<StepsCategory> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(c.category.type == true ? 'SubCategoria' : 'Categoria'),
+                Text(c.type ? 'Categoria' : 'SubCategoria'),
               ],
             ),
             Visibility(
-                visible: c.category.type,
+                visible: !c.type,
                 child: DropdownButton(
                     items: c.categories
                         .map((item) => DropdownMenuItem(child: Text('A')))
@@ -120,14 +132,30 @@ class _StepsCategoryState extends State<StepsCategory> {
             TextField(
               controller: name,
             ),
-            ListTile(
-              title: Text(
-                'Escolha uma cor',
-              ),
-              onTap: () => showDialogColor(context),
-              trailing: CircleAvatar(
-                backgroundColor: c.category.color,
-              ),
+            Visibility(
+              visible: MediaQuery.of(context).viewInsets.bottom == 0,
+              child: Column(children: [
+                ListTile(
+                  title: Text(
+                    'Escolha uma cor',
+                  ),
+                  onTap: () => showDialogColor(context),
+                  trailing: CircleAvatar(
+                    backgroundColor: c.category.color,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    RaisedButton(
+                        onPressed: () => c.saveCategory(name.text, context),
+                        child: Text('Salvar')),
+                    RaisedButton(
+                        onPressed: () => c.cancelCategory(context),
+                        child: Text('Cancelar'))
+                  ],
+                ),
+              ]),
             )
           ],
         ),
@@ -138,25 +166,38 @@ class _StepsCategoryState extends State<StepsCategory> {
         context: context,
         builder: (context) => LayoutBuilder(
               builder: (context, constraint) => Center(
-                child: Container(
-                  height: constraint.maxHeight * 0.4,
-                  child: Card(
+                child: Card(
+                  child: Container(
+                      height: constraint.maxHeight * 0.4,
+                      width: constraint.maxWidth * 0.7,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: constraint.maxWidth * 0.1),
                       child: Column(
-                    children: [
-                      Text('Escolha uma cor'),
-                      Spacer(),
-                      Expanded(
-                          child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 2, crossAxisCount: 10),
-                              itemCount: list.length,
-                              itemBuilder: (context, int index) => CircleAvatar(
-                                    backgroundColor: list[index],
-                                  ))),
-                      Spacer(),
-                    ],
-                  )),
+                        children: [
+                          Flexible(
+                            child: Text('Escolha uma cor'),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisSpacing: 4,
+                                        crossAxisCount: 4,
+                                        mainAxisSpacing: 2),
+                                itemCount: list.length,
+                                itemBuilder: (context, int index) => InkWell(
+                                    child: CircleAvatar(
+                                      radius: constraint.maxHeight * 0.01,
+                                      backgroundColor: list[index],
+                                    ),
+                                    onTap: () {
+                                      c.category.changeColor(list[index]);
+                                      Navigator.pop(context);
+                                    })),
+                          ),
+                        ],
+                      )),
                 ),
               ),
             ));

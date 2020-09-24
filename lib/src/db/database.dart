@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,22 +19,44 @@ class DatabaseHelper {
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, 'mywallet.db');
-    return await openDatabase(path, version: 2, onCreate: _onCreate);
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
-    await db.execute('''
-    CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL,password TEXT NOT NULL);
-    CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,type_id INTEGET NOT NULL, FOREIGN KEY (type_id)REFERENCES category_types);
-    CREATE TABLE category_types(id INTEGER PRIMARY KEY,)
-    CREATE TABLE creditcards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users)
-    ''');
+    await db.execute(
+        "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL,password TEXT NOT NULL);");
+    await db.execute(
+        "CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,color TEXT NOT NULL);");
+    await db.execute(
+        "CREATE TABLE subcategories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,category_id INTEGER, FOREIGN KEY(category_id)REFERENCES categories);");
+    await db.execute(
+        " CREATE TABLE creditcards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users);");
   }
 
   Future<int> registerUser(UserModel user) async {
     Database db = await instance.database;
     int id = await db.insert('users', user.registerToMap);
     return id;
+  }
+
+  Future<int> registerCategory(CategoryModel category) async {
+    Database db = await instance.database;
+    int id = await db.insert('categories', category.registerToMapCategory);
+    return id;
+  }
+
+  Future<int> registerSubCategory(CategoryModel subcategory) async {
+    Database db = await instance.database;
+    int id =
+        await db.insert('subcategories', subcategory.registerToMapSubCategory);
+    return id;
+  }
+
+  Future<List> getCategories() async {
+    Database db = await instance.database;
+    List<Map> list = await db.query('categories');
+    List<CategoryModel> l = list.map((e) => CategoryModel.fromMap(e)).toList();
+    return l;
   }
 
   Future<UserModel> getUserWithEmailAndPassword(

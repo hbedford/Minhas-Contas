@@ -6,29 +6,30 @@ class CategoryModel = _CategoryModelBase with _$CategoryModel;
 
 abstract class _CategoryModelBase with Store {
   @observable
+  int id;
+  @observable
   String name;
   @observable
   ObservableList payments = [].asObservable();
   @observable
-  bool type;
-  @observable
-  int step;
-  @observable
   Color color;
   @observable
   ObservableList subCategories = [].asObservable();
-  _CategoryModelBase(
-      {this.name, this.payments, this.color, this.type = false, this.step = 0});
+  _CategoryModelBase({this.name, this.payments, this.color});
+  _CategoryModelBase.fromMap(Map m)
+      : this.name = m['name'],
+        this.id = m['id'],
+        this.color = Color(int.parse(m['color']));
   @action
   addSubCategory(CategoryModel c) => subCategories.add(c);
   @action
-  changeType(bool v) => type = v;
-  @action
-  selectType(bool v) {
-    step = 1;
-    changeType(v);
+  changeColor(Color c) {
+    color = c;
+    print(color.value.toString());
   }
 
+  @action
+  changeName(String n) => name = n;
   @action
   removeSubCategory(CategoryModel c) => subCategories.remove(c);
   @computed
@@ -39,4 +40,15 @@ abstract class _CategoryModelBase with Store {
     });
     return t;
   }
+
+  @computed
+  Map<String, dynamic> get registerToMapCategory => {
+        'name': name,
+        'color': color.value.toString(),
+      };
+  @computed
+  Map<String, dynamic> get registerToMapSubCategory => {
+        'name': name,
+        'color': color.value.toString(),
+      };
 }
