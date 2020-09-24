@@ -21,6 +21,24 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
+  selectCreditCard(int v) {
+    changeStep(2);
+    payment.changeCreditCardId(v);
+  }
+
+  @action
+  backStep(int v) {
+    if (v == 0) {
+      payment.changeTypePayment(null);
+      changeStep(0);
+    }
+    if (v == 1) {
+      payment.changeCreditCardId(null);
+      changeStep(1);
+    }
+  }
+
+  @action
   changeTypePayment(int i) {
     changeStep(1);
     payment.changeTypePayment(i);

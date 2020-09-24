@@ -32,8 +32,10 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body:
-          Observer(builder: (_) => c.index == 3 ? ConfigsScreen() : homeInfo()),
+      body: Observer(
+          builder: (_) => c.index == 3
+              ? ConfigsScreen()
+              : c.index == 1 ? creditCardsInfoWidget() : Container()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 2,
@@ -83,7 +85,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  homeInfo() => LayoutBuilder(
+  creditCardsInfoWidget() => LayoutBuilder(
         builder: (context, constraint) => Stack(
           children: [
             /* bottomMenu(constraint), */

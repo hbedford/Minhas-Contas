@@ -76,6 +76,28 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
+  dynamic selectCreditCard(int v) {
+    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
+        name: '_PaymentControllerBase.selectCreditCard');
+    try {
+      return super.selectCreditCard(v);
+    } finally {
+      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic backStep(int v) {
+    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
+        name: '_PaymentControllerBase.backStep');
+    try {
+      return super.backStep(v);
+    } finally {
+      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeTypePayment(int i) {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
         name: '_PaymentControllerBase.changeTypePayment');

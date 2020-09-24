@@ -92,6 +92,21 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
     });
   }
 
+  final _$creditCardIdAtom = Atom(name: '_PaymentModelBase.creditCardId');
+
+  @override
+  int get creditCardId {
+    _$creditCardIdAtom.reportRead();
+    return super.creditCardId;
+  }
+
+  @override
+  set creditCardId(int value) {
+    _$creditCardIdAtom.reportWrite(value, super.creditCardId, () {
+      super.creditCardId = value;
+    });
+  }
+
   final _$tPaymentAtom = Atom(name: '_PaymentModelBase.tPayment');
 
   @override
@@ -181,6 +196,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   }
 
   @override
+  dynamic changeCreditCardId(int i) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeCreditCardId');
+    try {
+      return super.changeCreditCardId(i);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 id: ${id},
@@ -188,6 +214,7 @@ name: ${name},
 value: ${value},
 date: ${date},
 time: ${time},
+creditCardId: ${creditCardId},
 tPayment: ${tPayment},
 category: ${category},
 dateToString: ${dateToString}
