@@ -18,8 +18,8 @@ class AddNewPaymentWidget extends StatelessWidget {
         builder: (_) => Container(
             padding: EdgeInsets.symmetric(
                 horizontal: constraint.maxWidth * 0.05,
-                vertical: constraint.maxHeight * 0.02),
-            height: constraint.maxHeight * (c.step == 1 ? 0.4 : 0.8),
+                vertical: constraint.maxHeight * 0.05),
+            height: constraint.maxHeight * (c.step == 4 ? 0.8 : 0.4),
             width: constraint.maxWidth,
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -65,11 +65,13 @@ class AddNewPaymentWidget extends StatelessWidget {
       );
   step1() => Column(
         children: [
-          Row(children: [
-            IconButton(
-                icon: Icon(Icons.arrow_left), onPressed: () => c.backStep(0)),
-            Text('Qual o cartão utilizado?'),
-          ]),
+          Flexible(
+            child: Row(children: [
+              IconButton(
+                  icon: Icon(Icons.arrow_left), onPressed: () => c.backStep(0)),
+              Text('Qual o cartão utilizado?'),
+            ]),
+          ),
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraint) => ListView.builder(
@@ -89,10 +91,12 @@ class AddNewPaymentWidget extends StatelessWidget {
   step2() => Column(children: [
         Row(children: [
           Flexible(
+            flex: 1,
             child: IconButton(
                 icon: Icon(Icons.arrow_left), onPressed: () => c.backStep(1)),
           ),
           Expanded(
+            flex: 3,
             child: Text(
               'A despesa faz parte de algum projeto ou foi uma compra avulsa?',
             ),

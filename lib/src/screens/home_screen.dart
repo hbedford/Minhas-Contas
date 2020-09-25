@@ -35,7 +35,17 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Observer(
           builder: (_) => c.index == 0
-              ? Container()
+              ? Container(
+                  child: Column(
+                    children: [
+                      Text('Seja bem vindo de volta'),
+                      Text('Ultimas despesas'),
+                      Flexible(
+                          child: GridView.builder(
+                              gridDelegate: null, itemBuilder: null))
+                    ],
+                  ),
+                )
               : c.index == 1
                   ? creditCardsInfoWidget()
                   : c.index == 2
