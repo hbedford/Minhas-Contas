@@ -8,6 +8,7 @@ import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/configs_screen.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
+import 'package:minhasconta/src/screens/projects_screen.dart';
 import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 import 'package:minhasconta/src/widgets/creditcard_widget.dart';
 import 'creditcards_screen.dart';
@@ -33,9 +34,13 @@ class HomeScreen extends StatelessWidget {
         elevation: 0.0,
       ),
       body: Observer(
-          builder: (_) => c.index == 3
-              ? ConfigsScreen()
-              : c.index == 1 ? creditCardsInfoWidget() : Container()),
+          builder: (_) => c.index == 0
+              ? Container()
+              : c.index == 1
+                  ? creditCardsInfoWidget()
+                  : c.index == 2
+                      ? ProjectsScreen()
+                      : c.index == 3 ? ConfigsScreen() : Container()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 2,
@@ -50,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                 iconSize: 30.0,
                 /* 
                 padding: EdgeInsets.only(left: 28.0), */
-                icon: Icon(Icons.search),
+                icon: Icon(Icons.home),
                 onPressed: () => c.changeIndex(0),
               ),
               IconButton(
