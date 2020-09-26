@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/home_screen.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
@@ -25,6 +26,9 @@ class App extends StatelessWidget {
       /* home: LoginScreen(), */
       darkTheme: ThemeData.dark(),
       theme: ThemeData(
+        textTheme: GoogleFonts.openSansTextTheme(
+          Theme.of(context).textTheme,
+        ),
         scaffoldBackgroundColor: Colors.grey[200],
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),

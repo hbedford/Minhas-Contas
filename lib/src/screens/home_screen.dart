@@ -33,24 +33,66 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: Observer(
-          builder: (_) => c.index == 0
-              ? Container(
-                  child: Column(
-                    children: [
-                      Text('Seja bem vindo de volta'),
-                      Text('Ultimas despesas'),
-                      Flexible(
-                          child: GridView.builder(
-                              gridDelegate: null, itemBuilder: null))
-                    ],
-                  ),
-                )
-              : c.index == 1
-                  ? creditCardsInfoWidget()
-                  : c.index == 2
-                      ? ProjectsScreen()
-                      : c.index == 3 ? ConfigsScreen() : Container()),
+      body: LayoutBuilder(
+        builder: (context, constraint) => Observer(
+            builder: (_) => c.index == 0
+                ? Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: constraint.maxWidth * 0.04),
+                    child: Column(
+                      children: [
+                        Spacer(),
+                        Flexible(
+                          flex: 2,
+                          child: Row(
+                            children: [
+                              Text('Seja bem vindo de volta'),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.end,
+                          ),
+                        ),
+                        Spacer(),
+                        Flexible(
+                          flex: 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('Ultimas despesas'),
+                            ],
+                          ),
+                        ),
+                        Flexible(
+                            flex: 4,
+                            child: ListView.builder(
+                                itemCount: 3,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, int index) =>
+                                    Card(child: Text('Testando')))),
+                        Flexible(
+                            flex: 2,
+                            child: Row(
+                              children: [
+                                Text('Avisos'),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.start,
+                            )),
+                        Flexible(
+                            flex: 4,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 3,
+                                itemBuilder: (context, int index) => Card(
+                                      child: Text('Testando'),
+                                    ))),
+                      ],
+                    ),
+                  )
+                : c.index == 1
+                    ? creditCardsInfoWidget()
+                    : c.index == 2
+                        ? ProjectsScreen()
+                        : c.index == 3 ? ConfigsScreen() : Container()),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 2,
