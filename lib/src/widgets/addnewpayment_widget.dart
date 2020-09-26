@@ -16,25 +16,24 @@ class AddNewPaymentWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraint) => Observer(
         builder: (_) => Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: constraint.maxWidth * 0.05,
-                vertical: constraint.maxHeight * 0.05),
-            height: constraint.maxHeight * (c.step == 4 ? 0.8 : 0.4),
-            width: constraint.maxWidth,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-            child: Expanded(
-              child: c.step == 0
-                  ? step0()
-                  : c.step == 1
-                      ? step1()
-                      : c.step == 2
-                          ? step2()
-                          : c.step == 3
-                              ? step3()
-                              : c.step == 4 ? step4() : Container(),
-            )),
+          padding: EdgeInsets.symmetric(
+              horizontal: constraint.maxWidth * 0.05,
+              vertical: constraint.maxHeight * 0.05),
+          height: constraint.maxHeight * (c.step == 4 ? 0.8 : 0.4),
+          width: constraint.maxWidth,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          child: c.step == 0
+              ? step0()
+              : c.step == 1
+                  ? step1()
+                  : c.step == 2
+                      ? step2()
+                      : c.step == 3
+                          ? step3()
+                          : c.step == 4 ? step4() : Container(),
+        ),
       ),
     );
   }

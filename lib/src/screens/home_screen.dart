@@ -4,14 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
+import 'package:minhasconta/src/home_pages/creditcards_page.dart';
 import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/configs_screen.dart';
-import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/screens/projects_screen.dart';
 import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
-import 'package:minhasconta/src/widgets/creditcard_widget.dart';
-import 'creditcards_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final c = GetIt.instance<HomeController>();
@@ -26,76 +24,103 @@ class HomeScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Minhas Contas'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+    return Observer(
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Minhas Contas',
+            style: TextStyle(color: c.index == 0 ? Colors.white : Colors.black),
+          ),
+          centerTitle: true,
+          backgroundColor: c.index == 0 ? Colors.blue : Colors.transparent,
+          elevation: 0.0,
+        ),
+        body: body(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: bottomNavigation(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showDialogAdd(context),
+          child: Icon(Icons.add),
+        ),
       ),
-      body: LayoutBuilder(
+    );
+  }
+
+  body() => LayoutBuilder(
         builder: (context, constraint) => Observer(
             builder: (_) => c.index == 0
-                ? Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: constraint.maxWidth * 0.04),
-                    child: Column(
-                      children: [
-                        Spacer(),
-                        Flexible(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              Text('Seja bem vindo de volta'),
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.end,
-                          ),
+                ? Stack(
+                    children: [
+                      Container(
+                        color: Colors.blue,
+                        height: constraint.maxHeight * 0.2,
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: constraint.maxWidth * 0.04),
+                        child: Column(
+                          children: [
+                            Flexible(
+                              flex: 4,
+                              child: Container(
+                                height: constraint.maxHeight * 0.4,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        'Seja bem vindo(a) de volta',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                            Flexible(
+                                flex: 7,
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) => Card(
+                                          elevation: 8,
+                                          child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      constraints.maxWidth *
+                                                          0.02,
+                                                  vertical:
+                                                      constraints.maxHeight *
+                                                          0.02),
+                                              height: constraints.maxHeight,
+                                              width: constraints.maxWidth,
+                                              child: Text('Ultima informação')),
+                                        ))),
+                            Spacer(
+                              flex: 2,
+                            ),
+                            title('Ultimas despesas', () => null),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            listWidget([1, 2, 3]),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            title('Avisos', () => null),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            listWidget([1, 2]),
+                          ],
                         ),
-                        Spacer(),
-                        Flexible(
-                          flex: 2,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Ultimas despesas'),
-                            ],
-                          ),
-                        ),
-                        Flexible(
-                            flex: 4,
-                            child: ListView.builder(
-                                itemCount: 3,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, int index) =>
-                                    Card(child: Text('Testando')))),
-                        Flexible(
-                            flex: 2,
-                            child: Row(
-                              children: [
-                                Text('Avisos'),
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.start,
-                            )),
-                        Flexible(
-                            flex: 4,
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 3,
-                                itemBuilder: (context, int index) => Card(
-                                      child: Text('Testando'),
-                                    ))),
-                      ],
-                    ),
+                      ),
+                    ],
                   )
                 : c.index == 1
-                    ? creditCardsInfoWidget()
+                    ? CreditCardsPage()
                     : c.index == 2
                         ? ProjectsScreen()
                         : c.index == 3 ? ConfigsScreen() : Container()),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 2,
+      );
+  bottomNavigation() => BottomAppBar(
+        notchMargin: 5,
         shape: CircularNotchedRectangle(),
         child: Container(
           height: 50,
@@ -106,130 +131,38 @@ class HomeScreen extends StatelessWidget {
               IconButton(
                 iconSize: 30.0,
                 /* 
-                padding: EdgeInsets.only(left: 28.0), */
+                  padding: EdgeInsets.only(left: 28.0), */
                 icon: Icon(Icons.home),
                 onPressed: () => c.changeIndex(0),
               ),
               IconButton(
                   iconSize: 30.0,
                   /* 
-                padding: EdgeInsets.only(right: 28.0), */
+                  padding: EdgeInsets.only(right: 28.0), */
                   icon: Icon(Icons.credit_card),
                   onPressed: () => c.changeIndex(1)),
               Container(),
               IconButton(
                 iconSize: 30.0,
                 /* 
-                padding: EdgeInsets.only(left: 28.0), */
+                  padding: EdgeInsets.only(left: 28.0), */
                 icon: Icon(Icons.border_all),
                 onPressed: () => c.changeIndex(2),
               ),
               IconButton(
                 iconSize: 30.0,
                 /* 
-                padding: EdgeInsets.only(right: 28.0), */
+                  padding: EdgeInsets.only(right: 28.0), */
                 icon: Icon(Icons.settings),
                 onPressed: () => c.changeIndex(3),
               )
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialogAdd(context),
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  creditCardsInfoWidget() => LayoutBuilder(
-        builder: (context, constraint) => Stack(
-          children: [
-            /* bottomMenu(constraint), */
-            Container(
-              height: constraint.maxHeight * 0.1,
-            ),
-            Column(
-              children: [
-                Flexible(child: Container()),
-                creditCardsInfo(constraint, context),
-                Flexible(
-                    child: LayoutBuilder(
-                  builder: (c, constraints) => Container(),
-                ))
-              ],
-            ),
-            Observer(
-                builder: (_) => Visibility(
-                    visible: c.actionButton,
-                    child: Positioned(
-                        bottom: constraint.maxHeight * 0.2,
-                        right: constraint.maxWidth * 0.1,
-                        child: Row(children: [
-                          Text('Gasto/Ganho'),
-                          IconButton(
-                              icon: Icon(Icons.payment), onPressed: () => null)
-                        ]))))
-          ],
-        ),
       );
-
   BottomNavigationBarItem bottomItem() =>
       BottomNavigationBarItem(icon: Icon(Icons.credit_card));
-  creditCardsInfo(BoxConstraints constraint, BuildContext context) => Flexible(
-        child: Column(
-          children: [
-            Flexible(
-              child: Container(
-                margin: EdgeInsets.only(left: constraint.maxWidth * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Cartões',
-                      style: TextStyle(),
-                    ),
-                    FlatButton(
-                      child: Text('ver detalhes'),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreditCardsScreen(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Flexible(
-              child: LayoutBuilder(
-                builder: (c, constraints) => ListView(
-                  physics: PageScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  children: creditCardsController.creditCards
-                      .map(
-                        (e) => InkWell(
-                            onTap: () {
-                              creditCardsController.changeCreditCard(e);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          CreditCardScreen()));
-                            },
-                            child: CreditCardWidget(
-                              creditCard: e,
-                              constrainedBox: constraints,
-                            )),
-                      )
-                      .toList(),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+
   showDialogAdd(BuildContext context) {
     cp.initiatePayment();
     showModalBottomSheet(
@@ -237,4 +170,27 @@ class HomeScreen extends StatelessWidget {
         context: context,
         builder: (_) => AddNewPaymentWidget());
   }
+
+  title(String title, Function f) => Flexible(
+      flex: 5,
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Text(title,
+            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+        InkWell(onTap: f, child: Text('ver mais'))
+      ]));
+  listWidget(List l) => Flexible(
+      flex: 6,
+      child: LayoutBuilder(
+        builder: (context, constraint) => ListView.builder(
+            itemCount: l.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, int index) => Card(
+                elevation: 2,
+                child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: constraint.maxWidth * 0.02,
+                        vertical: constraint.maxHeight * 0.01),
+                    width: constraint.maxWidth * 0.4,
+                    child: Text('Testando')))),
+      ));
 }

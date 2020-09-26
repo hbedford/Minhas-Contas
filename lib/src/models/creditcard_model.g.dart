@@ -246,6 +246,21 @@ mixin _$CreditCardModel on _CreditCardModelBase, Store {
     });
   }
 
+  final _$optionsActiveAtom = Atom(name: '_CreditCardModelBase.optionsActive');
+
+  @override
+  bool get optionsActive {
+    _$optionsActiveAtom.reportRead();
+    return super.optionsActive;
+  }
+
+  @override
+  set optionsActive(bool value) {
+    _$optionsActiveAtom.reportWrite(value, super.optionsActive, () {
+      super.optionsActive = value;
+    });
+  }
+
   final _$paymentsAtom = Atom(name: '_CreditCardModelBase.payments');
 
   @override
@@ -397,6 +412,17 @@ mixin _$CreditCardModel on _CreditCardModelBase, Store {
   }
 
   @override
+  dynamic changeOptionsActive(bool v) {
+    final _$actionInfo = _$_CreditCardModelBaseActionController.startAction(
+        name: '_CreditCardModelBase.changeOptionsActive');
+    try {
+      return super.changeOptionsActive(v);
+    } finally {
+      _$_CreditCardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 id: ${id},
@@ -411,6 +437,7 @@ company: ${company},
 type: ${type},
 bestDateToPay: ${bestDateToPay},
 active: ${active},
+optionsActive: ${optionsActive},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
 actualTotalLimit: ${actualTotalLimit},

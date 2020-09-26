@@ -36,6 +36,8 @@ abstract class _CreditCardModelBase with Store {
   DateTime bestDateToPay;
   @observable
   bool active = false;
+  @observable
+  bool optionsActive;
 
   @observable
   ObservableList payments = [].asObservable();
@@ -44,7 +46,8 @@ abstract class _CreditCardModelBase with Store {
       this.name,
       this.color = Colors.white,
       this.payments,
-      this.active = false});
+      this.active = false,
+      this.optionsActive = false});
   @action
   changeName(String n) => name = n;
   @action
@@ -69,6 +72,8 @@ abstract class _CreditCardModelBase with Store {
   changeToActived() => active = true;
   @action
   changeToDeactived() => active = false;
+  @action
+  changeOptionsActive(bool v) => optionsActive = v;
   @computed
   double get totalOfPayments {
     double total = 0;

@@ -14,9 +14,9 @@ class CreditCardWidget extends StatelessWidget {
                 constrainedBox != null ? constrainedBox.maxWidth * 0.02 : 10),
         padding: EdgeInsets.symmetric(
             vertical:
-                constrainedBox != null ? constrainedBox.maxWidth * 0.01 : 10,
+                constrainedBox != null ? constrainedBox.maxWidth * 0.02 : 10,
             horizontal:
-                constrainedBox != null ? constrainedBox.maxWidth * 0.02 : 10),
+                constrainedBox != null ? constrainedBox.maxWidth * 0.03 : 10),
         height: constrainedBox != null
             ? constrainedBox.maxWidth * 0.3
             : constraint.maxWidth * 0.3,
@@ -26,11 +26,25 @@ class CreditCardWidget extends StatelessWidget {
         decoration: BoxDecoration(
             color: creditCard != null ? creditCard.color : Colors.white,
             borderRadius: BorderRadius.circular(15)),
-        child: Column(children: [
-          Row(
-            children: [Text(creditCard != null ? creditCard.name : ' ')],
-          )
-        ]),
+        child: Stack(
+          children: [
+            Center(
+                child: Text(
+              'Minhas contas',
+              style: TextStyle(color: Colors.white10),
+            )),
+            Column(children: [
+              Row(
+                children: [
+                  Text(
+                    creditCard != null ? creditCard.name : ' ',
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              )
+            ]),
+          ],
+        ),
       ),
     );
   }

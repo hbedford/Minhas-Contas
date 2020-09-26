@@ -32,7 +32,7 @@ void main() async {
         [
           CreditCardModel(
             id: 1,
-            name: 'Teste',
+            name: 'Itau Card',
             color: Colors.green,
             payments: ObservableList.of(
               [

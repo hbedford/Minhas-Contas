@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/creditcards_controller.dart';
 import 'package:minhasconta/src/widgets/creditcard_widget.dart';
 
 import 'addcreditcard_screen.dart';
 
 class CreditCardsScreen extends StatelessWidget {
+  final c = GetIt.instance<CreditCardsController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +20,7 @@ class CreditCardsScreen extends StatelessWidget {
         builder: (context, constraint) => Column(
           children: [
             Flexible(
-              flex: 1,
+              flex: 2,
               child: Container(
                 margin: EdgeInsets.only(left: constraint.maxWidth * 0.04),
                 child: Row(
@@ -32,35 +35,21 @@ class CreditCardsScreen extends StatelessWidget {
                           style: TextStyle(color: Colors.white, fontSize: 24),
                         ),
                         Text(
-                          '0 fisicos, 0 virtuais',
+                          'Você tem ${c.creditCards.length} cart${c.creditCards.length == 1 ? 'ão' : 'ões'}',
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddCreditCardScreen())),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                margin: EdgeInsets.only(left: constraint.maxWidth * 0.04),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => null,
-                      child: Text('Cartões Fisicos'),
-                    ),
-                    InkWell(
-                      onTap: () => null,
-                      child: Text('Cartões Fisicos'),
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddCreditCardScreen())),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -71,10 +60,20 @@ class CreditCardsScreen extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) => ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 2,
+                    itemCount: c.creditCards.length,
                     itemBuilder: (context, int index) => Container(
                           width: constraints.maxWidth * 0.8,
-                          child: CreditCardWidget(),
+                          child: InkWell(
+                              onLongPress: () => c.creditCards[index]
+                                  .changeOptionsActive(
+                                      !c.creditCards[index].optionsActive),
+                              onTap: () {
+                                c.changeCreditCard(c.creditCards[index]);
+                                Navigator.pushNamed(context, '/card');
+                              },
+                              child: CreditCardWidget(
+                                creditCard: c.creditCards[index],
+                              )),
                         )),
               ),
             ),
@@ -82,12 +81,10 @@ class CreditCardsScreen extends StatelessWidget {
               flex: 8,
               child: Column(
                 children: [
-                  Observer(
-                    builder: (_) => ListTile(
-                      onTap: () => null,
-                      title: Text('Alterar data de vencimento'),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    ),
+                  ListTile(
+                    onTap: () => null,
+                    title: Text('Alterar data de vencimento'),
+                    trailing: Icon(Icons.arrow_forward_ios),
                   ),
                   ListTile(
                     onTap: () => null,

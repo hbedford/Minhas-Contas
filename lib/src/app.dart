@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minhasconta/src/screens/categories_screen.dart';
+import 'package:minhasconta/src/screens/creditcard_screen.dart';
+import 'package:minhasconta/src/screens/creditcards_screen.dart';
 import 'package:minhasconta/src/screens/home_screen.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
 import 'package:minhasconta/src/screens/login_screen.dart';
@@ -22,6 +24,8 @@ class App extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/categories': (context) => CategoriesScreen(),
+        '/card': (context) => CreditCardScreen(),
+        '/cards': (context) => CreditCardsScreen(),
       },
       /* home: LoginScreen(), */
       darkTheme: ThemeData.dark(),
