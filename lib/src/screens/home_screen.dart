@@ -128,37 +128,19 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              IconButton(
-                iconSize: 30.0,
-                /* 
-                  padding: EdgeInsets.only(left: 28.0), */
-                icon: Icon(Icons.home),
-                onPressed: () => c.changeIndex(0),
-              ),
-              IconButton(
-                  iconSize: 30.0,
-                  /* 
-                  padding: EdgeInsets.only(right: 28.0), */
-                  icon: Icon(Icons.credit_card),
-                  onPressed: () => c.changeIndex(1)),
+              icon(icon: Icon(Icons.home), f: () => c.changeIndex(0)),
+              icon(icon: Icon(Icons.credit_card), f: () => c.changeIndex(1)),
               Container(),
-              IconButton(
-                iconSize: 30.0,
-                /* 
-                  padding: EdgeInsets.only(left: 28.0), */
-                icon: Icon(Icons.border_all),
-                onPressed: () => c.changeIndex(2),
-              ),
-              IconButton(
-                iconSize: 30.0,
-                /* 
-                  padding: EdgeInsets.only(right: 28.0), */
-                icon: Icon(Icons.settings),
-                onPressed: () => c.changeIndex(3),
-              )
+              icon(icon: Icon(Icons.border_all), f: () => c.changeIndex(2)),
+              icon(icon: Icon(Icons.settings), f: () => c.changeIndex(3))
             ],
           ),
         ),
+      );
+  icon({Icon icon, Function f}) => IconButton(
+        iconSize: 30.0,
+        icon: icon,
+        onPressed: f,
       );
   BottomNavigationBarItem bottomItem() =>
       BottomNavigationBarItem(icon: Icon(Icons.credit_card));
