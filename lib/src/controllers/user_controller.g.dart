@@ -47,6 +47,21 @@ mixin _$UserController on _UserControllerBase, Store {
     });
   }
 
+  final _$stepAtom = Atom(name: '_UserControllerBase.step');
+
+  @override
+  int get step {
+    _$stepAtom.reportRead();
+    return super.step;
+  }
+
+  @override
+  set step(int value) {
+    _$stepAtom.reportWrite(value, super.step, () {
+      super.step = value;
+    });
+  }
+
   final _$startLogInAsyncAction = AsyncAction('_UserControllerBase.startLogIn');
 
   @override
@@ -103,10 +118,22 @@ mixin _$UserController on _UserControllerBase, Store {
   }
 
   @override
+  dynamic changeStep(int i) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changeStep');
+    try {
+      return super.changeStep(i);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 user: ${user},
 widget: ${widget},
+step: ${step},
 getUserInfo: ${getUserInfo}
     ''';
   }

@@ -34,6 +34,7 @@ class App extends StatelessWidget {
         fontFamily: 'Helvetica',
         primaryColor: deepPurple,
         accentColor: Colors.white,
+        backgroundColor: Color(0xffA2A0F2),
         primaryTextTheme: TextTheme(
             button: TextStyle(
                 color: Colors.white,

@@ -17,7 +17,9 @@ abstract class _UserControllerBase with Store {
   UserModel user = UserModel();
   @observable
   int widget = 0;
-  _UserControllerBase({this.user});
+  @observable
+  int step = 0;
+  _UserControllerBase({this.user, this.step = 0});
   @computed
   Future<bool> get getUserInfo async {
     final db = DatabaseHelper.instance;
@@ -123,4 +125,6 @@ abstract class _UserControllerBase with Store {
   changeUser(UserModel u) => user = u;
   @action
   changeWidget(int i) => widget = i;
+  @action
+  changeStep(int i) => step = i;
 }
