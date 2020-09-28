@@ -27,7 +27,7 @@ class CreditCardsPage extends StatelessWidget {
   );
   ScrollController scroll = ScrollController();
   Matrix4 perspective = _pmat(1.0);
-  @override
+  /* @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraint) => ListView.builder(
@@ -86,7 +86,7 @@ class CreditCardsPage extends StatelessWidget {
         ),
       ),
     );
-  }
+  } */
 
   /*  _builder(int index, BoxConstraints constraint) {
     /* CreditCard _card = _creditCards[index]; */
@@ -132,9 +132,9 @@ class CreditCardsPage extends StatelessWidget {
       )),
     );
   } */
-  /* @override
+  @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
+    return /* LayoutBuilder(
       builder: (context, constraint) => SingleChildScrollView(
         controller: scroll,
         child: Container(
@@ -159,12 +159,11 @@ class CreditCardsPage extends StatelessWidget {
       ),
     ); */
 
-  /* LayoutBuilder(
+        LayoutBuilder(
       builder: (context, constraint) => Stack(
         children: [
-          
           /* bottomMenu(constraint), */
-          /*  Container(
+          Container(
             height: constraint.maxHeight * 0.1,
           ),
           Column(
@@ -187,12 +186,12 @@ class CreditCardsPage extends StatelessWidget {
                         Text('Gasto/Ganho'),
                         IconButton(
                             icon: Icon(Icons.payment), onPressed: () => null)
-                      ])))) */
+                      ]))))
         ],
       ),
-    ); */
-  /*  } */
-/* 
+    );
+  }
+
   creditCardsInfo(BoxConstraints constraint, BuildContext context) => Flexible(
         child: Column(
           children: [
@@ -247,5 +246,5 @@ class CreditCardsPage extends StatelessWidget {
             ),
           ],
         ),
-      ); */
+      );
 }

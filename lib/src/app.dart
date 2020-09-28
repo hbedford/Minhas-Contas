@@ -14,7 +14,8 @@ import 'controllers/user_controller.dart';
 class App extends StatelessWidget {
   final h = GetIt.instance<HomeController>();
   final c = GetIt.instance<UserController>();
-
+  Color deepPurple = Color(0xFF222059);
+  Color buttonPrimary = Color(0xFF22f2dd);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,10 +31,24 @@ class App extends StatelessWidget {
       /* home: LoginScreen(), */
       darkTheme: ThemeData.dark(),
       theme: ThemeData(
-        textTheme: GoogleFonts.openSansTextTheme(
-          Theme.of(context).textTheme,
+        fontFamily: 'Helvetica',
+        primaryColor: deepPurple,
+        accentColor: Colors.white,
+        primaryTextTheme: TextTheme(
+            button: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w900)),
+        buttonTheme: ButtonThemeData(
+          minWidth: 150,
+          height: 40,
+          textTheme: ButtonTextTheme.primary,
+          buttonColor: buttonPrimary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
         ),
-        scaffoldBackgroundColor: Colors.grey[200],
+        scaffoldBackgroundColor: Color(0xffefefef),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),
           textTheme: TextTheme(

@@ -73,6 +73,14 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
+  fonts:
+   - family: Helvetica
+     fonts:
+      - asset: assets/fonts/Helvetica.ttf
+      - asset: assets/fonts/Helvetica-Bold.ttf
+        weight: 900
+      - asset: assets/fonts/helvetica-light.ttf
+        weight: 100
   # example:
   # fonts:
   #   - family: Schyler

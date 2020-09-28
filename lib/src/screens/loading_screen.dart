@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
+import 'package:minhasconta/src/widgets/background.dart';
 
 class LoadingScreen extends StatelessWidget {
   final c = GetIt.instance<UserController>();
@@ -12,9 +13,20 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getInfos(context);
-    return Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    Future.delayed(Duration(seconds: 3), () {
+      getInfos(context);
+    });
+    return BackGround(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+            child: Text('iDeck',
+                style: TextStyle(
+                    fontFamily: 'Helvetica',
+                    fontSize: 40,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white))),
+      ),
     );
   }
 }

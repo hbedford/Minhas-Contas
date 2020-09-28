@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
@@ -15,82 +14,345 @@ class _LoginScreenState extends State<LoginScreen> {
   final c = GetIt.instance<UserController>();
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
-
+  bool animate = false;
   TextEditingController password = TextEditingController();
   TextEditingController repeatPassword = TextEditingController();
-
+  double keyboard = WidgetsBinding.instance.window.viewInsets.bottom;
+  bool swap = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) => Container(
-          margin: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.1),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  InkWell(
-                      onTap: () => c.changeWidget(0), child: Text('Acessar')),
-                  Text(' / '),
-                  InkWell(
-                      onTap: () => c.changeWidget(1),
-                      child: Text('Registrar-se'))
-                ],
-              ),
-              Observer(
-                  builder: (_) => c.widget == 0
-                      ? loginWidget(context)
-                      : c.widget == 1
-                          ? registerWidget(context)
-                          : recoverPassword())
-            ],
-          ),
+    return Material(
+      child: LayoutBuilder(
+        builder: (context, constraint) => SizedBox(
+          height: constraint.maxHeight,
+          width: constraint.maxWidth,
+          child: Stack(children: [
+            !swap ? registerWidget(constraint) : loginWidget(constraint),
+            !swap ? loginWidget(constraint) : registerWidget(constraint),
+          ]),
         ),
       ),
     );
   }
 
-  loginWidget(BuildContext context) => Column(children: [
-        TextField(
-          controller: email,
-          decoration: InputDecoration(hintText: 'Email'),
+  loginWidget(BoxConstraints constraint) => AnimatedPositioned(
+          duration: Duration(milliseconds: !animate ? 400 : 700),
+          /*   curve: Curves.linear, */
+          left: swap ? null : !animate ? constraint.maxWidth * 0.04 : 1.0,
+          right: swap ? !animate ? constraint.maxWidth * 0.02 : 1.0 : null,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: !animate ? 400 : 100),
+            margin: EdgeInsets.only(
+              top: keyboard > 0.0
+                  ? !swap
+                      ? constraint.maxHeight * 0.13
+                      : constraint.maxHeight * 0.13
+                  : !swap
+                      ? constraint.maxHeight * 0.23
+                      : constraint.maxHeight * 0.15,
+            ),
+            height: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
+                ? constraint.maxHeight * 0.75
+                : constraint.maxHeight * 0.6,
+            width: (constraint.maxWidth * 0.9) * (!animate ? 1 : 0),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0.0, 1.0), //(x,y)
+                  blurRadius: 6.0,
+                ),
+              ],
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                  topRight: Radius.circular(85)),
+              color: Colors.white,
+            ),
+            child: AnimatedOpacity(
+              duration: Duration(milliseconds: !animate ? 800 : 30),
+              opacity: !animate ? 1.0 : 0.0,
+              child: InkWell(
+                splashColor: Colors.transparent,
+                onTap: swap
+                    ? animate
+                        ? null
+                        : () {
+                            setState(() {
+                              animate = true;
+                            });
+                            Future.delayed(Duration(milliseconds: 600), () {
+                              swap = false;
+                              Future.delayed(Duration(milliseconds: 50), () {
+                                setState(() {
+                                  animate = false;
+                                });
+                              });
+                            });
+                          }
+                    : null,
+                child: Container(
+                  padding: EdgeInsets.only(
+                      left: 20, right: 20, top: constraint.maxHeight * 0.03),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => Column(children: [
+                      Container(
+                          child: Text(
+                        'login',
+                        style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(swap ? 0.2 : 1.0)),
+                      )),
+                      Visibility(visible: !swap, child: loginInfo(constraints))
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+          ))
+      /* AnimatedPositioned(
+      duration: Duration(milliseconds: !animate ? 100 : 700),
+      curve: Curves.easeOut,
+      left: !animate ? constraint.maxWidth * 0.02 : 0.0,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: !animate ? 400 : 100),
+        margin: EdgeInsets.only(
+          top: keyboard > 0.0
+              ? constraint.maxHeight * 0.13
+              : constraint.maxHeight * 0.23,
         ),
-        TextField(
-          controller: password,
-          decoration: InputDecoration(hintText: 'Senha'),
+        height: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
+            ? constraint.maxHeight * 0.75
+            : constraint.maxHeight * 0.6,
+        width: (constraint.maxWidth * 0.9) * (!animate ? 1 : 0),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.0), //(x,y)
+              blurRadius: 6.0,
+            ),
+          ],
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+              topRight: Radius.circular(85)),
+          color: Colors.white,
         ),
-        RaisedButton(
-          onPressed: () {
-            c.changeUser(UserModel(email: email.text, password: password.text));
-            c.logIn(context);
-          },
-          child: Text('Entrar'),
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: !animate ? 800 : 30),
+          opacity: !animate ? 1 : 0,
+          child: InkWell(
+            splashColor: Colors.transparent,
+            onTap: !animate
+                ? null
+                : () => setState(() {
+                      animate = true;
+                      Future.delayed(Duration(milliseconds: 600), () {
+                        setState(() {
+                          swap = false;
+                          animate = false;
+                        });
+                      });
+                    }),
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: 20, right: 20, top: constraint.maxHeight * 0.03),
+              child: LayoutBuilder(
+                builder: (context, constraints) => Column(
+                  children: [
+                    Container(
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    loginInfo(constraints)
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
-      ]);
-  registerWidget(BuildContext context) => Column(
+      )) */
+      ;
+  registerWidget(BoxConstraints constraint) => AnimatedPositioned(
+      duration: Duration(milliseconds: !animate ? 100 : 700),
+      curve: Curves.easeOut,
+      right: swap ? null : !animate ? constraint.maxWidth * 0.04 : 1.0,
+      left: swap ? !animate ? constraint.maxWidth * 0.02 : 1.0 : null,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: !animate ? 400 : 100),
+        margin: EdgeInsets.only(
+          top: keyboard > 0.0
+              ? !swap
+                  ? constraint.maxHeight * 0.13
+                  : constraint.maxHeight * 0.13
+              : !swap
+                  ? constraint.maxHeight * 0.15
+                  : constraint.maxHeight * 0.23,
+        ),
+        height: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
+            ? constraint.maxHeight * 0.75
+            : constraint.maxHeight * 0.6,
+        width: (constraint.maxWidth * 0.9) * (!animate ? 1 : 0),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.0), //(x,y)
+              blurRadius: 6.0,
+            ),
+          ],
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+              topRight: Radius.circular(85)),
+          color: Colors.white,
+        ),
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: !animate ? 800 : 30),
+          opacity: !animate ? 1.0 : 0.0,
+          child: InkWell(
+            splashColor: Colors.transparent,
+            onTap: !swap
+                ? animate
+                    ? null
+                    : () {
+                        setState(() {
+                          animate = true;
+                        });
+                        Future.delayed(Duration(milliseconds: 400), () {
+                          swap = true;
+                          Future.delayed(Duration(milliseconds: 600), () {
+                            setState(() {
+                              animate = false;
+                            });
+                          });
+                        });
+                      }
+                : null,
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: 20, right: 20, top: constraint.maxHeight * 0.03),
+              child: LayoutBuilder(
+                builder: (context, constraints) => Column(children: [
+                  Container(
+                      child: Text(
+                    'Cadastro',
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context)
+                            .primaryColor
+                            .withOpacity(swap ? 1.0 : 0.2)),
+                  )),
+                ]),
+              ),
+            ),
+          ),
+        ),
+      ));
+
+  loginInfo(BoxConstraints constraints) => Column(
         children: [
-          TextField(
-            decoration: InputDecoration(hintText: 'Nome'),
-            controller: name,
+          Container(
+            margin: EdgeInsets.only(
+                top: constraints.maxHeight * 0.08,
+                bottom: constraints.maxHeight * 0.01),
+            child: Divider(
+              color: Colors.grey,
+            ),
           ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Email'),
-            controller: email,
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Senha'),
-            controller: password,
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Repetir senha'),
-            controller: repeatPassword,
+          Container(
+              height: constraints.maxHeight * 0.23,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: constraints.maxWidth * 0.1,
+                        bottom: constraints.maxHeight * 0.01),
+                    child: Text('E-mail'),
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.13,
+                    child: TextField(
+                        controller: email,
+                        decoration: InputDecoration(
+                          border: new OutlineInputBorder(
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(30.0),
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              )),
+          Container(
+            height: constraints.maxHeight * 0.23,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                        left: constraints.maxWidth * 0.1,
+                        bottom: constraints.maxHeight * 0.01),
+                    child: Text('Senha')),
+                Container(
+                  height: constraints.maxHeight * 0.13,
+                  child: TextField(
+                      controller: password,
+                      decoration: InputDecoration(
+                        border: new OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(30.0),
+                          ),
+                        ),
+                      )),
+                ),
+              ],
+            ),
           ),
           RaisedButton(
-              child: Text('Registrar'),
-              onPressed: () => c.register(email.text, name.text, password.text,
-                  repeatPassword.text, context))
+              onPressed: () {
+                c.changeUser(
+                    UserModel(email: email.text, password: password.text));
+                c.logIn(context);
+              },
+              child: Text(
+                'Entrar',
+                style: Theme.of(context).primaryTextTheme.button,
+              )),
+          Column(children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              FlatButton(
+                onPressed: () => null,
+                child: Row(
+                  children: [
+                    Icon(Icons.check_box_outline_blank),
+                    Text('Lembrar meus dados')
+                  ],
+                ),
+              )
+            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('Precisa de ajuda?'),
+              ],
+            ),
+          ])
         ],
       );
-  recoverPassword() => Column(children: []);
 }
