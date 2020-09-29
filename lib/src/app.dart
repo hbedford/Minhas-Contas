@@ -7,6 +7,7 @@ import 'package:minhasconta/src/screens/creditcards_screen.dart';
 import 'package:minhasconta/src/screens/home_screen.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
 import 'package:minhasconta/src/screens/login_screen.dart';
+import 'package:minhasconta/src/screens/login_screen1.dart';
 
 import 'controllers/home_controller.dart';
 import 'controllers/user_controller.dart';
@@ -21,7 +22,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => LoadingScreen(),
+        '/': (context) => LoginScreen1(),
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
         '/categories': (context) => CategoriesScreen(),
