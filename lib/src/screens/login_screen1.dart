@@ -22,6 +22,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
   bool swap = false;
   bool loginClick = false;
   bool registerClick = false;
+  Color yellow = Color(0xffFFC557);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,75 +277,10 @@ class _LoginScreen1State extends State<LoginScreen1> {
               height: constraint.maxHeight,
               child: Column(
                 children: [
-                  Flexible(
-                    child: Divider(),
-                  ),
+                  Divider(),
+                  steps(constraint),
                   Expanded(
-                    child: Stack(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: constraint.maxWidth * 0.34,
-                              height: constraint.maxHeight * 0.012,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) => Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Observer(
-                                      builder: (_) =>
-                                          lineStep(c.step >= 0, constraints),
-                                    ),
-                                    Observer(
-                                      builder: (_) =>
-                                          lineStep(c.step >= 1, constraints),
-                                    ),
-                                    Observer(
-                                      builder: (_) =>
-                                          lineStep(c.step >= 1, constraints),
-                                    ),
-                                    Observer(
-                                      builder: (_) =>
-                                          lineStep(c.step >= 2, constraints),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: constraint.maxWidth * 0.34,
-                              height: constraint.maxHeight * 0.3,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) => Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Observer(
-                                      builder: (_) =>
-                                          circleStep(c.step >= 0, constraints),
-                                    ),
-                                    Observer(
-                                      builder: (_) =>
-                                          circleStep(c.step >= 1, constraints),
-                                    ),
-                                    Observer(
-                                      builder: (_) =>
-                                          circleStep(c.step >= 2, constraints),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: actualStep(),
                   )
                 ],
               ),
@@ -352,9 +288,99 @@ class _LoginScreen1State extends State<LoginScreen1> {
           ),
         ),
       );
+  actualStep() => c.step == 0 ? step0() : step1();
+  step0() => LayoutBuilder(
+        builder: (context, constraint) => Column(
+          children: [
+            textField(
+                controller: email, title: 'E-mail', constraints: constraint),
+            textField(
+                controller: password, title: 'Senha', constraints: constraint),
+            textField(
+                controller: repeatPassword,
+                title: 'Confirmar senha',
+                constraints: constraint),
+            RaisedButton(
+              color: yellow,
+              onPressed: () => c.changeStep(1),
+              child: Text('Confirmar',
+                  style: Theme.of(context).primaryTextTheme.button),
+            )
+          ],
+        ),
+      );
+  step1() => LayoutBuilder(
+        builder: (context, constraint) => Column(
+          children: [
+            Text('Criar PIN de acesso rápido'),
+            pin()
+          ],
+        ),
+      );
+      pin()=>Container(child: TextField(controller:),);
+  steps(BoxConstraints constraint) => Container(
+        height: constraint.maxHeight * 0.1,
+        child: Stack(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: constraint.maxHeight * 0.0075),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Observer(
+                            builder: (_) => lineStep(c.step >= 0, constraints),
+                          ),
+                          Observer(
+                            builder: (_) => lineStep(c.step >= 1, constraints),
+                          ),
+                          Observer(
+                            builder: (_) => lineStep(c.step >= 1, constraints),
+                          ),
+                          Observer(
+                            builder: (_) => lineStep(c.step >= 2, constraints),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: constraint.maxWidth * 0.45,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Observer(
+                          builder: (_) => circleStep(c.step >= 0, constraints),
+                        ),
+                        Observer(
+                          builder: (_) => circleStep(c.step >= 1, constraints),
+                        ),
+                        Observer(
+                          builder: (_) => circleStep(c.step >= 2, constraints),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
   lineStep(bool v, BoxConstraints constraint) => Container(
-        height: constraint.maxHeight * 1,
-        width: constraint.maxWidth * 0.24,
+        height: constraint.maxHeight * 0.1,
+        width: constraint.maxWidth * 0.1,
         decoration: BoxDecoration(
           border: Border.symmetric(
               vertical: BorderSide(color: Theme.of(context).backgroundColor)),
@@ -362,8 +388,8 @@ class _LoginScreen1State extends State<LoginScreen1> {
         ),
       );
   circleStep(bool v, BoxConstraints constraint) => Container(
-      height: constraint.maxWidth * 0.2,
-      width: constraint.maxWidth * 0.2,
+      height: constraint.maxWidth * 0.1,
+      width: constraint.maxWidth * 0.1,
       decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).backgroundColor),
           borderRadius: BorderRadius.all(Radius.circular(100)),
