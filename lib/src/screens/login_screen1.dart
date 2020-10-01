@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/user_model.dart';
+import 'package:minhasconta/src/utils/pin_fields.dart';
 
 class LoginScreen1 extends StatefulWidget {
   @override
@@ -80,9 +81,13 @@ class _LoginScreen1State extends State<LoginScreen1> {
             duration: Duration(milliseconds: !animate ? 400 : 100),
             margin: EdgeInsets.only(
               top: keyboard > 0.0
-                  ? !swap
-                      ? constraint.maxHeight * 0.13
-                      : constraint.maxHeight * 0.13
+                  ? (loginWidget
+                      ? (!swap
+                          ? constraint.maxHeight * 0.2
+                          : constraint.maxHeight * 0.1)
+                      : (!swap
+                          ? constraint.maxHeight * 0.1
+                          : constraint.maxHeight * 0.2))
                   : loginWidget
                       ? (!swap
                           ? constraint.maxHeight * 0.23
@@ -288,7 +293,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
           ),
         ),
       );
-  actualStep() => c.step == 0 ? step0() : step1();
+  actualStep() => Observer(builder: (_) => c.step == 0 ? step0() : step1());
   step0() => LayoutBuilder(
         builder: (context, constraint) => Column(
           children: [
@@ -313,11 +318,25 @@ class _LoginScreen1State extends State<LoginScreen1> {
         builder: (context, constraint) => Column(
           children: [
             Text('Criar PIN de acesso rápido'),
-            pin()
+            PinField(
+              fields: 4,
+              fieldWidth: constraint.maxWidth * 0.2,
+            ),
+            Text('Uma senha de 4 digitos numéricos.'),
+            Text('Seu PIN servirá confirmar ações futuras mais rapidamente.'),
+            RaisedButton(
+              onPressed: () => null,
+              child: Text('Confirmar'),
+              color: yellow,
+            ),
+            InkWell(
+                child: Text(
+              'Não quero criar agora!',
+              style: TextStyle(),
+            ))
           ],
         ),
       );
-      pin()=>Container(child: TextField(controller:),);
   steps(BoxConstraints constraint) => Container(
         height: constraint.maxHeight * 0.1,
         child: Stack(
