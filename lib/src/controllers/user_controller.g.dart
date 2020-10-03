@@ -32,6 +32,21 @@ mixin _$UserController on _UserControllerBase, Store {
     });
   }
 
+  final _$rememberAtom = Atom(name: '_UserControllerBase.remember');
+
+  @override
+  bool get remember {
+    _$rememberAtom.reportRead();
+    return super.remember;
+  }
+
+  @override
+  set remember(bool value) {
+    _$rememberAtom.reportWrite(value, super.remember, () {
+      super.remember = value;
+    });
+  }
+
   final _$widgetAtom = Atom(name: '_UserControllerBase.widget');
 
   @override
@@ -44,6 +59,36 @@ mixin _$UserController on _UserControllerBase, Store {
   set widget(int value) {
     _$widgetAtom.reportWrite(value, super.widget, () {
       super.widget = value;
+    });
+  }
+
+  final _$forgetStepsAtom = Atom(name: '_UserControllerBase.forgetSteps');
+
+  @override
+  bool get forgetSteps {
+    _$forgetStepsAtom.reportRead();
+    return super.forgetSteps;
+  }
+
+  @override
+  set forgetSteps(bool value) {
+    _$forgetStepsAtom.reportWrite(value, super.forgetSteps, () {
+      super.forgetSteps = value;
+    });
+  }
+
+  final _$forgetStepAtom = Atom(name: '_UserControllerBase.forgetStep');
+
+  @override
+  int get forgetStep {
+    _$forgetStepAtom.reportRead();
+    return super.forgetStep;
+  }
+
+  @override
+  set forgetStep(int value) {
+    _$forgetStepAtom.reportWrite(value, super.forgetStep, () {
+      super.forgetStep = value;
     });
   }
 
@@ -96,6 +141,39 @@ mixin _$UserController on _UserControllerBase, Store {
       ActionController(name: '_UserControllerBase');
 
   @override
+  dynamic changeForgetScreen(bool v) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changeForgetScreen');
+    try {
+      return super.changeForgetScreen(v);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeForgetStep(int s) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changeForgetStep');
+    try {
+      return super.changeForgetStep(s);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeRemember(bool v) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changeRemember');
+    try {
+      return super.changeRemember(v);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeUser(UserModel u) {
     final _$actionInfo = _$_UserControllerBaseActionController.startAction(
         name: '_UserControllerBase.changeUser');
@@ -132,7 +210,10 @@ mixin _$UserController on _UserControllerBase, Store {
   String toString() {
     return '''
 user: ${user},
+remember: ${remember},
 widget: ${widget},
+forgetSteps: ${forgetSteps},
+forgetStep: ${forgetStep},
 step: ${step},
 getUserInfo: ${getUserInfo}
     ''';

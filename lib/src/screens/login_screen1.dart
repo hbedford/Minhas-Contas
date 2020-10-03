@@ -28,14 +28,76 @@ class _LoginScreen1State extends State<LoginScreen1> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(
-        builder: (context, constraint) => Stack(children: [
-          !swap ? registerWidget(constraint) : loginWidget(constraint),
-          !swap ? loginWidget(constraint) : registerWidget(constraint),
-        ]),
+        builder: (context, constraint) => Observer(
+          builder: (_) => Container(
+            height: constraint.maxHeight,
+            width: constraint.maxWidth,
+            child: AnimatedCrossFade(
+                firstChild: Stack(children: [
+                  !swap ? registerWidget(constraint) : loginWidget(constraint),
+                  !swap ? loginWidget(constraint) : registerWidget(constraint),
+                ]),
+                secondChild: Stack(children: [
+                  Container(
+                      height: constraint.maxHeight,
+                      width: constraint.maxWidth,
+                      child: InkWell(
+                        onTap: c.forgetSteps
+                            ? () => c.changeForgetScreen(false)
+                            : null,
+                      )),
+                  cardWidget(
+                    constraint,
+                    EdgeInsets.only(
+                        top: constraint.maxHeight * 0.23,
+                        left: constraint.maxWidth * 0.1),
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: constraint.maxHeight * 0.05,
+                            horizontal: constraint.maxWidth * 0.02),
+                        child: InkWell(onTap: null, child: forgetSteps())),
+                  ),
+                  Positioned(
+                      top: constraint.maxHeight * 0.22,
+                      left: constraint.maxWidth * 0.08,
+                      child: InkWell(
+                          onTap: () => c.changeForgetScreen(false),
+                          child: CircleAvatar(child: Text('x')))),
+                ]),
+                crossFadeState: c.forgetSteps
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: Duration(milliseconds: 500)),
+          ),
+        ),
       ),
     );
   }
 
+  cardWidget(BoxConstraints constraint, EdgeInsets edgeInsets, Widget child) =>
+      AnimatedContainer(
+          duration: Duration(milliseconds: !animate ? 400 : 100),
+          margin: edgeInsets,
+          height: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
+              ? constraint.maxHeight * 0.75
+              : constraint.maxHeight * 0.6,
+          width: constraint.maxWidth * 0.8,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0.0, 1.0), //(x,y)
+                blurRadius: 6.0,
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+                topRight: Radius.circular(85)),
+            color: Colors.white,
+          ),
+          child: child);
   cardAnimated(
           {List<Widget> children,
           BoxConstraints constraint,
@@ -77,7 +139,44 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       ? constraint.maxWidth * 0.02
                       : -constraint.maxWidth * 1
                   : null),
-          child: AnimatedContainer(
+          child: cardWidget(
+            constraint,
+            EdgeInsets.only(
+              top: keyboard > 0.0
+                  ? (loginWidget
+                      ? (!swap
+                          ? constraint.maxHeight * 0.2
+                          : constraint.maxHeight * 0.1)
+                      : (!swap
+                          ? constraint.maxHeight * 0.1
+                          : constraint.maxHeight * 0.2))
+                  : loginWidget
+                      ? (!swap
+                          ? constraint.maxHeight * 0.23
+                          : constraint.maxHeight * 0.15)
+                      : (!swap
+                          ? constraint.maxHeight * 0.15
+                          : constraint.maxHeight * 0.23),
+            ),
+            InkWell(
+                splashColor: Colors.transparent,
+                onTap: f,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Container(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    padding: EdgeInsets.symmetric(
+                        vertical: constraints.maxHeight * 0.05,
+                        horizontal: constraints.maxWidth * 0.1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    ),
+                  ),
+                )),
+          ));
+
+  /* AnimatedContainer(
             duration: Duration(milliseconds: !animate ? 400 : 100),
             margin: EdgeInsets.only(
               top: keyboard > 0.0
@@ -115,7 +214,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                   topRight: Radius.circular(85)),
               color: Colors.white,
             ),
-            child: InkWell(
+            child:  InkWell(
                 splashColor: Colors.transparent,
                 onTap: f,
                 child: LayoutBuilder(
@@ -131,7 +230,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                     ),
                   ),
                 )),
-          ));
+          ) ); */
   loginWidget(BoxConstraints constraint) => cardAnimated(
       f: swap
           ? animate
@@ -217,16 +316,25 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       )),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     FlatButton(
-                      onPressed: () => null,
+                      onPressed: () => c.changeRemember(!c.remember),
                       child: Row(
                         children: [
-                          Icon(Icons.check_box_outline_blank),
+                          Observer(
+                            builder: (_) => Icon(
+                              c.remember
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                            ),
+                          ),
                           Text('Lembrar meus dados')
                         ],
                       ),
                     )
                   ]),
-                  Text('Precisa de ajuda?'),
+                  InkWell(
+                    child: Text('Precisa de ajuda?'),
+                    onTap: () => c.changeForgetScreen(true),
+                  ),
                 ],
               ),
             ),
@@ -337,6 +445,9 @@ class _LoginScreen1State extends State<LoginScreen1> {
           ],
         ),
       );
+  step2() => LayoutBuilder(
+      builder: (context, constraints) =>
+          Column(children: [Text('Tudo pronto!'), Icon(Icons.check_circle)]));
   steps(BoxConstraints constraint) => Container(
         height: constraint.maxHeight * 0.1,
         child: Stack(
@@ -413,4 +524,36 @@ class _LoginScreen1State extends State<LoginScreen1> {
           border: Border.all(color: Theme.of(context).backgroundColor),
           borderRadius: BorderRadius.all(Radius.circular(100)),
           color: v ? Theme.of(context).backgroundColor : Colors.white));
+  forgetSteps() => c.step == 0
+      ? Container(
+          child: Column(children: [
+          Text('Problemas de acesso?'),
+          Divider(),
+          Text('Selecione uma opção'),
+          Column(
+            children: [
+              RaisedButton(
+                child: Text('Esqueci minha senha!'),
+                onPressed: () => null,
+              ),
+              RaisedButton(
+                child: Text('Esqueci meu E-mail de acesso!!'),
+                onPressed: () => null,
+              ),
+              RaisedButton(
+                child: Text('Resgatar PIN!'),
+                onPressed: () => null,
+              ),
+              RaisedButton(
+                child: Text('Mudei meu número de celular!'),
+                onPressed: () => null,
+              ),
+              /* RaisedButton(
+                child: Text('Outro!'),
+                onPressed: () => null,
+              ), */
+            ],
+          )
+        ]))
+      : Container();
 }

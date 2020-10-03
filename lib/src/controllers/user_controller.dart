@@ -16,25 +16,37 @@ abstract class _UserControllerBase with Store {
   @observable
   UserModel user = UserModel();
   @observable
+  bool remember;
+  @observable
   int widget = 0;
   @observable
+  bool forgetSteps;
+  @observable
+  int forgetStep;
+  @observable
   int step = 0;
-  _UserControllerBase({this.user, this.step = 0});
+  _UserControllerBase(
+      {this.user,
+      this.step = 0,
+      this.remember = false,
+      this.forgetSteps = false});
   @computed
   Future<bool> get getUserInfo async {
     final db = DatabaseHelper.instance;
-    print(user.email);
     UserModel u =
         await db.getUserWithEmailAndPassword(user.email, user.password);
     if (u != null) changeUser(u);
-    print(u != null);
     return u != null;
   }
 
   @action
+  changeForgetScreen(bool v) => forgetSteps = v;
+  @action
+  changeForgetStep(int s) => forgetStep = s;
+  @action
+  changeRemember(bool v) => remember = v;
+  @action
   startLogIn(BuildContext context) async {
-    print(user.email);
-    print(user.emailIsValid);
     if (user.emailIsValid && user.passwordIsValid) {
       if (await getUserInfo) {
         Navigator.pushReplacementNamed(context, '/home');
@@ -49,7 +61,10 @@ abstract class _UserControllerBase with Store {
     if (user.emailIsValid && user.passwordIsValid) {
       if (await getUserInfo) {
         Navigator.pushReplacementNamed(context, '/home');
-        saveInfos();
+        if (remember)
+          saveInfos();
+        else
+          cancelInfos();
         return true;
       } else {
         flushBar(
@@ -67,6 +82,12 @@ abstract class _UserControllerBase with Store {
     SharedPreferences s = await SharedPreferences.getInstance();
     s.setString('email', user.email);
     s.setString('password', user.password);
+  }
+
+  cancelInfos() async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    s.setString('email', null);
+    s.setString('password', null);
   }
 
   Future<bool> getInfosShared() async {

@@ -5,6 +5,7 @@ import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
 import 'package:minhasconta/src/screens/home_screen.dart';
+import 'package:minhasconta/src/screens/home_screen1.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
 import 'package:minhasconta/src/screens/login_screen.dart';
 import 'package:minhasconta/src/screens/login_screen1.dart';
@@ -23,8 +24,8 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen1(),
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen(),
+        '/login': (context) => LoginScreen1(),
+        '/home': (context) => HomeScreen1(),
         '/categories': (context) => CategoriesScreen(),
         '/card': (context) => CreditCardScreen(),
         '/cards': (context) => CreditCardsScreen(),
