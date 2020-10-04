@@ -31,7 +31,7 @@ class App extends StatelessWidget {
         '/cards': (context) => CreditCardsScreen(),
       },
       /* home: LoginScreen(), */
-      darkTheme: ThemeData.dark(),
+      // darkTheme: ThemeData.dark(),
       theme: ThemeData(
         fontFamily: 'Helvetica',
         primaryColor: deepPurple,

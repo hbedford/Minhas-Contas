@@ -115,7 +115,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                     registerClick = false;
                   })
               : null,
-          duration: Duration(milliseconds: !animate ? 400 : 400),
+          duration: Duration(milliseconds: !animate ? 100 : 100),
           curve: Curves.easeOut,
           right: loginWidget
               ? (swap
@@ -176,61 +176,6 @@ class _LoginScreen1State extends State<LoginScreen1> {
                 )),
           ));
 
-  /* AnimatedContainer(
-            duration: Duration(milliseconds: !animate ? 400 : 100),
-            margin: EdgeInsets.only(
-              top: keyboard > 0.0
-                  ? (loginWidget
-                      ? (!swap
-                          ? constraint.maxHeight * 0.2
-                          : constraint.maxHeight * 0.1)
-                      : (!swap
-                          ? constraint.maxHeight * 0.1
-                          : constraint.maxHeight * 0.2))
-                  : loginWidget
-                      ? (!swap
-                          ? constraint.maxHeight * 0.23
-                          : constraint.maxHeight * 0.15)
-                      : (!swap
-                          ? constraint.maxHeight * 0.15
-                          : constraint.maxHeight * 0.23),
-            ),
-            height: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
-                ? constraint.maxHeight * 0.75
-                : constraint.maxHeight * 0.6,
-            width: constraint.maxWidth * 0.8,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0.0, 1.0), //(x,y)
-                  blurRadius: 6.0,
-                ),
-              ],
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                  topRight: Radius.circular(85)),
-              color: Colors.white,
-            ),
-            child:  InkWell(
-                splashColor: Colors.transparent,
-                onTap: f,
-                child: LayoutBuilder(
-                  builder: (context, constraints) => Container(
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
-                    padding: EdgeInsets.symmetric(
-                        vertical: constraints.maxHeight * 0.05,
-                        horizontal: constraints.maxWidth * 0.1),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: children,
-                    ),
-                  ),
-                )),
-          ) ); */
   loginWidget(BoxConstraints constraint) => cardAnimated(
       f: swap
           ? animate
@@ -463,16 +408,23 @@ class _LoginScreen1State extends State<LoginScreen1> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Observer(
-                            builder: (_) => lineStep(c.step >= 0, constraints),
+                            builder: (_) => lineStep(
+                              c.step >= 0,
+                              constraints,
+                              0,
+                            ),
                           ),
                           Observer(
-                            builder: (_) => lineStep(c.step >= 1, constraints),
+                            builder: (_) =>
+                                lineStep(c.step >= 1, constraints, 1),
                           ),
                           Observer(
-                            builder: (_) => lineStep(c.step >= 1, constraints),
+                            builder: (_) =>
+                                lineStep(c.step >= 1, constraints, 2),
                           ),
                           Observer(
-                            builder: (_) => lineStep(c.step >= 2, constraints),
+                            builder: (_) =>
+                                lineStep(c.step >= 2, constraints, 3),
                           ),
                         ],
                       ),
@@ -491,7 +443,10 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Observer(
-                          builder: (_) => circleStep(c.step >= 0, constraints),
+                          builder: (_) => circleStep(
+                            c.step >= 0,
+                            constraints,
+                          ),
                         ),
                         Observer(
                           builder: (_) => circleStep(c.step >= 1, constraints),
@@ -508,12 +463,16 @@ class _LoginScreen1State extends State<LoginScreen1> {
           ],
         ),
       );
-  lineStep(bool v, BoxConstraints constraint) => Container(
+  lineStep(bool v, BoxConstraints constraint, int step) => AnimatedContainer(
+        duration: Duration(milliseconds: 100 * (step + 1)),
         height: constraint.maxHeight * 0.1,
         width: constraint.maxWidth * 0.1,
         decoration: BoxDecoration(
-          border: Border.symmetric(
-              vertical: BorderSide(color: Theme.of(context).backgroundColor)),
+          border: !v
+              ? Border.symmetric(
+                  horizontal: BorderSide(
+                      width: 1, color: Theme.of(context).backgroundColor))
+              : null,
           color: v ? Theme.of(context).backgroundColor : Colors.white,
         ),
       );
