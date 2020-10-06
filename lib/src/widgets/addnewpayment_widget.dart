@@ -77,9 +77,9 @@ class AddNewPaymentWidget extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: cc.creditCards.length,
                   itemBuilder: (context, int index) => InkWell(
-                      child: CreditCardWidget(
-                        constrainedBox: constraint,
-                        creditCard: cc.creditCards[index],
+                      child: CardWidget(
+                        constraint: constraint,
+                        card: cc.creditCards[index],
                       ),
                       onTap: () =>
                           c.selectCreditCard(cc.creditCards[index].id))),

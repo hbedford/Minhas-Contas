@@ -235,9 +235,9 @@ class CreditCardsPage extends StatelessWidget {
                                       builder: (context) =>
                                           CreditCardScreen()));
                             },
-                            child: CreditCardWidget(
-                              creditCard: e,
-                              constrainedBox: constraints,
+                            child: CardWidget(
+                              card: e,
+                              constraint: constraints,
                             )),
                       )
                       .toList(),

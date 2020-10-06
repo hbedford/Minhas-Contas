@@ -71,8 +71,8 @@ class CreditCardsScreen extends StatelessWidget {
                                 c.changeCreditCard(c.creditCards[index]);
                                 Navigator.pushNamed(context, '/card');
                               },
-                              child: CreditCardWidget(
-                                creditCard: c.creditCards[index],
+                              child: CardWidget(
+                                card: c.creditCards[index],
                               )),
                         )),
               ),
