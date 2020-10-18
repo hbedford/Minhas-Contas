@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/creditcards_controller.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
-import 'package:minhasconta/src/widgets/creditcard_widget.dart';
+import 'package:minhasconta/src/widgets/card_widget.dart';
 import 'package:minhasconta/src/widgets/project_widget.dart';
 
 class AddNewPaymentWidget extends StatelessWidget {
-  final cc = GetIt.instance<CreditCardsController>();
+  final cc = GetIt.instance<CardsController>();
   final c = GetIt.instance<PaymentController>();
   final cp = GetIt.instance<ProjectsController>();
   @override
@@ -75,14 +75,13 @@ class AddNewPaymentWidget extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraint) => ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: cc.creditCards.length,
+                  itemCount: cc.cards.length,
                   itemBuilder: (context, int index) => InkWell(
                       child: CardWidget(
                         constraint: constraint,
-                        card: cc.creditCards[index],
+                        card: cc.cards[index],
                       ),
-                      onTap: () =>
-                          c.selectCreditCard(cc.creditCards[index].id))),
+                      onTap: () => c.selectCard(cc.cards[index].id))),
             ),
           ),
         ],

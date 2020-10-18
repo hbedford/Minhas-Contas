@@ -19,7 +19,7 @@ abstract class _PaymentModelBase with Store {
   @observable
   TimeOfDay time;
   @observable
-  int creditCardId;
+  int cardId;
   @observable
   int tPayment;
   //0 - credito / 1 - debito / 2 - dinheiro/transf
@@ -32,7 +32,7 @@ abstract class _PaymentModelBase with Store {
       this.date,
       this.value = 0,
       this.tPayment,
-      this.creditCardId});
+      this.cardId});
   @action
   changeName(String n) => name = n;
   @action
@@ -44,7 +44,7 @@ abstract class _PaymentModelBase with Store {
   @action
   changeTypePayment(int t) => tPayment = t;
   @action
-  changeCreditCardId(int i) => creditCardId = i;
+  changeCardId(int i) => cardId = i;
 
   @computed
   String get dateToString => Converting().dateToString(date);

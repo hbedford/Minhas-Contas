@@ -21,9 +21,9 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
-  selectCreditCard(int v) {
+  selectCard(int v) {
     changeStep(2);
-    payment.changeCreditCardId(v);
+    payment.changeCardId(v);
   }
 
   @action
@@ -33,7 +33,7 @@ abstract class _PaymentControllerBase with Store {
       changeStep(0);
     }
     if (v == 1) {
-      payment.changeCreditCardId(null);
+      payment.changeCardId(null);
       changeStep(1);
     }
   }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
-import 'package:minhasconta/src/screens/home_screen.dart';
 import 'package:minhasconta/src/screens/home_screen1.dart';
-import 'package:minhasconta/src/screens/loading_screen.dart';
-import 'package:minhasconta/src/screens/login_screen.dart';
 import 'package:minhasconta/src/screens/login_screen1.dart';
 
 import 'controllers/home_controller.dart';
@@ -16,8 +12,9 @@ import 'controllers/user_controller.dart';
 class App extends StatelessWidget {
   final h = GetIt.instance<HomeController>();
   final c = GetIt.instance<UserController>();
-  Color deepPurple = Color(0xFF222059);
-  Color buttonPrimary = Color(0xFF22f2dd);
+  final Color deepPurple = Color(0xFF222059);
+  final Color lightPurple = Color(0xFFCFCEF2);
+  final Color buttonPrimary = Color(0xFF22f2dd);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,6 +32,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Helvetica',
         primaryColor: deepPurple,
+        secondaryHeaderColor: lightPurple,
         accentColor: Colors.white,
         backgroundColor: Color(0xffA2A0F2),
         primaryTextTheme: TextTheme(

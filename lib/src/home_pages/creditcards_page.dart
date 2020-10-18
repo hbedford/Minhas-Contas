@@ -1,18 +1,15 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/creditcards_controller.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
-import 'package:minhasconta/src/widgets/creditcard_widget.dart';
-import 'dart:math' as math;
+import 'package:minhasconta/src/widgets/card_widget.dart';
 
 class CreditCardsPage extends StatelessWidget {
   final c = GetIt.instance<HomeController>();
-  final creditCardsController = GetIt.instance<CreditCardsController>();
+  final cardsController = GetIt.instance<CardsController>();
   static Matrix4 _pmat(num pv) {
     return new Matrix4(
       1.0, 0.0, 0.0, 0.0, //
@@ -22,11 +19,11 @@ class CreditCardsPage extends StatelessWidget {
     );
   }
 
-  final _pageController = PageController(
+  /* final _pageController = PageController(
     viewportFraction: 0.2,
-  );
-  ScrollController scroll = ScrollController();
-  Matrix4 perspective = _pmat(1.0);
+  ); */
+  final ScrollController scroll = ScrollController();
+  final Matrix4 perspective = _pmat(1.0);
   /* @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -224,11 +221,11 @@ class CreditCardsPage extends StatelessWidget {
                 builder: (c, constraints) => ListView(
                   physics: PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  children: creditCardsController.creditCards
+                  children: cardsController.cards
                       .map(
                         (e) => InkWell(
                             onTap: () {
-                              creditCardsController.changeCreditCard(e);
+                              cardsController.changeCard(e);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

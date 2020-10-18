@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/creditcard_controller.dart';
-import 'package:minhasconta/src/controllers/creditcards_controller.dart';
+import 'package:minhasconta/src/controllers/card_controller.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:minhasconta/src/widgets/chartcircle_widget.dart';
@@ -11,8 +11,8 @@ import '../models/menu_model.dart';
 
 class CreditCardScreen extends StatelessWidget {
   CreditCardScreen();
-  final creditCardsController = GetIt.instance<CreditCardsController>();
-  final c = GetIt.instance<CreditCardController>();
+  final cardsController = GetIt.instance<CardsController>();
+  final c = GetIt.instance<CardController>();
 
   final Converting converting = Converting();
   final List<MenuModel> menu = [
@@ -109,7 +109,7 @@ class CreditCardScreen extends StatelessWidget {
           Expanded(
             child: Observer(builder: (_) {
               List<Widget> l = [];
-              creditCardsController.creditCard.paymentsPerDate.map((e) {
+              cardsController.card.paymentsPerDate.map((e) {
                 l.add(
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
@@ -173,8 +173,8 @@ class CreditCardScreen extends StatelessWidget {
                             child: cInfoLeft(
                                 title: 'Total de compras',
                                 icon: Icon(Icons.shopping_cart),
-                                info: creditCardsController
-                                    .creditCard.amountPaymentsThisMonth
+                                info: cardsController
+                                    .card.amountPaymentsThisMonth
                                     .toString()),
                           ),
                           Flexible(
@@ -236,13 +236,11 @@ class CreditCardScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        creditCardsController.creditCard.totalThisMonth
-                            .toString(),
+                        cardsController.card.totalThisMonth.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
-                      Text('de ' +
-                          creditCardsController.creditCard.limit.toString())
+                      Text('de ' + cardsController.card.limit.toString())
                     ],
                   ),
                 ),

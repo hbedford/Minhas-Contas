@@ -49,7 +49,7 @@ abstract class _UserControllerBase with Store {
   startLogIn(BuildContext context) async {
     if (user.emailIsValid && user.passwordIsValid) {
       if (await getUserInfo) {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
       } else
         Navigator.pushReplacementNamed(context, '/login');
     } else

@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/category_controller.dart';
-import 'package:minhasconta/src/controllers/creditcards_controller.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/category_model.dart';
-import 'package:minhasconta/src/models/creditcard_model.dart';
+import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
 
 import 'src/app.dart';
-import 'src/controllers/creditcard_controller.dart';
+import 'src/controllers/card_controller.dart';
 import 'src/controllers/user_controller.dart';
 
 void main() async {
   GetIt getIt = GetIt.instance;
   getIt.registerSingleton<HomeController>(HomeController());
-  getIt.registerSingleton<CreditCardController>(CreditCardController());
+  getIt.registerSingleton<CardController>(CardController());
   getIt.registerSingleton<UserController>(UserController(user: UserModel()));
   getIt.registerSingleton<CategoryController>(
       CategoryController(categories: [].asObservable()));
   getIt.registerSingleton<PaymentController>(PaymentController());
   getIt.registerSingleton<ProjectsController>(
       ProjectsController(projects: [].asObservable()));
-  getIt.registerSingleton<CreditCardsController>(
-    CreditCardsController(
-      creditCards: ObservableList.of(
+  getIt.registerSingleton<CardsController>(
+    CardsController(
+      cards: ObservableList.of(
         [
-          CreditCardModel(
+          CardModel(
             id: 1,
             name: 'Itau Card',
             color: Colors.green,

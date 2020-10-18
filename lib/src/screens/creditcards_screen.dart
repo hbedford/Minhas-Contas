@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/creditcards_controller.dart';
-import 'package:minhasconta/src/widgets/creditcard_widget.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
+import 'package:minhasconta/src/widgets/card_widget.dart';
 
 import 'addcreditcard_screen.dart';
 
 class CreditCardsScreen extends StatelessWidget {
-  final c = GetIt.instance<CreditCardsController>();
+  final c = GetIt.instance<CardsController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +34,7 @@ class CreditCardsScreen extends StatelessWidget {
                           style: TextStyle(color: Colors.white, fontSize: 24),
                         ),
                         Text(
-                          'Você tem ${c.creditCards.length} cart${c.creditCards.length == 1 ? 'ão' : 'ões'}',
+                          'Você tem ${c.cards.length} cart${c.cards.length == 1 ? 'ão' : 'ões'}',
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
@@ -60,19 +59,19 @@ class CreditCardsScreen extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) => ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: c.creditCards.length,
+                    itemCount: c.cards.length,
                     itemBuilder: (context, int index) => Container(
                           width: constraints.maxWidth * 0.8,
                           child: InkWell(
-                              onLongPress: () => c.creditCards[index]
+                              onLongPress: () => c.cards[index]
                                   .changeOptionsActive(
-                                      !c.creditCards[index].optionsActive),
+                                      !c.cards[index].optionsActive),
                               onTap: () {
-                                c.changeCreditCard(c.creditCards[index]);
+                                c.changeCard(c.cards[index]);
                                 Navigator.pushNamed(context, '/card');
                               },
                               child: CardWidget(
-                                card: c.creditCards[index],
+                                card: c.cards[index],
                               )),
                         )),
               ),

@@ -76,11 +76,11 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
-  dynamic selectCreditCard(int v) {
+  dynamic selectCard(int v) {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
-        name: '_PaymentControllerBase.selectCreditCard');
+        name: '_PaymentControllerBase.selectCard');
     try {
-      return super.selectCreditCard(v);
+      return super.selectCard(v);
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }

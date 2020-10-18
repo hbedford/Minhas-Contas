@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/creditcards_controller.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/home_pages/creditcards_page.dart';
@@ -13,7 +13,7 @@ import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final c = GetIt.instance<HomeController>();
-  final creditCardsController = GetIt.instance<CreditCardsController>();
+  final creditCardsController = GetIt.instance<CardsController>();
   final cp = GetIt.instance<PaymentController>();
   final List<ProjectModel> projects = [];
   final List<MenuModel> list = [
