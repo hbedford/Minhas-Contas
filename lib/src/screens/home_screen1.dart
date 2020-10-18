@@ -59,7 +59,32 @@ class _HomeScreen1State extends State<HomeScreen1> {
         centerTitle: true,
         title: Text('Dashboard', style: TextStyle(color: Colors.grey[400])),
       ),
-      body: cardsInfo(),
+      body: LayoutBuilder(
+        builder: (context, constraint) => Stack(children: [
+          Expanded(child: cardsInfo()),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              child: CurvedNavigationBar(
+                key: _bottomNavigationKey,
+                width: constraint.maxWidth,
+                backgroundColor: Colors.transparent,
+                animationDuration: Duration(milliseconds: 300),
+                index: _page,
+                onTap: (index) => setState(() => _page = index),
+                items: [
+                  Icon(Icons.credit_card),
+                  Text('A'),
+                  Text('A'),
+                  Text('A')
+                ],
+                height: constraint.maxHeight * 0.08,
+              ),
+            ),
+          ),
+        ]),
+      ),
+
       /* bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         backgroundColor: Colors.transparent,
@@ -77,190 +102,206 @@ class _HomeScreen1State extends State<HomeScreen1> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            margin(Text('Meus cartões'), constraint),
-            cardsWidget(constraint),
-            margin(Text('Informações'), constraint),
-            margin(
-                cc.card != null
-                    ? Text('Saldo em conta')
-                    : loadContainer(
-                        h: constraint.maxHeight * 0.025,
-                        w: constraint.maxWidth * 0.25,
-                        bColor: Theme.of(context).secondaryHeaderColor),
-                constraint),
-            margin(
-                cc.card != null
-                    ? Text('R\$250,00')
-                    : loadContainer(
-                        h: constraint.maxHeight * 0.04,
-                        w: constraint.maxWidth * 0.3,
-                        bColor: Color(0xFF222059),
-                      ),
-                constraint),
-            margin(
-                cc.card != null
-                    ? Row(children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Limite disponivel'),
-                              Text('R\$1750,00')
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Credito utilizado'),
-                                Text('R\$250,00')
-                              ]),
-                        )
-                      ])
-                    : Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  loadContainer(
-                                      h: constraint.maxHeight * 0.025,
-                                      w: constraint.maxWidth * 0.25,
-                                      bColor: Theme.of(context)
-                                          .secondaryHeaderColor),
-                                  Container(
-                                    height: constraint.maxHeight * 0.01,
+            Flexible(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  margin(Text('Meus cartões'), constraint),
+                  cardsWidget(constraint),
+                ])),
+            Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    margin(Text('Informações'), constraint),
+                    margin(
+                        cc.card != null
+                            ? Text('Saldo em conta')
+                            : loadContainer(
+                                h: constraint.maxHeight * 0.025,
+                                w: constraint.maxWidth * 0.25,
+                                bColor: Theme.of(context).secondaryHeaderColor),
+                        constraint),
+                    margin(
+                        cc.card != null
+                            ? Text('R\$250,00')
+                            : loadContainer(
+                                h: constraint.maxHeight * 0.04,
+                                w: constraint.maxWidth * 0.3,
+                                bColor: Color(0xFF222059),
+                              ),
+                        constraint),
+                    margin(
+                        cc.card != null
+                            ? Row(children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Limite disponivel'),
+                                      Text('R\$1750,00')
+                                    ],
                                   ),
-                                  loadContainer(
-                                    h: constraint.maxHeight * 0.04,
-                                    w: constraint.maxWidth * 0.3,
-                                    bColor: Color(0xFF222059),
-                                  ),
-                                ]),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                loadContainer(
-                                    h: constraint.maxHeight * 0.025,
-                                    w: constraint.maxWidth * 0.25,
-                                    bColor: Colors.grey),
-                                Container(
-                                  height: constraint.maxHeight * 0.01,
                                 ),
-                                loadContainer(
-                                  h: constraint.maxHeight * 0.04,
-                                  w: constraint.maxWidth * 0.3,
-                                  bColor: Color(0xFF222059),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                constraint),
-            margin(
-                cc.card != null
-                    ? Container(
-                        child: Stack(
-                        children: [
-                          Container(
-                            height: constraint.maxHeight * 0.02,
-                            width: constraint.maxWidth * 0.8,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.green,
-                            ),
-                            height: constraint.maxHeight * 0.02,
-                            width: constraint.maxWidth * 0.4,
-                          ),
-                        ],
-                      ))
-                    : loadContainer(
-                        h: constraint.maxHeight * 0.02,
-                        w: constraint.maxWidth * 0.8,
-                        bColor: Colors.grey),
-                constraint),
-            margin(Text('Ultimas compras'), constraint),
-            margin(
-                Container(
-                    height: constraint.maxHeight * 0.3,
-                    child: ListView.builder(
-                        itemCount: cc.card != null ? 3 : 2,
-                        itemBuilder: (context, int index) => Container(
-                              height: constraint.maxHeight * 0.05,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                Expanded(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Credito utilizado'),
+                                        Text('R\$250,00')
+                                      ]),
+                                )
+                              ])
+                            : Row(
                                 children: [
                                   Expanded(
-                                    flex: 4,
-                                    child: Row(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          loadContainer(
+                                              h: constraint.maxHeight * 0.025,
+                                              w: constraint.maxWidth * 0.25,
+                                              bColor: Theme.of(context)
+                                                  .secondaryHeaderColor),
+                                          Container(
+                                            height: constraint.maxHeight * 0.01,
+                                          ),
+                                          loadContainer(
+                                            h: constraint.maxHeight * 0.04,
+                                            w: constraint.maxWidth * 0.3,
+                                            bColor: Color(0xFF222059),
+                                          ),
+                                        ]),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        cc.card != null
-                                            ? Text(
-                                                'VXCase Digital LTDA.',
-                                              )
-                                            : loadContainer(
-                                                h: constraint.maxHeight * 0.02,
-                                                w: constraint.maxWidth * 0.4,
-                                                bColor: Colors.grey[700]),
+                                        loadContainer(
+                                            h: constraint.maxHeight * 0.025,
+                                            w: constraint.maxWidth * 0.25,
+                                            bColor: Colors.grey),
+                                        Container(
+                                          height: constraint.maxHeight * 0.01,
+                                        ),
+                                        loadContainer(
+                                          h: constraint.maxHeight * 0.04,
+                                          w: constraint.maxWidth * 0.3,
+                                          bColor: Color(0xFF222059),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  Flexible(
-                                      flex: 2,
-                                      child: Row(
-                                        children: [
-                                          cc.card != null
-                                              ? Text('Credito')
-                                              : loadContainer(
-                                                  h: constraint.maxHeight *
-                                                      0.02,
-                                                  w: constraint.maxWidth * 0.15,
-                                                  bColor: Colors.grey),
-                                        ],
-                                      )),
-                                  Flexible(
-                                      flex: 2,
-                                      child: Observer(
-                                        builder: (_) => Row(
-                                          children: [
-                                            cc.card != null
-                                                ? Text('R\$250,00')
-                                                : loadContainer(
-                                                    h: constraint.maxHeight *
-                                                        0.02,
-                                                    w: constraint.maxWidth *
-                                                        0.18,
-                                                    bColor: Colors.green),
-                                          ],
-                                        ),
-                                      ))
+                                  )
                                 ],
                               ),
-                            ))),
-                constraint),
-            Container(
-              child: CurvedNavigationBar(
-                key: _bottomNavigationKey,
-                width: constraint.maxWidth,
-                backgroundColor: Colors.transparent,
-                animationDuration: Duration(milliseconds: 300),
-                index: _page,
-                onTap: (index) => setState(() => _page = index),
-                items: [Icon(Icons.person), Text('A'), Text('A'), Text('A')],
-                height: constraint.maxHeight * 0.08,
-              ),
-            ),
+                        constraint),
+                    margin(
+                        cc.card != null
+                            ? Container(
+                                child: Stack(
+                                children: [
+                                  Container(
+                                    height: constraint.maxHeight * 0.02,
+                                    width: constraint.maxWidth * 0.8,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.green,
+                                    ),
+                                    height: constraint.maxHeight * 0.02,
+                                    width: constraint.maxWidth * 0.4,
+                                  ),
+                                ],
+                              ))
+                            : loadContainer(
+                                h: constraint.maxHeight * 0.02,
+                                w: constraint.maxWidth * 0.8,
+                                bColor: Colors.grey),
+                        constraint),
+                    margin(Text('Ultimas compras'), constraint),
+                    margin(
+                        Container(
+                            height: constraint.maxHeight * 0.3,
+                            child: ListView.builder(
+                                itemCount: cc.card != null ? 3 : 2,
+                                itemBuilder: (context, int index) => Container(
+                                      height: constraint.maxHeight * 0.05,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 4,
+                                            child: Row(
+                                              children: [
+                                                cc.card != null
+                                                    ? Text(
+                                                        'VXCase Digital LTDA.',
+                                                      )
+                                                    : loadContainer(
+                                                        h: constraint
+                                                                .maxHeight *
+                                                            0.02,
+                                                        w: constraint.maxWidth *
+                                                            0.4,
+                                                        bColor:
+                                                            Colors.grey[700]),
+                                              ],
+                                            ),
+                                          ),
+                                          Flexible(
+                                              flex: 2,
+                                              child: Row(
+                                                children: [
+                                                  cc.card != null
+                                                      ? Text('Credito')
+                                                      : loadContainer(
+                                                          h: constraint
+                                                                  .maxHeight *
+                                                              0.02,
+                                                          w: constraint
+                                                                  .maxWidth *
+                                                              0.15,
+                                                          bColor: Colors.grey),
+                                                ],
+                                              )),
+                                          Flexible(
+                                              flex: 2,
+                                              child: Observer(
+                                                builder: (_) => Row(
+                                                  children: [
+                                                    cc.card != null
+                                                        ? Text('R\$250,00')
+                                                        : loadContainer(
+                                                            h: constraint
+                                                                    .maxHeight *
+                                                                0.02,
+                                                            w: constraint
+                                                                    .maxWidth *
+                                                                0.18,
+                                                            bColor:
+                                                                Colors.green),
+                                                  ],
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                    ))),
+                        constraint),
+                  ],
+                ))
           ],
         ),
       );

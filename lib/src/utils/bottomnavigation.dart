@@ -140,6 +140,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                   .map((item) => Expanded(
                         child: Center(
                           child: FlatButton(
+                            splashColor: Colors.transparent,
                             onPressed: () {
                               setState(() {
                                 widget.onTap(widget.items.indexOf(item));
