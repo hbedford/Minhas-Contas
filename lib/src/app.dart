@@ -13,7 +13,9 @@ class App extends StatelessWidget {
   final h = GetIt.instance<HomeController>();
   final c = GetIt.instance<UserController>();
   final Color deepPurple = Color(0xFF222059);
+  final Color menuPurple = Color(0xFF33328B);
   final Color lightPurple = Color(0xFFCFCEF2);
+  final Color accentPurple = Color(0xFFA2A0F2);
   final Color buttonPrimary = Color(0xFF22f2dd);
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,24 @@ class App extends StatelessWidget {
         primaryColor: deepPurple,
         secondaryHeaderColor: lightPurple,
         accentColor: Colors.white,
+        bottomAppBarColor: menuPurple,
         backgroundColor: Color(0xffA2A0F2),
+        textTheme: TextTheme(
+            subtitle1: TextStyle(
+              color: Colors.grey[500],
+            ),
+            subtitle2:
+                TextStyle(color: accentPurple, fontWeight: FontWeight.w600),
+            headline1: TextStyle(
+                color: menuPurple, fontSize: 26, fontWeight: FontWeight.w700),
+            headline6: TextStyle(
+                color: menuPurple, fontWeight: FontWeight.w700, fontSize: 18),
+            button: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w900)),
         primaryTextTheme: TextTheme(
+            headline6: TextStyle(color: menuPurple),
             button: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
