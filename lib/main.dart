@@ -6,9 +6,6 @@ import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
-import 'package:minhasconta/src/models/category_model.dart';
-import 'package:minhasconta/src/models/card_model.dart';
-import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
 
@@ -30,7 +27,7 @@ void main() async {
     CardsController(
       cards: ObservableList.of(
         [
-          CardModel(
+          /* CardModel(
             id: 1,
             name: 'Itau Card',
             color: Colors.green,
@@ -80,7 +77,7 @@ void main() async {
                     value: 203.0),
               ],
             ),
-          ),
+          ), */
         ],
       ),
     ),

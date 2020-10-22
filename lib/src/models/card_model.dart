@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:minhasconta/src/models/paymentsofday_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
 
 import 'cardtype_model.dart';
 import 'category_model.dart';
-import 'paymentsofday_model.dart';
 part 'card_model.g.dart';
 
 class CardModel = _CardModelBase with _$CardModel;
@@ -48,6 +48,9 @@ abstract class _CardModelBase with Store {
       this.payments,
       this.active = false,
       this.optionsActive = false});
+  _CardModelBase.emptyCard()
+      : this.name = '',
+        this.color = Color(0xFF222059);
   @action
   changeName(String n) => name = n;
   @action
@@ -181,8 +184,8 @@ abstract class _CardModelBase with Store {
   }
 
   @computed
-  List<PaymentsOfDay> get paymentsPerDate {
-    List<PaymentsOfDay> pOfDays = [];
+  List<PaymentsOfDayModel> get paymentsPerDate {
+    List<PaymentsOfDayModel> pOfDays = [];
     List<PaymentModel> pActual = [];
     DateTime actual = DateTime.now();
 
@@ -190,14 +193,15 @@ abstract class _CardModelBase with Store {
       if (c.dateToString(element.date) == c.dateToString(actual)) {
         pActual.add(element);
       } else {
-        pOfDays
-            .add(PaymentsOfDay(date: actual, payments: pActual.asObservable()));
+        pOfDays.add(
+            PaymentsOfDayModel(date: actual, payments: pActual.asObservable()));
         /* if (pActual.length != 0) */
         pActual.add(element);
         actual = element.date;
       }
     });
-    pOfDays.add(PaymentsOfDay(date: actual, payments: pActual.asObservable()));
+    pOfDays.add(
+        PaymentsOfDayModel(date: actual, payments: pActual.asObservable()));
 
     return pOfDays;
   }

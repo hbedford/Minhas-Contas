@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/user_controller.dart';
 
 class PinField extends StatefulWidget {
   final String lastPin;
@@ -37,7 +39,7 @@ class PinFieldState extends State<PinField> {
   List<TextEditingController> _textControllers;
 
   Widget textFields = Container();
-
+  final c = GetIt.I.get<UserController>();
   @override
   void initState() {
     super.initState();
@@ -127,6 +129,8 @@ class PinFieldState extends State<PinField> {
         onChanged: (String str) {
           setState(() {
             _pin[i] = str;
+
+            c.changePin(int.parse(_pin[0] + _pin[1] + _pin[2] + _pin[3]));
           });
           if (i + 1 != widget.fields) {
             _focusNodes[i].unfocus();

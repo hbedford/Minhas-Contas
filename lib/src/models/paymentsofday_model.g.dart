@@ -8,16 +8,16 @@ part of 'paymentsofday_model.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$PaymentsOfDay on _PaymentsOfDayBase, Store {
+mixin _$PaymentsOfDayModel on _PaymentsOfDayModelBase, Store {
   Computed<String> _$dateToStringComputed;
 
   @override
   String get dateToString =>
       (_$dateToStringComputed ??= Computed<String>(() => super.dateToString,
-              name: '_PaymentsOfDayBase.dateToString'))
+              name: '_PaymentsOfDayModelBase.dateToString'))
           .value;
 
-  final _$dateAtom = Atom(name: '_PaymentsOfDayBase.date');
+  final _$dateAtom = Atom(name: '_PaymentsOfDayModelBase.date');
 
   @override
   DateTime get date {
@@ -32,7 +32,7 @@ mixin _$PaymentsOfDay on _PaymentsOfDayBase, Store {
     });
   }
 
-  final _$paymentsAtom = Atom(name: '_PaymentsOfDayBase.payments');
+  final _$paymentsAtom = Atom(name: '_PaymentsOfDayModelBase.payments');
 
   @override
   ObservableList<dynamic> get payments {

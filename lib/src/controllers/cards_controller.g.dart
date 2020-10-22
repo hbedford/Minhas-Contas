@@ -9,6 +9,21 @@ part of 'cards_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CardsController on _CardsControllerBase, Store {
+  Computed<int> _$actualCardComputed;
+
+  @override
+  int get actualCard =>
+      (_$actualCardComputed ??= Computed<int>(() => super.actualCard,
+              name: '_CardsControllerBase.actualCard'))
+          .value;
+  Computed<List<dynamic>> _$cForListComputed;
+
+  @override
+  List<dynamic> get cForList =>
+      (_$cForListComputed ??= Computed<List<dynamic>>(() => super.cForList,
+              name: '_CardsControllerBase.cForList'))
+          .value;
+
   final _$cardAtom = Atom(name: '_CardsControllerBase.card');
 
   @override
@@ -21,6 +36,21 @@ mixin _$CardsController on _CardsControllerBase, Store {
   set card(CardModel value) {
     _$cardAtom.reportWrite(value, super.card, () {
       super.card = value;
+    });
+  }
+
+  final _$newCardAtom = Atom(name: '_CardsControllerBase.newCard');
+
+  @override
+  CardModel get newCard {
+    _$newCardAtom.reportRead();
+    return super.newCard;
+  }
+
+  @override
+  set newCard(CardModel value) {
+    _$newCardAtom.reportWrite(value, super.newCard, () {
+      super.newCard = value;
     });
   }
 
@@ -84,6 +114,21 @@ mixin _$CardsController on _CardsControllerBase, Store {
     });
   }
 
+  final _$scrollAtom = Atom(name: '_CardsControllerBase.scroll');
+
+  @override
+  double get scroll {
+    _$scrollAtom.reportRead();
+    return super.scroll;
+  }
+
+  @override
+  set scroll(double value) {
+    _$scrollAtom.reportWrite(value, super.scroll, () {
+      super.scroll = value;
+    });
+  }
+
   final _$_CardsControllerBaseActionController =
       ActionController(name: '_CardsControllerBase');
 
@@ -132,13 +177,39 @@ mixin _$CardsController on _CardsControllerBase, Store {
   }
 
   @override
+  dynamic changeScroll(double s) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.changeScroll');
+    try {
+      return super.changeScroll(s);
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addNewCard() {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.addNewCard');
+    try {
+      return super.addNewCard();
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 card: ${card},
+newCard: ${newCard},
 cValidate: ${cValidate},
 cBestDate: ${cBestDate},
 cLimit: ${cLimit},
-cards: ${cards}
+cards: ${cards},
+scroll: ${scroll},
+actualCard: ${actualCard},
+cForList: ${cForList}
     ''';
   }
 }

@@ -23,8 +23,8 @@ abstract class _UserModelBase with Store {
   _UserModelBase.fromMap(Map map)
       : this.id = map['id'],
         this.name = map['name'],
-        this.email = 'email',
-        this.password = 'password';
+        this.email = map['email'],
+        this.password = map['password'];
   @action
   changeId(int i) => id = i;
   @action
@@ -44,6 +44,6 @@ abstract class _UserModelBase with Store {
       repeatPassword.length > 3 &&
       repeatPassword == password;
   @computed
-  Map<String, dynamic> get registerToMap =>
+  Map<String, dynamic> get map =>
       {'name': name, 'email': email, 'password': password};
 }

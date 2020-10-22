@@ -34,8 +34,12 @@ class _LoginScreen1State extends State<LoginScreen1> {
             width: constraint.maxWidth,
             child: AnimatedCrossFade(
                 firstChild: Stack(children: [
-                  !swap ? registerWidget(constraint) : loginWidget(constraint),
-                  !swap ? loginWidget(constraint) : registerWidget(constraint),
+                  !swap
+                      ? registerWidget(constraint, context)
+                      : loginWidget(constraint),
+                  !swap
+                      ? loginWidget(constraint)
+                      : registerWidget(constraint, context),
                 ]),
                 secondChild: Stack(children: [
                   Container(
@@ -188,7 +192,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
       constraint: constraint,
       loginWidget: true,
       children: [title(!swap, 'Login'), loginInfo()]);
-  registerWidget(BoxConstraints constraint) => cardAnimated(
+  registerWidget(BoxConstraints constraint, BuildContext ctxt) => cardAnimated(
       f: !swap
           ? animate
               ? null
@@ -199,7 +203,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
           : null,
       children: [
         title(swap, 'Cadastro'),
-        registerInfo(),
+        registerInfo(ctxt),
       ],
       constraint: constraint,
       loginWidget: false);
@@ -271,7 +275,10 @@ class _LoginScreen1State extends State<LoginScreen1> {
                                   : Icons.check_box_outline_blank,
                             ),
                           ),
-                          Text('Lembrar meus dados')
+                          Text(
+                            'Lembrar meus dados',
+                            style: TextStyle(fontSize: 14),
+                          )
                         ],
                       ),
                     )
@@ -326,7 +333,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
         ),
       );
 
-  registerInfo() => Visibility(
+  registerInfo(BuildContext ctxt) => Visibility(
         visible: swap,
         child: Expanded(
           child: LayoutBuilder(
@@ -338,7 +345,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                   Divider(),
                   steps(constraint),
                   Expanded(
-                    child: actualStep(),
+                    child: actualStep(ctxt),
                   )
                 ],
               ),
@@ -346,8 +353,9 @@ class _LoginScreen1State extends State<LoginScreen1> {
           ),
         ),
       );
-  actualStep() => Observer(builder: (_) => c.step == 0 ? step0() : step1());
-  step0() => LayoutBuilder(
+  actualStep(BuildContext context) =>
+      Observer(builder: (_) => c.step == 0 ? step0(context) : step1());
+  step0(BuildContext ctxt) => LayoutBuilder(
         builder: (context, constraint) => Column(
           children: [
             textField(
@@ -360,7 +368,10 @@ class _LoginScreen1State extends State<LoginScreen1> {
                 constraints: constraint),
             RaisedButton(
               color: yellow,
-              onPressed: () => c.changeStep(1),
+              onPressed: () async {
+                if (await c.register(email.text, name.text, password.text,
+                    repeatPassword.text, ctxt)) c.changeStep(1);
+              },
               child: Text('Confirmar',
                   style: Theme.of(context).primaryTextTheme.button),
             )
@@ -378,7 +389,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
             Text('Uma senha de 4 digitos numéricos.'),
             Text('Seu PIN servirá confirmar ações futuras mais rapidamente.'),
             RaisedButton(
-              onPressed: () => null,
+              onPressed: () => c.addPin(context),
               child: Text('Confirmar'),
               color: yellow,
             ),

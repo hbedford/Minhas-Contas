@@ -51,11 +51,11 @@ mixin _$CardModel on _CardModelBase, Store {
           Computed<List<dynamic>>(() => super.pSortedPayments,
               name: '_CardModelBase.pSortedPayments'))
       .value;
-  Computed<List<PaymentsOfDay>> _$paymentsPerDateComputed;
+  Computed<List<PaymentsOfDayModel>> _$paymentsPerDateComputed;
 
   @override
-  List<PaymentsOfDay> get paymentsPerDate => (_$paymentsPerDateComputed ??=
-          Computed<List<PaymentsOfDay>>(() => super.paymentsPerDate,
+  List<PaymentsOfDayModel> get paymentsPerDate => (_$paymentsPerDateComputed ??=
+          Computed<List<PaymentsOfDayModel>>(() => super.paymentsPerDate,
               name: '_CardModelBase.paymentsPerDate'))
       .value;
   Computed<int> _$amountPaymentsThisMonthComputed;

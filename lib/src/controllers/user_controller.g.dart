@@ -92,6 +92,21 @@ mixin _$UserController on _UserControllerBase, Store {
     });
   }
 
+  final _$pinAtom = Atom(name: '_UserControllerBase.pin');
+
+  @override
+  int get pin {
+    _$pinAtom.reportRead();
+    return super.pin;
+  }
+
+  @override
+  set pin(int value) {
+    _$pinAtom.reportWrite(value, super.pin, () {
+      super.pin = value;
+    });
+  }
+
   final _$stepAtom = Atom(name: '_UserControllerBase.step');
 
   @override
@@ -130,6 +145,13 @@ mixin _$UserController on _UserControllerBase, Store {
         () => super.register(email, name, password, repeatPassword, context));
   }
 
+  final _$addPinAsyncAction = AsyncAction('_UserControllerBase.addPin');
+
+  @override
+  Future addPin(BuildContext context) {
+    return _$addPinAsyncAction.run(() => super.addPin(context));
+  }
+
   final _$logOutAsyncAction = AsyncAction('_UserControllerBase.logOut');
 
   @override
@@ -139,6 +161,17 @@ mixin _$UserController on _UserControllerBase, Store {
 
   final _$_UserControllerBaseActionController =
       ActionController(name: '_UserControllerBase');
+
+  @override
+  dynamic changePin(int p) {
+    final _$actionInfo = _$_UserControllerBaseActionController.startAction(
+        name: '_UserControllerBase.changePin');
+    try {
+      return super.changePin(p);
+    } finally {
+      _$_UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeForgetScreen(bool v) {
@@ -214,6 +247,7 @@ remember: ${remember},
 widget: ${widget},
 forgetSteps: ${forgetSteps},
 forgetStep: ${forgetStep},
+pin: ${pin},
 step: ${step},
 getUserInfo: ${getUserInfo}
     ''';

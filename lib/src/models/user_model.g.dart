@@ -30,13 +30,13 @@ mixin _$UserModel on _UserModelBase, Store {
           Computed<bool>(() => super.repeatPasswordIsValid,
               name: '_UserModelBase.repeatPasswordIsValid'))
       .value;
-  Computed<Map<String, dynamic>> _$registerToMapComputed;
+  Computed<Map<String, dynamic>> _$mapComputed;
 
   @override
-  Map<String, dynamic> get registerToMap => (_$registerToMapComputed ??=
-          Computed<Map<String, dynamic>>(() => super.registerToMap,
-              name: '_UserModelBase.registerToMap'))
-      .value;
+  Map<String, dynamic> get map =>
+      (_$mapComputed ??= Computed<Map<String, dynamic>>(() => super.map,
+              name: '_UserModelBase.map'))
+          .value;
 
   final _$idAtom = Atom(name: '_UserModelBase.id');
 
@@ -171,7 +171,7 @@ repeatPassword: ${repeatPassword},
 emailIsValid: ${emailIsValid},
 passwordIsValid: ${passwordIsValid},
 repeatPasswordIsValid: ${repeatPasswordIsValid},
-registerToMap: ${registerToMap}
+map: ${map}
     ''';
   }
 }

@@ -24,7 +24,7 @@ class DatabaseHelper {
 
   Future _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL,password TEXT NOT NULL);");
+        "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL UNIQUE,password TEXT NOT NULL,pin INT);");
     await db.execute(
         "CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,color TEXT NOT NULL);");
     await db.execute(
@@ -34,9 +34,13 @@ class DatabaseHelper {
   }
 
   Future<int> registerUser(UserModel user) async {
-    Database db = await instance.database;
-    int id = await db.insert('users', user.registerToMap);
-    return id;
+    try {
+      Database db = await instance.database;
+
+      return await db.insert('users', user.map);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<int> registerCategory(CategoryModel category) async {
@@ -65,6 +69,12 @@ class DatabaseHelper {
     List<Map> list = await db.query('users',
         where: 'email = ? and password = ? ', whereArgs: [email, password]);
     return list.length > 0 ? UserModel.fromMap(list.first) : null;
+  }
+
+  Future<int> addPIN(int pin, int id) async {
+    Database db = await instance.database;
+    return await db
+        .rawUpdate('UPDATE users SET pin = ? WHERE id = ?', [pin, id]);
   }
 
   Future<int> updateUser(Map<String, dynamic> row) async {

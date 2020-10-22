@@ -4,6 +4,7 @@ import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
 import 'package:minhasconta/src/screens/home_screen1.dart';
+import 'package:minhasconta/src/screens/loading_screen.dart';
 import 'package:minhasconta/src/screens/login_screen1.dart';
 
 import 'controllers/home_controller.dart';
@@ -20,9 +21,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/',
       routes: {
-        '/': (context) => LoginScreen1(),
+        /* 
+        '/test': (context) => Testing(), */
+        '/': (context) => LoadingScreen(),
         '/login': (context) => LoginScreen1(),
         '/home': (context) => HomeScreen1(),
         '/categories': (context) => CategoriesScreen(),

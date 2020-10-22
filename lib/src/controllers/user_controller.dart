@@ -24,6 +24,8 @@ abstract class _UserControllerBase with Store {
   @observable
   int forgetStep;
   @observable
+  int pin;
+  @observable
   int step = 0;
   _UserControllerBase(
       {this.user,
@@ -39,6 +41,8 @@ abstract class _UserControllerBase with Store {
     return u != null;
   }
 
+  @action
+  changePin(int p) => pin = p;
   @action
   changeForgetScreen(bool v) => forgetSteps = v;
   @action
@@ -80,7 +84,9 @@ abstract class _UserControllerBase with Store {
 
   saveInfos() async {
     SharedPreferences s = await SharedPreferences.getInstance();
+    print(user.email);
     s.setString('email', user.email);
+    print(s.getString('email'));
     s.setString('password', user.password);
   }
 
@@ -90,12 +96,15 @@ abstract class _UserControllerBase with Store {
     s.setString('password', null);
   }
 
-  Future<bool> getInfosShared() async {
+  Future getInfosShared(BuildContext context) async {
     SharedPreferences s = await SharedPreferences.getInstance();
     String email = s.getString('email');
     String password = s.getString('password');
-    changeUser(UserModel(email: email, password: password));
-    return true;
+    print(email);
+    print(password);
+    user.changeEmail(email);
+    user.changePassword(password);
+    startLogIn(context);
   }
 
   @action
@@ -108,26 +117,35 @@ abstract class _UserControllerBase with Store {
         password == repeatPassword &&
         name != null) {
       final db = DatabaseHelper.instance;
-      int i = (await db.registerUser(
-          UserModel(email: email, name: name, password: password)));
-      if (i != null) {
+      int i = await db.registerUser(
+          UserModel(email: email, name: name, password: password));
+      if (i != null && i > 0) {
         changeUser(
             UserModel(email: email, password: password, name: name, id: i));
 
         saveInfos();
-        Navigator.pushReplacementNamed(context, '/home');
-        flushBar(
-                message: 'Você se registrou com sucesso',
-                title: 'Seja Bem vindo $name',
-                color: Colors.green)
-            .show(context);
+        return true;
       } else {
         flushBar(
-                title: 'Esse usuario ja existe no banco',
-                message: '',
-                color: Colors.red)
-            .show(context);
+          message: 'Esse usuario ja existe no banco',
+          color: Colors.red,
+        ).show(context);
+        return false;
       }
+    }
+  }
+
+  @action
+  addPin(BuildContext context) async {
+    final db = DatabaseHelper.instance;
+    int i = (await db.addPIN(pin, user.id));
+    if (i > 0) {
+      Navigator.pushReplacementNamed(context, '/home');
+      flushBar(
+              message: 'Você se registrou com sucesso',
+              title: 'Seja Bem vindo ${user.name}',
+              color: Colors.green)
+          .show(context);
     }
   }
 

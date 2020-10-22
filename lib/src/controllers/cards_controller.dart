@@ -8,6 +8,8 @@ abstract class _CardsControllerBase with Store {
   @observable
   CardModel card;
   @observable
+  CardModel newCard;
+  @observable
   bool cValidate;
   @observable
   bool cBestDate;
@@ -34,6 +36,10 @@ abstract class _CardsControllerBase with Store {
   changeCard(CardModel c) => card = c;
   @action
   changeScroll(double s) => scroll = s;
+  @action
+  addNewCard() => newCard = CardModel.emptyCard();
   @computed
   int get actualCard => cards.indexOf(card);
+  @computed
+  List get cForList => cards.toList()..add(null);
 }
