@@ -32,7 +32,9 @@ class AddNewPaymentWidget extends StatelessWidget {
                       ? step2()
                       : c.step == 3
                           ? step3()
-                          : c.step == 4 ? step4() : Container(),
+                          : c.step == 4
+                              ? step4()
+                              : Container(),
         ),
       ),
     );
@@ -78,7 +80,6 @@ class AddNewPaymentWidget extends StatelessWidget {
                   itemCount: cc.cards.length,
                   itemBuilder: (context, int index) => InkWell(
                       child: CardWidget(
-                        constraint: constraint,
                         card: cc.cards[index],
                       ),
                       onTap: () => c.selectCard(cc.cards[index].id))),

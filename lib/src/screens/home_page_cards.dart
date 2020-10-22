@@ -13,6 +13,8 @@ class HomePageCards extends StatefulWidget {
 }
 
 class _HomePageCardsState extends State<HomePageCards> {
+  bool showTxtEditingLimit = false;
+  TextEditingController limit = TextEditingController();
   ScrollController controller;
   final cc = GetIt.I.get<CardsController>();
   double v = 0;
@@ -26,7 +28,10 @@ class _HomePageCardsState extends State<HomePageCards> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      height: constraints.maxHeight * 0.3,
+                      height: constraints.maxHeight * 0.3 +
+                          (WidgetsBinding.instance.window.viewInsets.bottom *
+                              0.1),
+                      width: constraints.maxWidth,
                       child: LayoutBuilder(
                         builder: (context, constraint) => Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +45,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                         Theme.of(context).textTheme.headline6,
                                   ),
                                   constraint: constraint),
-                              cardsWidget(constraint)
+                              cardsWidget()
                             ]),
                       )),
                   Observer(
@@ -49,32 +54,27 @@ class _HomePageCardsState extends State<HomePageCards> {
                 ]));
   }
 
-  cardsWidget(BoxConstraints constraints) => Container(
-      height: constraints.maxHeight * 0.8,
-      width: constraints.maxWidth,
-      child: Observer(
-          builder: (_) => cc.cForList.length == 1
-              ? Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: constraints.maxWidth * 0.1),
-                  child:
-                      /* cc.newCard != null
-                      ? EditCardWidget(
-                          constraint: constraints,
-                        )
-                      : */
-                      CardWidget(
-                          constraint: constraints,
-                          card: cc.newCard != null ? cc.newCard : null,
-                          f: () => cc.addNewCard(),
-                          title: 'Novo cartão'))
-              : Stack(
-                  children: cc.cForList
-                      .map<Widget>(
-                          (e) => card(cc.cForList.indexOf(e), constraints, e))
-                      .toList()
-                      .reversed
-                      .toList())));
+  cardsWidget() => Expanded(
+        child: LayoutBuilder(
+            builder: (context, constraints) => Observer(
+                builder: (_) => cc.cForList.length == 1
+                    ? Container(
+                        width: constraints.maxWidth,
+                        margin: EdgeInsets.symmetric(
+                            vertical: constraints.maxHeight * 0.02,
+                            horizontal: constraints.maxWidth * 0.1),
+                        child: CardWidget(
+                            card: cc.newCard != null ? cc.newCard : null,
+                            f: () => cc.addNewCard(),
+                            title: 'Novo cartão'))
+                    : Stack(
+                        children: cc.cForList
+                            .map<Widget>((e) =>
+                                card(cc.cForList.indexOf(e), constraints, e))
+                            .toList()
+                            .reversed
+                            .toList()))),
+      );
   cardInfos() => Expanded(
       flex: 2,
       child: LayoutBuilder(
@@ -268,14 +268,104 @@ class _HomePageCardsState extends State<HomePageCards> {
                 margin(
                   t: 3,
                   r: 5,
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Nome do cartão'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: constraint.maxWidth * 0.6,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Nome do cartão'),
+                            ),
+                          ),
+                          Container(
+                            width: constraint.maxWidth * 0.2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Cor:'),
+                                InkWell(
+                                  onTap: () => null,
+                                  child: CircleAvatar(
+                                    backgroundColor: cc.newCard.color,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        children: [
+                          Flexible(
+                              child: TextField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Numero do cartão'),
+                          ))
+                        ],
+                      ),
+                      Divider(),
+                      Container(
+                        height: constraint.maxHeight * 0.13,
+                        width: constraint.maxWidth,
+                        child: Stack(
+                          children: [
+                            AnimatedPositioned(
+                                duration: Duration(milliseconds: 200),
+                                left: showTxtEditingLimit
+                                    ? -constraint.maxWidth
+                                    : 0,
+                                child: SizedBox(
+                                  width: constraint.maxWidth * 0.9,
+                                  child: ListTile(
+                                      onTap: () => setState(() =>
+                                          showTxtEditingLimit =
+                                              !showTxtEditingLimit),
+                                      title: Text(
+                                        'Limite',
+                                      ),
+                                      trailing: Text('R\$' +
+                                          (cc.newCard.limit
+                                              .toStringAsFixed(2)))),
+                                )),
+                            AnimatedPositioned(
+                                duration: Duration(milliseconds: 200),
+                                right: showTxtEditingLimit
+                                    ? 0
+                                    : -constraint.maxWidth,
+                                child: SizedBox(
+                                    width: constraint.maxWidth * 0.9,
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                            icon: Icon(Icons.arrow_back),
+                                            onPressed: () => setState(() =>
+                                                showTxtEditingLimit =
+                                                    !showTxtEditingLimit)),
+                                        Flexible(
+                                            child: TextField(
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              hintText: 'Limite'),
+                                        )),
+                                        IconButton(
+                                            icon: Icon(Icons.save),
+                                            onPressed: () {
+                                              setState(() {
+                                                cc.newCard.changeLimit(
+                                                    double.parse(limit.text));
+                                                showTxtEditingLimit = false;
+                                              });
+                                            })
+                                      ],
+                                    ))),
+                          ],
                         ),
                       )
                     ],
@@ -335,12 +425,8 @@ class _HomePageCardsState extends State<HomePageCards> {
             }
           }),
           child: card == null
-              ? CardWidget(
-                  constraint: constraint,
-                  title: 'Adicionar cartão',
-                  f: () => cc.addNewCard())
+              ? CardWidget(title: 'Adicionar cartão', f: () => cc.addNewCard())
               : CardWidget(
-                  constraint: constraint,
                   card: card,
                 ),
         ),
