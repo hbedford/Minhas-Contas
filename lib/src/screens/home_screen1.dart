@@ -53,12 +53,12 @@ class _HomeScreen1State extends State<HomeScreen1> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
+      /* appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         centerTitle: true,
         title: Text('Dashboard', style: TextStyle(color: Colors.grey[400])),
-      ),
+      ), */
       body: LayoutBuilder(
         builder: (context, constraint) => Stack(children: [
           _page == 0 ? HomePageCards() : ProjectsScreen1(),

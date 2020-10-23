@@ -30,7 +30,7 @@ class DatabaseHelper {
     await db.execute(
         "CREATE TABLE subcategories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,category_id INTEGER, FOREIGN KEY(category_id)REFERENCES categories);");
     await db.execute(
-        " CREATE TABLE creditcards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users);");
+        "CREATE TABLE cards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER,number TEXT,color TEXT NOT NULL,limitcard REAL, FOREIGN KEY(user_id) REFERENCES users);");
   }
 
   Future<int> registerUser(UserModel user) async {

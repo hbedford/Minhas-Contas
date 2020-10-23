@@ -40,6 +40,8 @@ abstract class _CardModelBase with Store {
   bool active = false;
   @observable
   bool optionsActive;
+  @observable
+  bool show;
 
   @observable
   ObservableList payments = [].asObservable();
@@ -50,11 +52,18 @@ abstract class _CardModelBase with Store {
       this.payments,
       this.active = false,
       this.optionsActive = false,
+      this.show = false,
       this.number = "0000000000000000"});
+
+  // ignore: unused_element
+  _CardModelBase.addNew()
+      : this.color = Colors.white,
+        this.show = false;
   _CardModelBase.emptyCard()
       : this.name = '',
         this.color = Color(0xFF222059),
-        this.number = "1234567891234567";
+        this.show = false,
+        this.number = "0000000000000000";
   @action
   changeName(String n) => name = n;
   @action
@@ -67,6 +76,8 @@ abstract class _CardModelBase with Store {
   changeValidate(DateTime v) => validate = v;
   @action
   changeDueDate(DateTime d) => dueDate = d;
+  @action
+  changeShow(bool s) => show = s;
   @action
   changeLast4Digits(int l) => last4Digits = l;
   @action
@@ -139,12 +150,22 @@ abstract class _CardModelBase with Store {
   @computed
   String get number01 => number.substring(0, 4) ?? '0000';
   @computed
-  String get number02 => number.toString().substring(4, 7) ?? '0000';
+  String get number02 => number.toString().substring(4, 8) ?? '0000';
   @computed
   String get number03 => number.toString().substring(8, 12) ?? '0000';
   @computed
-  String get number04 => number.toString().substring(13, 16) ?? '0000';
-
+  String get number04 => number.toString().substring(12, 16) ?? '0000';
+  @computed
+  bool get isValidName => name != null && name.length > 0;
+  @computed
+  bool get isValidNumber => number != null && number.length == 16;
+  @computed
+  bool get isValidColor => color != null;
+  @computed
+  bool get isValidLimit => limit != null && limit > 0;
+  @computed
+  bool get isAllValid =>
+      isValidName && isValidNumber && isValidColor && isValidLimit;
   /* @computed
   List<CategoryModel> get orderByCategory {
     List<CategoryModel> list = [];

@@ -250,6 +250,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                         ],
                       )),
                   textField(
+                      obscure: true,
                       controller: password,
                       constraints: constraints,
                       title: 'Senha'),
@@ -302,6 +303,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
             color: Theme.of(context).primaryColor.withOpacity(v ? 1.0 : 0.2)),
       ));
   textField({
+    bool obscure = false,
     TextEditingController controller,
     BoxConstraints constraints,
     String title,
@@ -319,6 +321,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
             Container(
               height: constraints.maxHeight * 0.13,
               child: TextField(
+                  obscureText: obscure,
                   controller: controller,
                   decoration: InputDecoration(
                     border: new OutlineInputBorder(
@@ -361,8 +364,12 @@ class _LoginScreen1State extends State<LoginScreen1> {
             textField(
                 controller: email, title: 'E-mail', constraints: constraint),
             textField(
-                controller: password, title: 'Senha', constraints: constraint),
+                obscure: true,
+                controller: password,
+                title: 'Senha',
+                constraints: constraint),
             textField(
+                obscure: true,
                 controller: repeatPassword,
                 title: 'Confirmar senha',
                 constraints: constraint),

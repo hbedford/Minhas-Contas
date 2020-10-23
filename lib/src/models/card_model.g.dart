@@ -72,6 +72,41 @@ mixin _$CardModel on _CardModelBase, Store {
       (_$number04Computed ??= Computed<String>(() => super.number04,
               name: '_CardModelBase.number04'))
           .value;
+  Computed<bool> _$isValidNameComputed;
+
+  @override
+  bool get isValidName =>
+      (_$isValidNameComputed ??= Computed<bool>(() => super.isValidName,
+              name: '_CardModelBase.isValidName'))
+          .value;
+  Computed<bool> _$isValidNumberComputed;
+
+  @override
+  bool get isValidNumber =>
+      (_$isValidNumberComputed ??= Computed<bool>(() => super.isValidNumber,
+              name: '_CardModelBase.isValidNumber'))
+          .value;
+  Computed<bool> _$isValidColorComputed;
+
+  @override
+  bool get isValidColor =>
+      (_$isValidColorComputed ??= Computed<bool>(() => super.isValidColor,
+              name: '_CardModelBase.isValidColor'))
+          .value;
+  Computed<bool> _$isValidLimitComputed;
+
+  @override
+  bool get isValidLimit =>
+      (_$isValidLimitComputed ??= Computed<bool>(() => super.isValidLimit,
+              name: '_CardModelBase.isValidLimit'))
+          .value;
+  Computed<bool> _$isAllValidComputed;
+
+  @override
+  bool get isAllValid =>
+      (_$isAllValidComputed ??= Computed<bool>(() => super.isAllValid,
+              name: '_CardModelBase.isAllValid'))
+          .value;
   Computed<List<dynamic>> _$pSortedPaymentsComputed;
 
   @override
@@ -304,6 +339,21 @@ mixin _$CardModel on _CardModelBase, Store {
     });
   }
 
+  final _$showAtom = Atom(name: '_CardModelBase.show');
+
+  @override
+  bool get show {
+    _$showAtom.reportRead();
+    return super.show;
+  }
+
+  @override
+  set show(bool value) {
+    _$showAtom.reportWrite(value, super.show, () {
+      super.show = value;
+    });
+  }
+
   final _$paymentsAtom = Atom(name: '_CardModelBase.payments');
 
   @override
@@ -383,6 +433,17 @@ mixin _$CardModel on _CardModelBase, Store {
         name: '_CardModelBase.changeDueDate');
     try {
       return super.changeDueDate(d);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeShow(bool s) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeShow');
+    try {
+      return super.changeShow(s);
     } finally {
       _$_CardModelBaseActionController.endAction(_$actionInfo);
     }
@@ -493,6 +554,7 @@ type: ${type},
 bestDateToPay: ${bestDateToPay},
 active: ${active},
 optionsActive: ${optionsActive},
+show: ${show},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
 actualTotalLimit: ${actualTotalLimit},
@@ -503,6 +565,11 @@ number01: ${number01},
 number02: ${number02},
 number03: ${number03},
 number04: ${number04},
+isValidName: ${isValidName},
+isValidNumber: ${isValidNumber},
+isValidColor: ${isValidColor},
+isValidLimit: ${isValidLimit},
+isAllValid: ${isAllValid},
 pSortedPayments: ${pSortedPayments},
 paymentsPerDate: ${paymentsPerDate},
 amountPaymentsThisMonth: ${amountPaymentsThisMonth}

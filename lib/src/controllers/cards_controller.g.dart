@@ -23,6 +23,13 @@ mixin _$CardsController on _CardsControllerBase, Store {
       (_$cForListComputed ??= Computed<List<dynamic>>(() => super.cForList,
               name: '_CardsControllerBase.cForList'))
           .value;
+  Computed<bool> _$editCardScrolledComputed;
+
+  @override
+  bool get editCardScrolled => (_$editCardScrolledComputed ??= Computed<bool>(
+          () => super.editCardScrolled,
+          name: '_CardsControllerBase.editCardScrolled'))
+      .value;
 
   final _$cardAtom = Atom(name: '_CardsControllerBase.card');
 
@@ -39,18 +46,18 @@ mixin _$CardsController on _CardsControllerBase, Store {
     });
   }
 
-  final _$newCardAtom = Atom(name: '_CardsControllerBase.newCard');
+  final _$editCardAtom = Atom(name: '_CardsControllerBase.editCard');
 
   @override
-  CardModel get newCard {
-    _$newCardAtom.reportRead();
-    return super.newCard;
+  CardModel get editCard {
+    _$editCardAtom.reportRead();
+    return super.editCard;
   }
 
   @override
-  set newCard(CardModel value) {
-    _$newCardAtom.reportWrite(value, super.newCard, () {
-      super.newCard = value;
+  set editCard(CardModel value) {
+    _$editCardAtom.reportWrite(value, super.editCard, () {
+      super.editCard = value;
     });
   }
 
@@ -96,6 +103,22 @@ mixin _$CardsController on _CardsControllerBase, Store {
   set cLimit(bool value) {
     _$cLimitAtom.reportWrite(value, super.cLimit, () {
       super.cLimit = value;
+    });
+  }
+
+  final _$scrollEditCardAtom =
+      Atom(name: '_CardsControllerBase.scrollEditCard');
+
+  @override
+  ScrollController get scrollEditCard {
+    _$scrollEditCardAtom.reportRead();
+    return super.scrollEditCard;
+  }
+
+  @override
+  set scrollEditCard(ScrollController value) {
+    _$scrollEditCardAtom.reportWrite(value, super.scrollEditCard, () {
+      super.scrollEditCard = value;
     });
   }
 
@@ -199,17 +222,30 @@ mixin _$CardsController on _CardsControllerBase, Store {
   }
 
   @override
+  dynamic saveCard(BuildContext context) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.saveCard');
+    try {
+      return super.saveCard(context);
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 card: ${card},
-newCard: ${newCard},
+editCard: ${editCard},
 cValidate: ${cValidate},
 cBestDate: ${cBestDate},
 cLimit: ${cLimit},
+scrollEditCard: ${scrollEditCard},
 cards: ${cards},
 scroll: ${scroll},
 actualCard: ${actualCard},
-cForList: ${cForList}
+cForList: ${cForList},
+editCardScrolled: ${editCardScrolled}
     ''';
   }
 }

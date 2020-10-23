@@ -5,7 +5,7 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
-import 'package:minhasconta/src/widgets/selectcolor_widget.dart';
+import 'package:minhasconta/src/widgets/editcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomePageCards extends StatefulWidget {
@@ -14,72 +14,101 @@ class HomePageCards extends StatefulWidget {
 }
 
 class _HomePageCardsState extends State<HomePageCards> {
-  bool showTxtEditingLimit = false;
-  TextEditingController limit = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController number = TextEditingController();
   ScrollController controller;
   final cc = GetIt.I.get<CardsController>();
   double v = 0;
   double size = 0;
   double pointer = 0;
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (context, constraints) => Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      height: constraints.maxHeight * 0.3 +
-                          (WidgetsBinding.instance.window.viewInsets.bottom *
-                              0.1),
-                      width: constraints.maxWidth,
-                      child: LayoutBuilder(
-                        builder: (context, constraint) => Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              margin(
-                                  t: 0,
-                                  child: Text(
-                                    'Meus cartões',
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  ),
-                                  constraint: constraint),
-                              cardsWidget()
-                            ]),
-                      )),
-                  Observer(
-                      builder: (_) =>
-                          cc.newCard != null ? newCardWidget() : cardInfos()),
-                ]));
-  }
+  Widget build(BuildContext context) => SafeArea(
+        child: LayoutBuilder(
+            builder: (context, constraints) => Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        child: Center(
+                          child: Text(
+                            'DASHBOARD',
+                            style: TextStyle(
+                                color: Colors.grey[400],
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        height:
+                            WidgetsBinding.instance.window.viewInsets.bottom ==
+                                    0
+                                ? constraints.maxHeight * 0.08
+                                : 0,
+                      ),
+                      Container(
+                          height: constraints.maxHeight * 0.3 +
+                              (WidgetsBinding
+                                      .instance.window.viewInsets.bottom *
+                                  0.1),
+                          width: constraints.maxWidth,
+                          child: LayoutBuilder(
+                              builder: (context, constraint) => Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AnimatedContainer(
+                                          height: WidgetsBinding.instance.window
+                                                      .viewInsets.bottom ==
+                                                  0
+                                              ? null
+                                              : 0,
+                                          duration: Duration(milliseconds: 200),
+                                          child: margin(
+                                              t: 0,
+                                              child: Text(
+                                                cc.editCard == null
+                                                    ? 'Meus cartões'
+                                                    : 'Editar cartão',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline6,
+                                              ),
+                                              constraint: constraint),
+                                        ),
+                                        cardsWidget()
+                                      ]))),
+                      Observer(
+                          builder: (_) => cc.editCard != null
+                              ? EditCardWidget()
+                              : cardInfos())
+                    ])),
+      );
 
   cardsWidget() => Expanded(
-        child: LayoutBuilder(
-            builder: (context, constraints) => Observer(
-                builder: (_) => cc.cForList.length == 1
-                    ? Container(
-                        width: constraints.maxWidth,
-                        margin: EdgeInsets.symmetric(
-                            vertical: constraints.maxHeight * 0.02,
-                            horizontal: constraints.maxWidth * 0.1),
-                        child: Observer(
-                          builder: (_) => CardWidget(
-                              card: cc.newCard != null ? cc.newCard : null,
-                              f: () => cc.addNewCard(),
-                              title: 'Novo cartão'),
-                        ))
-                    : Stack(
-                        children: cc.cForList
-                            .map<Widget>((e) =>
-                                card(cc.cForList.indexOf(e), constraints, e))
-                            .toList()
-                            .reversed
-                            .toList()))),
-      );
+      child: LayoutBuilder(
+          builder: (context, constraints) => Observer(
+              builder: (_) => cc.cForList.length == 1
+                  ? Container(
+                      width: constraints.maxWidth,
+                      margin: EdgeInsets.symmetric(
+                          vertical: constraints.maxHeight * 0.02,
+                          horizontal: constraints.maxWidth * 0.1),
+                      child: Observer(
+                        builder: (_) => CardWidget(
+                          card: cc.editCard != null
+                              ? cc.editCard
+                              : cc.cForList.first,
+                          f: () => cc.addNewCard(),
+                          title: 'Novo cartão',
+                          editing: true,
+                        ),
+                      ))
+                  : Stack(
+                      children: cc.cForList
+                          .map<Widget>((e) =>
+                              card(cc.cForList.indexOf(e), constraints, e))
+                          .toList()
+                          .reversed
+                          .toList()))));
   cardInfos() => Expanded(
       flex: 2,
       child: LayoutBuilder(
@@ -182,30 +211,24 @@ class _HomePageCardsState extends State<HomePageCards> {
                             enable: cc.card == null,
                             bColor: Colors.grey,
                             child: Container(
-                              height: constraint.maxHeight * 0.01,
-                              width: constraint.maxWidth * 0.8,
-                            ))
+                                height: constraint.maxHeight * 0.01,
+                                width: constraint.maxWidth * 0.8))
                         : Container(
-                            child: Stack(
-                            children: [
-                              Container(
+                            child: Stack(children: [
+                            Container(
                                 height: constraint.maxHeight * 0.01,
                                 width: constraint.maxWidth * 0.8,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Container(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white)),
+                            Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.green,
                                 ),
                                 height: constraint.maxHeight * 0.01,
-                                width: constraint.maxWidth * 0.4,
-                              ),
-                            ],
-                          )),
+                                width: constraint.maxWidth * 0.4)
+                          ])),
                     constraint: constraint),
                 margin(
                     t: 6,
@@ -225,28 +248,23 @@ class _HomePageCardsState extends State<HomePageCards> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
-                                        flex: 4,
-                                        child: Row(
-                                          children: [
+                                          flex: 4,
+                                          child: Row(children: [
                                             loadContainer(
                                                 child: Text(
                                                   'VXCase Digital LTDA.',
                                                 ),
                                                 enable: cc.card == null,
-                                                bColor: Colors.grey[700]),
-                                          ],
-                                        ),
-                                      ),
+                                                bColor: Colors.grey[700])
+                                          ])),
                                       Flexible(
                                           flex: 2,
-                                          child: Row(
-                                            children: [
-                                              loadContainer(
-                                                  child: Text('Credito'),
-                                                  enable: cc.card == null,
-                                                  bColor: Colors.grey),
-                                            ],
-                                          )),
+                                          child: Row(children: [
+                                            loadContainer(
+                                                child: Text('Credito'),
+                                                enable: cc.card == null,
+                                                bColor: Colors.grey)
+                                          ])),
                                       Flexible(
                                           flex: 2,
                                           child: Observer(
@@ -260,132 +278,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                     ])))),
                     constraint: constraint)
               ])));
-  newCardWidget() => Expanded(
-      flex: 2,
-      child: LayoutBuilder(
-          builder: (context, constraint) =>
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                margin(
-                    t: 3,
-                    child: Text('Informações',
-                        style: Theme.of(context).textTheme.subtitle1),
-                    constraint: constraint),
-                margin(
-                  t: 3,
-                  r: 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: constraint.maxWidth * 0.6,
-                            child: TextField(
-                              controller: name,
-                              onChanged: (v) => cc.newCard.changeName(v),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Nome do cartão'),
-                            ),
-                          ),
-                          Container(
-                            width: constraint.maxWidth * 0.2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Cor:'),
-                                InkWell(
-                                  onTap: () => SelectColor().showDialogColor(
-                                      context,
-                                      (v) => cc.newCard.changeColor(v)),
-                                  child: CircleAvatar(
-                                    backgroundColor: cc.newCard.color,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Flexible(
-                              child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Numero do cartão'),
-                          ))
-                        ],
-                      ),
-                      Divider(),
-                      Container(
-                        height: constraint.maxHeight * 0.13,
-                        width: constraint.maxWidth,
-                        child: Stack(
-                          children: [
-                            AnimatedPositioned(
-                                duration: Duration(milliseconds: 200),
-                                left: showTxtEditingLimit
-                                    ? -constraint.maxWidth
-                                    : 0,
-                                child: SizedBox(
-                                  width: constraint.maxWidth * 0.9,
-                                  child: ListTile(
-                                      onTap: () => setState(() =>
-                                          showTxtEditingLimit =
-                                              !showTxtEditingLimit),
-                                      title: Text(
-                                        'Limite',
-                                      ),
-                                      trailing: Text('R\$' +
-                                          (cc.newCard.limit
-                                              .toStringAsFixed(2)))),
-                                )),
-                            AnimatedPositioned(
-                                duration: Duration(milliseconds: 200),
-                                right: showTxtEditingLimit
-                                    ? 0
-                                    : -constraint.maxWidth,
-                                child: SizedBox(
-                                    width: constraint.maxWidth * 0.9,
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                            child: TextField(
-                                          decoration: InputDecoration(
-                                              suffixIcon: IconButton(
-                                                  icon: Icon(Icons.save),
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      cc.newCard.changeLimit(
-                                                          double.parse(
-                                                              limit.text));
-                                                      showTxtEditingLimit =
-                                                          false;
-                                                    });
-                                                  }),
-                                              prefixIcon: IconButton(
-                                                  icon: Icon(Icons.arrow_back,
-                                                      color: Colors.blue),
-                                                  onPressed: () => setState(() =>
-                                                      showTxtEditingLimit =
-                                                          !showTxtEditingLimit)),
-                                              border: OutlineInputBorder(),
-                                              hintText: 'Limite'),
-                                        )),
-                                      ],
-                                    ))),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  constraint: constraint,
-                ),
-                Divider(),
-              ])));
+
   card(int index, BoxConstraints constraint, CardModel card) {
     double w = constraint.maxWidth;
     double result;
@@ -438,18 +331,16 @@ class _HomePageCardsState extends State<HomePageCards> {
           }),
           child: card == null
               ? CardWidget(title: 'Adicionar cartão', f: () => cc.addNewCard())
-              : CardWidget(
-                  card: card,
-                ),
+              : CardWidget(card: card),
         ),
         left: !type ? result : null,
         right: type ? result : null);
   }
 
   loadContainer({Color bColor, bool enable = false, Widget child}) => Container(
-        /* height: h, */
-        /* width: w, */
-        child: Shimmer.fromColors(
+      /* height: h, */
+      /* width: w, */
+      child: Shimmer.fromColors(
           baseColor: bColor,
           highlightColor: bColor.withOpacity(0.8),
           child: Container(
@@ -457,9 +348,7 @@ class _HomePageCardsState extends State<HomePageCards> {
             child: child,
           ),
           enabled: enable,
-          direction: ShimmerDirection.ltr,
-        ),
-      );
+          direction: ShimmerDirection.ltr));
   margin(
           {double t = 0,
           double l,
@@ -467,12 +356,11 @@ class _HomePageCardsState extends State<HomePageCards> {
           Widget child,
           BoxConstraints constraint}) =>
       Container(
-        margin: EdgeInsets.only(
-            right: (r / 100) * constraint.maxWidth ?? 0,
-            left: l == null
-                ? constraint.maxWidth * 0.05
-                : constraint.maxWidth * (l / 100),
-            top: constraint.maxHeight * (t / 100)),
-        child: child,
-      );
+          margin: EdgeInsets.only(
+              right: (r / 100) * constraint.maxWidth ?? 0,
+              left: l == null
+                  ? constraint.maxWidth * 0.05
+                  : constraint.maxWidth * (l / 100),
+              top: constraint.maxHeight * (t / 100)),
+          child: child);
 }

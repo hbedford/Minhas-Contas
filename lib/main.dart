@@ -10,13 +10,14 @@ import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
 
 import 'src/app.dart';
-import 'src/controllers/card_controller.dart';
+/* 
+import 'src/controllers/card_controller.dart'; */
 import 'src/controllers/user_controller.dart';
 
 void main() async {
   GetIt getIt = GetIt.instance;
   getIt.registerSingleton<HomeController>(HomeController());
-  getIt.registerSingleton<CardController>(CardController());
+  /*  getIt.registerSingleton<CardController>(CardController()); */
   getIt.registerSingleton<UserController>(UserController(user: UserModel()));
   getIt.registerSingleton<CategoryController>(
       CategoryController(categories: [].asObservable()));

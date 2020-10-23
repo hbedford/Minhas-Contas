@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/screens/categories_screen.dart';
-import 'package:minhasconta/src/screens/creditcard_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
 import 'package:minhasconta/src/screens/home_screen1.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
@@ -29,7 +28,7 @@ class App extends StatelessWidget {
         '/login': (context) => LoginScreen1(),
         '/home': (context) => HomeScreen1(),
         '/categories': (context) => CategoriesScreen(),
-        '/card': (context) => CreditCardScreen(),
+        /* '/card': (context) => CreditCardScreen(), */
         '/cards': (context) => CreditCardsScreen(),
       },
       /* home: LoginScreen(), */
@@ -52,9 +51,13 @@ class App extends StatelessWidget {
             headline6: TextStyle(
                 color: menuPurple, fontWeight: FontWeight.w700, fontSize: 18),
             button: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w900)),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+            headline2: TextStyle(
+                color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+            headline3: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            )),
         primaryTextTheme: TextTheme(
             headline6: TextStyle(color: menuPurple),
             button: TextStyle(

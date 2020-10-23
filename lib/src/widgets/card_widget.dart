@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 
 class CardWidget extends StatelessWidget {
   final CardModel card;
   final Function f;
   final String title;
-  CardWidget({this.card, this.f, this.title});
+  final bool editing;
+  CardWidget({this.card, this.f, this.title, this.editing = false});
+  final c = GetIt.I.get<CardsController>();
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) => Observer(
-          builder: (_) => AnimatedContainer(
-            duration: Duration(milliseconds: 200),
+          builder: (context) => Container(
             padding: EdgeInsets.symmetric(
                 vertical: constraints.maxHeight * 0.05,
                 horizontal: constraints.maxWidth * 0.05),
@@ -19,9 +22,8 @@ class CardWidget extends StatelessWidget {
                 horizontal: constraints.maxWidth * 0.01,
                 vertical: constraints.maxHeight * 0.07),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: card == null ? Colors.white : card.color),
-            child: card == null
+                borderRadius: BorderRadius.circular(20), color: card.color),
+            child: card.name == null
                 ? InkWell(
                     onTap: f,
                     child: Column(
@@ -40,46 +42,79 @@ class CardWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Observer(
-                                builder: (_) => Text(card.name,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w800)),
-                              ),
+                                  builder: (_) => Text(
+                                      card.name.isEmpty ? 'Nome' : card.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline2)),
                               IconButton(
-                                  icon: Icon(Icons.settings), onPressed: null)
+                                  color: Colors.white,
+                                  icon: editing
+                                      ? Icon(Icons.save)
+                                      : Icon(Icons.settings),
+                                  onPressed: () => editing
+                                      ? c.saveCard(context)
+                                      : c.changeCard(card))
                             ]),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [Text('debito'), Text('credito')]),
+                            children: [
+                              Text(
+                                'debito',
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
+                              Text(
+                                'credito',
+                                style: Theme.of(context).textTheme.headline3,
+                              )
+                            ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Observer(
                               builder: (_) => Container(
-                                color: Colors.white,
-                                child: Text(card.number.substring(6, 10)),
+                                color: card.show ? null : Colors.white,
+                                child: Text(
+                                  card.number01,
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
                               ),
                             ),
                             Observer(
                               builder: (_) => Container(
-                                color: Colors.white,
-                                child: Text(card.number02),
+                                color: card.show ? null : Colors.white,
+                                child: Text(
+                                  card.number02,
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
                               ),
                             ),
                             Observer(
                               builder: (_) => Container(
-                                color: Colors.white,
-                                child: Text(card.number03),
+                                color: card.show ? null : Colors.white,
+                                child: Text(
+                                  card.number03,
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
                               ),
                             ),
                             Observer(
                               builder: (_) => Container(
-                                color: Colors.white,
-                                child: Text(card.number04),
+                                color: card.show ? null : Colors.white,
+                                child: Text(
+                                  card.number04,
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
                               ),
                             ),
-                            Icon(Icons.visibility)
+                            Observer(
+                              builder: (_) => IconButton(
+                                  color: Colors.white,
+                                  icon: Icon(card.show
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () => card.changeShow(!card.show)),
+                            )
                           ],
                         ),
                       ]),
