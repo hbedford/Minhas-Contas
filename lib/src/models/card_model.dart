@@ -17,7 +17,7 @@ abstract class _CardModelBase with Store {
   @observable
   String name;
   @observable
-  int number;
+  String number;
   @observable
   Color color;
   @observable
@@ -49,14 +49,16 @@ abstract class _CardModelBase with Store {
       this.color = Colors.white,
       this.payments,
       this.active = false,
-      this.optionsActive = false});
+      this.optionsActive = false,
+      this.number = "0000000000000000"});
   _CardModelBase.emptyCard()
       : this.name = '',
-        this.color = Color(0xFF222059);
+        this.color = Color(0xFF222059),
+        this.number = "1234567891234567";
   @action
   changeName(String n) => name = n;
   @action
-  changeNumber(int n) => number = n;
+  changeNumber(String n) => number = n;
   @action
   changeColor(Color c) => color = c;
   @action
@@ -135,13 +137,13 @@ abstract class _CardModelBase with Store {
   }
 
   @computed
-  String get number01 => number.toString().substring(0, 3) ?? '0000';
+  String get number01 => number.substring(0, 4) ?? '0000';
   @computed
-  String get number02 => number.toString().substring(4, 8) ?? '0000';
+  String get number02 => number.toString().substring(4, 7) ?? '0000';
   @computed
-  String get number03 => number.toString().substring(9, 13) ?? '0000';
+  String get number03 => number.toString().substring(8, 12) ?? '0000';
   @computed
-  String get number04 => number.toString().substring(14, 18) ?? '0000';
+  String get number04 => number.toString().substring(13, 16) ?? '0000';
 
   /* @computed
   List<CategoryModel> get orderByCategory {

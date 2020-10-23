@@ -55,29 +55,29 @@ class CardWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              height: 10,
-                              width: 30,
-                              color: Colors.white,
-                              child: Text(card.number01),
+                            Observer(
+                              builder: (_) => Container(
+                                color: Colors.white,
+                                child: Text(card.number.substring(6, 10)),
+                              ),
                             ),
-                            Container(
-                              height: 10,
-                              width: 30,
-                              color: Colors.white,
-                              child: Text(card.number02),
+                            Observer(
+                              builder: (_) => Container(
+                                color: Colors.white,
+                                child: Text(card.number02),
+                              ),
                             ),
-                            Container(
-                              height: 10,
-                              width: 30,
-                              color: Colors.white,
-                              child: Text(card.number03),
+                            Observer(
+                              builder: (_) => Container(
+                                color: Colors.white,
+                                child: Text(card.number03),
+                              ),
                             ),
-                            Container(
-                              height: 10,
-                              width: 30,
-                              color: Colors.white,
-                              child: Text(card.number04),
+                            Observer(
+                              builder: (_) => Container(
+                                color: Colors.white,
+                                child: Text(card.number04),
+                              ),
                             ),
                             Icon(Icons.visibility)
                           ],

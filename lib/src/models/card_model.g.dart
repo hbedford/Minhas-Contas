@@ -127,13 +127,13 @@ mixin _$CardModel on _CardModelBase, Store {
   final _$numberAtom = Atom(name: '_CardModelBase.number');
 
   @override
-  int get number {
+  String get number {
     _$numberAtom.reportRead();
     return super.number;
   }
 
   @override
-  set number(int value) {
+  set number(String value) {
     _$numberAtom.reportWrite(value, super.number, () {
       super.number = value;
     });
@@ -334,7 +334,7 @@ mixin _$CardModel on _CardModelBase, Store {
   }
 
   @override
-  dynamic changeNumber(int n) {
+  dynamic changeNumber(String n) {
     final _$actionInfo = _$_CardModelBaseActionController.startAction(
         name: '_CardModelBase.changeNumber');
     try {

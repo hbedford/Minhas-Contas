@@ -129,8 +129,7 @@ class PinFieldState extends State<PinField> {
         onChanged: (String str) {
           setState(() {
             _pin[i] = str;
-
-            c.changePin(int.parse(_pin[0] + _pin[1] + _pin[2] + _pin[3]));
+            // c.changePin(int.parse(_pin[0] + _pin[1] + _pin[2] + _pin[3]));
           });
           if (i + 1 != widget.fields) {
             _focusNodes[i].unfocus();

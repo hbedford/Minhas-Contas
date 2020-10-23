@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -28,7 +30,7 @@ class CurvedNavigationBar extends StatefulWidget {
   })  : assert(items != null),
         assert(items.length >= 1),
         assert(0 <= index && index < items.length),
-        assert(0 <= height && height <= 75.0),
+        assert(0 <= height /*&& height <= 75.0*/),
         super(key: key);
 
   @override
@@ -101,8 +103,12 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                                     margin: EdgeInsets.only(
                                         bottom: widget.items.indexOf(item) ==
                                                 widget.index
-                                            ? 20
-                                            : 0),
+                                            ? Platform.isIOS
+                                                ? 25
+                                                : 20
+                                            : Platform.isIOS
+                                                ? 15
+                                                : 0),
                                     child: CircleAvatar(
                                       backgroundColor: widget.backgroundColor,
                                       child: Center(child: item),

@@ -88,7 +88,9 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         Text('A'),
                         Text('A')
                       ],
-                      height: constraint.maxHeight * 0.1,
+                      height: Platform.isIOS
+                          ? constraint.maxHeight * 0.12
+                          : constraint.maxHeight * 0.1,
                     ),
                   ),
                 ),
