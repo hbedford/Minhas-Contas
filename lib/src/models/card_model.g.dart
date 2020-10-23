@@ -44,6 +44,34 @@ mixin _$CardModel on _CardModelBase, Store {
           Computed<List<CategoryModel>>(() => super.orderByCategory,
               name: '_CardModelBase.orderByCategory'))
       .value;
+  Computed<String> _$number01Computed;
+
+  @override
+  String get number01 =>
+      (_$number01Computed ??= Computed<String>(() => super.number01,
+              name: '_CardModelBase.number01'))
+          .value;
+  Computed<String> _$number02Computed;
+
+  @override
+  String get number02 =>
+      (_$number02Computed ??= Computed<String>(() => super.number02,
+              name: '_CardModelBase.number02'))
+          .value;
+  Computed<String> _$number03Computed;
+
+  @override
+  String get number03 =>
+      (_$number03Computed ??= Computed<String>(() => super.number03,
+              name: '_CardModelBase.number03'))
+          .value;
+  Computed<String> _$number04Computed;
+
+  @override
+  String get number04 =>
+      (_$number04Computed ??= Computed<String>(() => super.number04,
+              name: '_CardModelBase.number04'))
+          .value;
   Computed<List<dynamic>> _$pSortedPaymentsComputed;
 
   @override
@@ -93,6 +121,21 @@ mixin _$CardModel on _CardModelBase, Store {
   set name(String value) {
     _$nameAtom.reportWrite(value, super.name, () {
       super.name = value;
+    });
+  }
+
+  final _$numberAtom = Atom(name: '_CardModelBase.number');
+
+  @override
+  int get number {
+    _$numberAtom.reportRead();
+    return super.number;
+  }
+
+  @override
+  set number(int value) {
+    _$numberAtom.reportWrite(value, super.number, () {
+      super.number = value;
     });
   }
 
@@ -291,6 +334,17 @@ mixin _$CardModel on _CardModelBase, Store {
   }
 
   @override
+  dynamic changeNumber(int n) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeNumber');
+    try {
+      return super.changeNumber(n);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeColor(Color c) {
     final _$actionInfo = _$_CardModelBaseActionController.startAction(
         name: '_CardModelBase.changeColor');
@@ -427,6 +481,7 @@ mixin _$CardModel on _CardModelBase, Store {
     return '''
 id: ${id},
 name: ${name},
+number: ${number},
 color: ${color},
 limit: ${limit},
 validate: ${validate},
@@ -444,6 +499,10 @@ actualTotalLimit: ${actualTotalLimit},
 totalThisMonth: ${totalThisMonth},
 pThisMonth: ${pThisMonth},
 orderByCategory: ${orderByCategory},
+number01: ${number01},
+number02: ${number02},
+number03: ${number03},
+number04: ${number04},
 pSortedPayments: ${pSortedPayments},
 paymentsPerDate: ${paymentsPerDate},
 amountPaymentsThisMonth: ${amountPaymentsThisMonth}

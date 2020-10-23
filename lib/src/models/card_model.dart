@@ -17,6 +17,8 @@ abstract class _CardModelBase with Store {
   @observable
   String name;
   @observable
+  int number;
+  @observable
   Color color;
   @observable
   double limit = 0;
@@ -53,6 +55,8 @@ abstract class _CardModelBase with Store {
         this.color = Color(0xFF222059);
   @action
   changeName(String n) => name = n;
+  @action
+  changeNumber(int n) => number = n;
   @action
   changeColor(Color c) => color = c;
   @action
@@ -129,6 +133,15 @@ abstract class _CardModelBase with Store {
     }
     return list;
   }
+
+  @computed
+  String get number01 => number.toString().substring(0, 3) ?? '0000';
+  @computed
+  String get number02 => number.toString().substring(4, 8) ?? '0000';
+  @computed
+  String get number03 => number.toString().substring(9, 13) ?? '0000';
+  @computed
+  String get number04 => number.toString().substring(14, 18) ?? '0000';
 
   /* @computed
   List<CategoryModel> get orderByCategory {

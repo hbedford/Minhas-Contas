@@ -5,6 +5,7 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
+import 'package:minhasconta/src/widgets/selectcolor_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomePageCards extends StatefulWidget {
@@ -15,6 +16,8 @@ class HomePageCards extends StatefulWidget {
 class _HomePageCardsState extends State<HomePageCards> {
   bool showTxtEditingLimit = false;
   TextEditingController limit = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController number = TextEditingController();
   ScrollController controller;
   final cc = GetIt.I.get<CardsController>();
   double v = 0;
@@ -63,10 +66,12 @@ class _HomePageCardsState extends State<HomePageCards> {
                         margin: EdgeInsets.symmetric(
                             vertical: constraints.maxHeight * 0.02,
                             horizontal: constraints.maxWidth * 0.1),
-                        child: CardWidget(
-                            card: cc.newCard != null ? cc.newCard : null,
-                            f: () => cc.addNewCard(),
-                            title: 'Novo cartão'))
+                        child: Observer(
+                          builder: (_) => CardWidget(
+                              card: cc.newCard != null ? cc.newCard : null,
+                              f: () => cc.addNewCard(),
+                              title: 'Novo cartão'),
+                        ))
                     : Stack(
                         children: cc.cForList
                             .map<Widget>((e) =>
@@ -277,6 +282,8 @@ class _HomePageCardsState extends State<HomePageCards> {
                           Container(
                             width: constraint.maxWidth * 0.6,
                             child: TextField(
+                              controller: name,
+                              onChanged: (v) => cc.newCard.changeName(v),
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Nome do cartão'),
@@ -289,7 +296,9 @@ class _HomePageCardsState extends State<HomePageCards> {
                               children: [
                                 Text('Cor:'),
                                 InkWell(
-                                  onTap: () => null,
+                                  onTap: () => SelectColor().showDialogColor(
+                                      context,
+                                      (v) => cc.newCard.changeColor(v)),
                                   child: CircleAvatar(
                                     backgroundColor: cc.newCard.color,
                                   ),
@@ -343,26 +352,29 @@ class _HomePageCardsState extends State<HomePageCards> {
                                     width: constraint.maxWidth * 0.9,
                                     child: Row(
                                       children: [
-                                        IconButton(
-                                            icon: Icon(Icons.arrow_back),
-                                            onPressed: () => setState(() =>
-                                                showTxtEditingLimit =
-                                                    !showTxtEditingLimit)),
                                         Flexible(
                                             child: TextField(
                                           decoration: InputDecoration(
+                                              suffixIcon: IconButton(
+                                                  icon: Icon(Icons.save),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      cc.newCard.changeLimit(
+                                                          double.parse(
+                                                              limit.text));
+                                                      showTxtEditingLimit =
+                                                          false;
+                                                    });
+                                                  }),
+                                              prefixIcon: IconButton(
+                                                  icon: Icon(Icons.arrow_back,
+                                                      color: Colors.blue),
+                                                  onPressed: () => setState(() =>
+                                                      showTxtEditingLimit =
+                                                          !showTxtEditingLimit)),
                                               border: OutlineInputBorder(),
                                               hintText: 'Limite'),
                                         )),
-                                        IconButton(
-                                            icon: Icon(Icons.save),
-                                            onPressed: () {
-                                              setState(() {
-                                                cc.newCard.changeLimit(
-                                                    double.parse(limit.text));
-                                                showTxtEditingLimit = false;
-                                              });
-                                            })
                                       ],
                                     ))),
                           ],
