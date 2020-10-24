@@ -1,5 +1,49 @@
 import 'package:flutter/material.dart';
 
+class SelectColorWidget extends StatefulWidget {
+  final BoxConstraints constraint;
+  final Function f;
+  SelectColorWidget({this.constraint, this.f});
+  @override
+  _SelectColorWidgetState createState() => _SelectColorWidgetState();
+}
+
+class _SelectColorWidgetState extends State<SelectColorWidget> {
+  List<Color> list = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.brown,
+    Colors.grey
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+        children: list
+            .map((e) => Container(
+                  margin: EdgeInsets.all(widget.constraint.maxHeight * 0.03),
+                  child: InkWell(
+                    child: CircleAvatar(
+                      radius: widget.constraint.maxHeight * 0.12,
+                      backgroundColor: e,
+                    ),
+                    onTap: () => widget.f(e),
+                  ),
+                ))
+            .toList());
+  }
+}
+
 class SelectColor {
   List<Color> list = [
     Colors.red,

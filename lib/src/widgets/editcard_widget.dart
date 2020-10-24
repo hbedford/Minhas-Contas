@@ -15,6 +15,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
 
   bool showTxtEditingLimit = false;
   bool showTxtEditingName = false;
+  bool editColor = false;
 
   TextEditingController limit = TextEditingController();
 
@@ -43,68 +44,86 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                                width: constraint.maxWidth * 0.6,
-                                height: constraint.maxHeight * 0.13,
-                                child: Stack(
-                                  children: [
-                                    AnimatedPositioned(
-                                      left: showTxtEditingName
-                                          ? -constraint.maxWidth * 0.6
-                                          : 0,
-                                      child: SizedBox(
-                                        width: constraint.maxWidth * 0.6,
-                                        child: ListTile(
-                                            onTap: () => setState(() =>
-                                                showTxtEditingName =
-                                                    !showTxtEditingName),
-                                            title: Text(
-                                              'Nome',
-                                            ),
-                                            trailing: Observer(
-                                              builder: (_) =>
-                                                  cc.editCard.name.length > 0
-                                                      ? Text(cc.editCard.name)
-                                                      : Text(
-                                                          'Necessario',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.red),
-                                                        ),
-                                            )),
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 200),
+                              width: editColor ? 0 : null,
+                              child: Container(
+                                  width: constraint.maxWidth * 0.6,
+                                  height: constraint.maxHeight * 0.13,
+                                  child: Stack(
+                                    children: [
+                                      AnimatedPositioned(
+                                        left: showTxtEditingName
+                                            ? -constraint.maxWidth * 0.6
+                                            : 0,
+                                        child: SizedBox(
+                                          width: constraint.maxWidth * 0.6,
+                                          child: ListTile(
+                                              onTap: () => setState(() =>
+                                                  showTxtEditingName =
+                                                      !showTxtEditingName),
+                                              title: Text(
+                                                'Nome',
+                                              ),
+                                              trailing: Observer(
+                                                builder: (_) =>
+                                                    cc.editCard.name.length > 0
+                                                        ? Text(cc.editCard.name)
+                                                        : Text(
+                                                            'Necessario',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          ),
+                                              )),
+                                        ),
+                                        duration: duration,
                                       ),
-                                      duration: duration,
-                                    ),
-                                    AnimatedPositioned(
-                                      right: showTxtEditingName
-                                          ? 0
-                                          : -constraint.maxWidth * 0.6,
-                                      duration: duration,
-                                      child: Container(
-                                        width: constraint.maxWidth * 0.6,
-                                        child: TextField(
-                                          controller: name,
-                                          onChanged: (v) =>
-                                              cc.editCard.changeName(v),
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              labelText: 'Nome do cartão'),
+                                      AnimatedPositioned(
+                                        right: showTxtEditingName
+                                            ? 0
+                                            : -constraint.maxWidth * 0.6,
+                                        duration: duration,
+                                        child: Container(
+                                          width: constraint.maxWidth * 0.6,
+                                          child: TextField(
+                                            controller: name,
+                                            onChanged: (v) =>
+                                                cc.editCard.changeName(v),
+                                            decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                labelText: 'Nome do cartão'),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )),
-                            Container(
-                              width: constraint.maxWidth * 0.2,
+                                    ],
+                                  )),
+                            ),
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 200),
+                              width: editColor
+                                  ? constraint.maxWidth * 0.9
+                                  : constraint.maxWidth * 0.2,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Cor:'),
+                                  AnimatedCrossFade(
+                                    firstChild: Text('Cor:'),
+                                    duration: Duration(milliseconds: 200),
+                                    secondChild: Text('Cor atual ->'),
+                                    reverseDuration:
+                                        Duration(milliseconds: 200),
+                                    crossFadeState: editColor
+                                        ? CrossFadeState.showSecond
+                                        : CrossFadeState.showFirst,
+                                  ),
                                   InkWell(
-                                    onTap: () => SelectColor().showDialogColor(
-                                        context,
-                                        (v) => cc.editCard.changeColor(v)),
+                                    onTap: () =>
+                                        setState(() => editColor = !editColor),
+                                    // onTap: () => SelectColor().showDialogColor(
+                                    //     context,
+                                    //     (v) => cc.editCard.changeColor(v)),
                                     child: Observer(
                                       builder: (_) => CircleAvatar(
                                         backgroundColor: cc.editCard.color,
@@ -116,6 +135,24 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                             )
                           ],
                         ),
+                        AnimatedContainer(
+                            height: editColor ? constraint.maxHeight * 0.3 : 0,
+                            duration: Duration(milliseconds: 200),
+                            child: AnimatedOpacity(
+                              duration: Duration(milliseconds: 100),
+                              opacity: editColor ? 1 : 0,
+                              child: LayoutBuilder(
+                                builder: (context, constraint) => Column(
+                                  children: [
+                                    Text('Selecione uma cor'),
+                                    SelectColorWidget(
+                                      constraint: constraint,
+                                      f: (v) => cc.editCard.changeColor(v),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
                         Divider(),
                         Row(
                           children: [

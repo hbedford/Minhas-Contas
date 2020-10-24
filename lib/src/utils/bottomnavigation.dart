@@ -104,10 +104,10 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                                         bottom: widget.items.indexOf(item) ==
                                                 widget.index
                                             ? Platform.isIOS
-                                                ? 25
+                                                ? 30
                                                 : 20
                                             : Platform.isIOS
-                                                ? 15
+                                                ? 20
                                                 : 0),
                                     child: CircleAvatar(
                                       backgroundColor: widget.backgroundColor,

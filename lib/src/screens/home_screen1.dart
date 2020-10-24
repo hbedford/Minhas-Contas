@@ -86,7 +86,10 @@ class _HomeScreen1State extends State<HomeScreen1> {
                           color: Theme.of(context).accentColor,
                         ),
                         Text('A'),
-                        Text('A')
+                        IconButton(
+                            onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                                context, '/login', (route) => route.isFirst),
+                            icon: Icon(Icons.logout))
                       ],
                       height: Platform.isIOS
                           ? constraint.maxHeight * 0.12

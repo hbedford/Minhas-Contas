@@ -415,46 +415,40 @@ class _LoginScreen1State extends State<LoginScreen1> {
         height: constraint.maxHeight * 0.1,
         child: Stack(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(top: constraint.maxHeight * 0.0075),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) => Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Observer(
-                            builder: (_) => lineStep(
-                              c.step >= 0,
-                              constraints,
-                              0,
-                            ),
-                          ),
-                          Observer(
-                            builder: (_) =>
-                                lineStep(c.step >= 1, constraints, 1),
-                          ),
-                          Observer(
-                            builder: (_) =>
-                                lineStep(c.step >= 1, constraints, 2),
-                          ),
-                          Observer(
-                            builder: (_) =>
-                                lineStep(c.step >= 2, constraints, 3),
-                          ),
-                        ],
+            Container(
+              height: constraint.maxHeight * 0.05,
+              // margin: EdgeInsets.only(top: constraint.maxHeight * 0.0085),
+              child: LayoutBuilder(
+                builder: (context, constraints) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Observer(
+                      builder: (_) => lineStep(
+                        c.step >= 0,
+                        constraints,
+                        0,
                       ),
                     ),
-                  ),
+                    Observer(
+                      builder: (_) => lineStep(c.step >= 1, constraints, 1),
+                    ),
+                    Observer(
+                      builder: (_) => lineStep(c.step >= 1, constraints, 2),
+                    ),
+                    Observer(
+                      builder: (_) => lineStep(c.step >= 2, constraints, 3),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
+                  height: constraint.maxHeight * 0.05,
                   width: constraint.maxWidth * 0.45,
                   child: LayoutBuilder(
                     builder: (context, constraints) => Row(
@@ -483,7 +477,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
       );
   lineStep(bool v, BoxConstraints constraint, int step) => AnimatedContainer(
         duration: Duration(milliseconds: 100 * (step + 1)),
-        height: constraint.maxHeight * 0.1,
+        height: constraint.maxHeight * 0.3,
         width: constraint.maxWidth * 0.1,
         decoration: BoxDecoration(
           border: !v
