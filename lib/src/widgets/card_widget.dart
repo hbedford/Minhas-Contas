@@ -9,12 +9,14 @@ class CardWidget extends StatelessWidget {
   final Function f;
   final String title;
   final bool editing;
-  CardWidget({this.card, this.f, this.title, this.editing = false});
+  CardWidget({this.card, this.f, this.title = '', this.editing = false});
   final c = GetIt.I.get<CardsController>();
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) => Observer(
           builder: (context) => Container(
+            height: constraints.maxHeight * 0.3,
+            width: constraints.maxWidth * 0.8,
             padding: EdgeInsets.symmetric(
                 vertical: constraints.maxHeight * 0.05,
                 horizontal: constraints.maxWidth * 0.05),

@@ -102,13 +102,17 @@ class _HomePageCardsState extends State<HomePageCards> {
                           editing: true,
                         ),
                       ))
-                  : Stack(
-                      children: cc.cForList
-                          .map<Widget>((e) =>
-                              card(cc.cForList.indexOf(e), constraints, e))
-                          .toList()
-                          .reversed
-                          .toList()))));
+                  : SizedBox(
+                      height: constraints.maxHeight * 0.3,
+                      width: constraints.maxWidth,
+                      child: Stack(
+                          children: cc.cForList
+                              .map<Widget>((e) =>
+                                  card(cc.cForList.indexOf(e), constraints, e))
+                              .toList()
+                              .reversed
+                              .toList()),
+                    ))));
   cardInfos() => Expanded(
       flex: 2,
       child: LayoutBuilder(
@@ -303,35 +307,42 @@ class _HomePageCardsState extends State<HomePageCards> {
     return AnimatedPositioned(
         curve: Curves.easeOut,
         duration: Duration(milliseconds: 200),
-        child: GestureDetector(
-          onHorizontalDragStart: (d) {
-            pointer = d.globalPosition.dx;
-            cc.changeCard(null);
-          },
-          onHorizontalDragEnd: (d) {
-            pointer = 0;
-            Compare compare = Compare();
-            setState(() {
-              Map m = compare.values(
-                  cc.cForList.reversed.toList(), cc.scroll, w * 0.7);
-              cc.changeScroll(m['scroll']);
-              cc.changeCard(cc.cForList[m['index']]);
-            });
-          },
-          onHorizontalDragUpdate: (d) => setState(() {
-            if (cc.scroll > -0.1) {
-              if (cc.scroll - d.delta.dx < 0.0)
-                cc.changeScroll(0.0);
-              else if (cc.scroll + d.delta.dx >
-                  (w * 0.7) * cc.cForList.length - 1) {
-                cc.changeScroll(cc.cForList.length * (w * 0.7));
-              } else
-                cc.changeScroll((cc.scroll - d.delta.dx));
-            }
-          }),
-          child: card == null
-              ? CardWidget(title: 'Adicionar cartão', f: () => cc.addNewCard())
-              : CardWidget(card: card),
+        child: Container(
+          height: constraint.maxHeight * 0.9,
+          width: constraint.maxWidth * 0.75,
+          child: GestureDetector(
+            onHorizontalDragStart: (d) {
+              pointer = d.globalPosition.dx;
+              cc.changeCard(null);
+            },
+            onHorizontalDragEnd: (d) {
+              pointer = 0;
+              Compare compare = Compare();
+              setState(() {
+                Map m = compare.values(
+                    cc.cForList.reversed.toList(), cc.scroll, w * 0.7);
+                cc.changeScroll(m['scroll']);
+                cc.changeCard(cc.cForList[m['index']]);
+              });
+            },
+            onHorizontalDragUpdate: (d) => setState(() {
+              if (cc.scroll > -0.1) {
+                if (cc.scroll - d.delta.dx < 0.0)
+                  cc.changeScroll(0.0);
+                else if (cc.scroll + d.delta.dx >
+                    (w * 0.7) * cc.cForList.length - 1) {
+                  cc.changeScroll(cc.cForList.length * (w * 0.7));
+                } else
+                  cc.changeScroll((cc.scroll - d.delta.dx));
+              }
+            }),
+            child: cc.cForList.indexOf(cc.cForList.last) == index
+                ? CardWidget(
+                    card: CardModel(),
+                    title: 'Adicionar cartão',
+                    f: () => cc.addNewCard())
+                : CardWidget(card: card),
+          ),
         ),
         left: !type ? result : null,
         right: type ? result : null);

@@ -150,11 +150,11 @@ abstract class _CardModelBase with Store {
   @computed
   String get number01 => number.substring(0, 4) ?? '0000';
   @computed
-  String get number02 => number.toString().substring(4, 8) ?? '0000';
+  String get number02 => number.substring(4, 8) ?? '0000';
   @computed
-  String get number03 => number.toString().substring(8, 12) ?? '0000';
+  String get number03 => number.substring(8, 12) ?? '0000';
   @computed
-  String get number04 => number.toString().substring(12, 16) ?? '0000';
+  String get number04 => number.substring(12, 16) ?? '0000';
   @computed
   bool get isValidName => name != null && name.length > 0;
   @computed
