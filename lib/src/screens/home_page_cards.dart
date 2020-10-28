@@ -26,63 +26,56 @@ class _HomePageCardsState extends State<HomePageCards> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 200),
-                        child: Center(
-                          child: Text(
-                            'DASHBOARD',
-                            style: TextStyle(
-                                color: Colors.grey[400],
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        height:
-                            WidgetsBinding.instance.window.viewInsets.bottom ==
-                                    0
-                                ? constraints.maxHeight * 0.08
-                                : 0,
-                      ),
-                      Container(
-                          height: constraints.maxHeight * 0.3 +
-                              (WidgetsBinding
-                                      .instance.window.viewInsets.bottom *
-                                  0.1),
-                          width: constraints.maxWidth,
-                          child: LayoutBuilder(
-                              builder: (context, constraint) => Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AnimatedContainer(
-                                          height: WidgetsBinding.instance.window
-                                                      .viewInsets.bottom ==
-                                                  0
-                                              ? null
-                                              : 0,
-                                          duration: Duration(milliseconds: 200),
-                                          child: margin(
-                                              t: 0,
-                                              child: Text(
-                                                cc.editCard == null
-                                                    ? 'Meus cartões'
-                                                    : 'Editar cartão',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline6,
-                                              ),
-                                              constraint: constraint),
-                                        ),
-                                        cardsWidget()
-                                      ]))),
+                      appBar(constraints),
+                      title(constraints),
                       Observer(
                           builder: (_) => cc.editCard != null
                               ? EditCardWidget()
                               : cardInfos())
                     ])),
       );
-
+  appBar(BoxConstraints constraints) => AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        child: Center(
+          child: Text(
+            'DASHBOARD',
+            style:
+                TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700),
+          ),
+        ),
+        height: WidgetsBinding.instance.window.viewInsets.bottom == 0
+            ? constraints.maxHeight * 0.08
+            : 0,
+      );
+  title(BoxConstraints constraints) => Container(
+      height: constraints.maxHeight *
+          0.3 /*  +
+          (WidgetsBinding.instance.window.viewInsets.bottom * 0.1) */
+      ,
+      width: constraints.maxWidth,
+      child: LayoutBuilder(
+          builder: (context, constraint) => Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AnimatedContainer(
+                      height:
+                          WidgetsBinding.instance.window.viewInsets.bottom == 0
+                              ? null
+                              : 0,
+                      duration: Duration(milliseconds: 200),
+                      child: margin(
+                          t: 0,
+                          child: Text(
+                            cc.editCard == null
+                                ? 'Meus cartões'
+                                : 'Editar cartão',
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          constraint: constraint),
+                    ),
+                    cardsWidget()
+                  ])));
   cardsWidget() => Expanded(
       child: LayoutBuilder(
           builder: (context, constraints) => Observer(
@@ -126,7 +119,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                 margin(
                     t: 4,
                     child: loadContainer(
-                        enable: cc.card == null,
+                        enable: cc.card.name == null,
                         bColor: Theme.of(context).textTheme.subtitle2.color,
                         child: Text('Saldo em conta',
                             style: Theme.of(context).textTheme.subtitle2)),
@@ -138,7 +131,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                           'R\$250,00',
                           style: Theme.of(context).textTheme.headline1,
                         ),
-                        enable: cc.card == null,
+                        enable: cc.card.name == null,
                         bColor: Color(0xFF222059)),
                     constraint: constraint),
                 margin(
@@ -156,7 +149,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2),
-                                      enable: cc.card == null,
+                                      enable: cc.card.name == null,
                                       bColor: Theme.of(context)
                                           .textTheme
                                           .subtitle2
@@ -166,11 +159,12 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   t: 1,
                                   l: 0,
                                   child: loadContainer(
-                                    child: Text('R\$1750,00',
+                                    child: Text(
+                                        'R\$${cc.card.limit.toStringAsFixed(2)}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline1),
-                                    enable: cc.card == null,
+                                    enable: cc.card.name == null,
                                     bColor: Color(0xFF222059),
                                   ),
                                   constraint: constraint)
@@ -188,7 +182,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2),
-                                      enable: cc.card == null,
+                                      enable: cc.card.name == null,
                                       bColor: Colors.grey),
                                   constraint: constraint),
                               margin(
@@ -196,11 +190,13 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   l: 0,
                                   child: loadContainer(
                                     child: Text(
-                                      'R\$250,00',
+                                      cc.card != null
+                                          ? cc.card.actualTotalLimit
+                                          : 'R\$00,00',
                                       style:
                                           Theme.of(context).textTheme.headline1,
                                     ),
-                                    enable: cc.card == null,
+                                    enable: cc.card.name == null,
                                     bColor: Color(0xFF222059),
                                   ),
                                   constraint: constraint)
@@ -210,18 +206,18 @@ class _HomePageCardsState extends State<HomePageCards> {
                     constraint: constraint),
                 margin(
                     t: 3,
-                    child: cc.card == null
+                    child: cc.card.name == null
                         ? loadContainer(
-                            enable: cc.card == null,
+                            enable: cc.card.name == null,
                             bColor: Colors.grey,
                             child: Container(
                                 height: constraint.maxHeight * 0.01,
-                                width: constraint.maxWidth * 0.8))
+                                width: (constraint.maxWidth * 0.9)))
                         : Container(
                             child: Stack(children: [
                             Container(
                                 height: constraint.maxHeight * 0.01,
-                                width: constraint.maxWidth * 0.8,
+                                width: (constraint.maxWidth * 0.9),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: Colors.white)),
@@ -243,48 +239,62 @@ class _HomePageCardsState extends State<HomePageCards> {
                     t: 2,
                     child: Container(
                         height: constraint.maxHeight * 0.3,
-                        child: ListView.builder(
-                            itemCount: cc.card == null ? 3 : 2,
-                            itemBuilder: (context, int index) => Container(
-                                height: constraint.maxHeight * 0.05,
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                          flex: 4,
-                                          child: Row(children: [
-                                            loadContainer(
-                                                child: Text(
-                                                  'VXCase Digital LTDA.',
-                                                ),
-                                                enable: cc.card == null,
-                                                bColor: Colors.grey[700])
-                                          ])),
-                                      Flexible(
-                                          flex: 2,
-                                          child: Row(children: [
-                                            loadContainer(
-                                                child: Text('Credito'),
-                                                enable: cc.card == null,
-                                                bColor: Colors.grey)
-                                          ])),
-                                      Flexible(
-                                          flex: 2,
-                                          child: Observer(
-                                              builder: (_) => Row(children: [
-                                                    loadContainer(
-                                                        enable: cc.card == null,
-                                                        child:
-                                                            Text('R\$250,00'),
-                                                        bColor: Colors.green)
-                                                  ])))
-                                    ])))),
+                        child: cc.card.name != null &&
+                                cc.card.pThisMonth.length == 0
+                            ? Center(
+                                child: Text('Nenhuma compra efetuada esse mês'),
+                              )
+                            : ListView.builder(
+                                itemCount: cc.card.name == null
+                                    ? 3
+                                    : cc.card.pThisMonth.length,
+                                itemBuilder: (context, int index) => Container(
+                                    height: constraint.maxHeight * 0.05,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                              flex: 4,
+                                              child: Row(children: [
+                                                loadContainer(
+                                                    child: Text(
+                                                      'VXCase Digital LTDA.',
+                                                    ),
+                                                    enable:
+                                                        cc.card.name == null,
+                                                    bColor: Colors.grey[700])
+                                              ])),
+                                          Flexible(
+                                              flex: 2,
+                                              child: Row(children: [
+                                                loadContainer(
+                                                    child: Text('Credito'),
+                                                    enable:
+                                                        cc.card.name == null,
+                                                    bColor: Colors.grey)
+                                              ])),
+                                          Flexible(
+                                              flex: 2,
+                                              child: Observer(
+                                                  builder: (_) =>
+                                                      Row(children: [
+                                                        loadContainer(
+                                                            enable:
+                                                                cc.card.name ==
+                                                                    null,
+                                                            child: Text(
+                                                                'R\$250,00'),
+                                                            bColor:
+                                                                Colors.green)
+                                                      ])))
+                                        ])))),
                     constraint: constraint)
               ])));
 
   card(int index, BoxConstraints constraint, CardModel card) {
     double w = constraint.maxWidth;
+    double h = constraint.maxHeight;
     double result;
     bool type = false;
     double dMargin = w * 0.05;
@@ -308,12 +318,14 @@ class _HomePageCardsState extends State<HomePageCards> {
         curve: Curves.easeOut,
         duration: Duration(milliseconds: 200),
         child: Container(
-          height: constraint.maxHeight * 0.9,
-          width: constraint.maxWidth * 0.75,
+          height: h * 0.9,
+          width: w * 0.75,
           child: GestureDetector(
             onHorizontalDragStart: (d) {
-              pointer = d.globalPosition.dx;
-              cc.changeCard(null);
+              if (cc.editCard == null) {
+                pointer = d.globalPosition.dx;
+                cc.changeCard(CardModel());
+              }
             },
             onHorizontalDragEnd: (d) {
               pointer = 0;
@@ -325,23 +337,35 @@ class _HomePageCardsState extends State<HomePageCards> {
                 cc.changeCard(cc.cForList[m['index']]);
               });
             },
-            onHorizontalDragUpdate: (d) => setState(() {
-              if (cc.scroll > -0.1) {
-                if (cc.scroll - d.delta.dx < 0.0)
-                  cc.changeScroll(0.0);
-                else if (cc.scroll + d.delta.dx >
-                    (w * 0.7) * cc.cForList.length - 1) {
-                  cc.changeScroll(cc.cForList.length * (w * 0.7));
-                } else
-                  cc.changeScroll((cc.scroll - d.delta.dx));
+            onHorizontalDragUpdate: (d) {
+              if (cc.editCard == null) {
+                setState(() {
+                  if (cc.scroll > -0.1 &&
+                      cc.scroll < (w * 0.75) * (cc.cForList.length - 1)) {
+                    if (cc.scroll - d.delta.dx < 0.0)
+                      cc.changeScroll(0.0);
+                    else if (cc.scroll + d.delta.dx >
+                        (w * 0.75) * (cc.cForList.length - 1)) {
+                      cc.changeScroll(cc.cForList.length * (w * 0.75));
+                    } else
+                      cc.changeScroll((cc.scroll - d.delta.dx));
+                  }
+                });
               }
-            }),
+            },
             child: cc.cForList.indexOf(cc.cForList.last) == index
                 ? CardWidget(
-                    card: CardModel(),
+                    editing: cc.editCard != null ? true : false,
+                    card: cc.editCard ?? CardModel(),
                     title: 'Adicionar cartão',
                     f: () => cc.addNewCard())
-                : CardWidget(card: card),
+                : Observer(
+                    builder: (_) => CardWidget(
+                      card: card,
+                      editing: cc.editCard == card,
+                      f: () => cc.changeEditCard(card),
+                    ),
+                  ),
           ),
         ),
         left: !type ? result : null,

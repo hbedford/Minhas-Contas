@@ -53,6 +53,7 @@ abstract class _CardModelBase with Store {
       this.active = false,
       this.optionsActive = false,
       this.show = false,
+      this.limit = 0.0,
       this.number = "0000000000000000"});
 
   // ignore: unused_element
@@ -97,15 +98,15 @@ abstract class _CardModelBase with Store {
   @computed
   double get totalOfPayments {
     double total = 0;
-    payments.forEach((element) {
-      total = total + element.value;
-    });
+    if (payments != null)
+      payments.forEach((element) {
+        total = total + element.value;
+      });
     return total;
   }
 
   @computed
-  String get actualTotalLimit =>
-      totalOfPayments.toString() + ' de ' + limit.toString();
+  String get actualTotalLimit => 'R\$' + (limit - totalOfPayments).toString();
   @computed
   double get totalThisMonth {
     DateTime d = DateTime.now();
@@ -121,9 +122,10 @@ abstract class _CardModelBase with Store {
   List<PaymentModel> get pThisMonth {
     DateTime d = DateTime.now();
     List<PaymentModel> list = [];
-    payments.forEach((e) {
-      if (d.month == e.date.month && d.year == e.date.year) list.add(e);
-    });
+    if (payments != null)
+      payments.forEach((e) {
+        if (d.month == e.date.month && d.year == e.date.year) list.add(e);
+      });
     return list;
   }
 
@@ -211,9 +213,10 @@ abstract class _CardModelBase with Store {
   @computed
   List get pSortedPayments {
     List list = [];
-    payments.forEach((element) {
-      list.add(element);
-    });
+    if (payments != null)
+      payments.forEach((element) {
+        list.add(element);
+      });
     list.sort(
         (a, b) => c.dateToString(b.date).compareTo(c.dateToString(a.date)));
     return list;

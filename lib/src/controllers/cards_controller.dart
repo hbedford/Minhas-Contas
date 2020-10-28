@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:minhasconta/src/db/database.dart';
+import 'package:flutter/material.dart';
 import 'package:minhasconta/src/models/card_model.dart';
+import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
 part 'cards_controller.g.dart';
 
@@ -42,21 +43,30 @@ abstract class _CardsControllerBase with Store {
   changeScroll(double s) => scroll = s;
   @action
   addNewCard() => editCard = CardModel.emptyCard();
+  @action
+  changeEditCard(CardModel c) => editCard = c;
 
   //Necessario verificar os dados
   @action
   saveCard(BuildContext context) {
-    if (editCard != null) {
-      if (card.isAllValid) {
-        final db = DatabaseHelper.instance;
-
+    /* if (editCard != null) { */
+    if (editCard.isAllValid) {
+      if (cards.indexOf(editCard) != -1) {
+        int v = cards.indexOf(editCard);
+        cards[v] = editCard;
+        changeEditCard(null);
+      } else {
         cards.add(editCard);
-        editCard = null;
-      } else {}
-    } else if (card.id != null) {
+        changeEditCard(null);
+      }
+    } else {
+      flushBar(color: Colors.red, title: 'Necessario preencher os campos')
+          .show(context);
+    }
+    /* } else if (card.id != null) {
       int id = cards.indexOf(card);
       cards[id] = card;
-    }
+    } */
   }
 
   @computed

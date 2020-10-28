@@ -54,9 +54,9 @@ class CardWidget extends StatelessWidget {
                                   icon: editing
                                       ? Icon(Icons.save)
                                       : Icon(Icons.settings),
-                                  onPressed: () => editing
-                                      ? c.saveCard(context)
-                                      : c.changeCard(card))
+                                  onPressed: editing
+                                      ? () => c.saveCard(context)
+                                      : f /* c.changeCard(card) */)
                             ]),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

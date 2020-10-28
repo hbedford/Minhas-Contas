@@ -29,6 +29,7 @@ void main() async {
       ProjectsController(projects: [].asObservable()));
   getIt.registerSingleton<CardsController>(
     CardsController(
+      card: CardModel(),
       cards: ObservableList.of(
         [
           CardModel(

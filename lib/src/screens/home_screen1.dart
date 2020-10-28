@@ -53,6 +53,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       /* appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
