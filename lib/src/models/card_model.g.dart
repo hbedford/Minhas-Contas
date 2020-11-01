@@ -16,6 +16,13 @@ mixin _$CardModel on _CardModelBase, Store {
           () => super.totalOfPayments,
           name: '_CardModelBase.totalOfPayments'))
       .value;
+  Computed<bool> _$creditDebitIsValidComputed;
+
+  @override
+  bool get creditDebitIsValid => (_$creditDebitIsValidComputed ??=
+          Computed<bool>(() => super.creditDebitIsValid,
+              name: '_CardModelBase.creditDebitIsValid'))
+      .value;
   Computed<String> _$actualTotalLimitComputed;
 
   @override
@@ -128,6 +135,13 @@ mixin _$CardModel on _CardModelBase, Store {
           Computed<int>(() => super.amountPaymentsThisMonth,
               name: '_CardModelBase.amountPaymentsThisMonth'))
       .value;
+  Computed<String> _$invalidStringComputed;
+
+  @override
+  String get invalidString =>
+      (_$invalidStringComputed ??= Computed<String>(() => super.invalidString,
+              name: '_CardModelBase.invalidString'))
+          .value;
 
   final _$idAtom = Atom(name: '_CardModelBase.id');
 
@@ -339,6 +353,36 @@ mixin _$CardModel on _CardModelBase, Store {
     });
   }
 
+  final _$debitAtom = Atom(name: '_CardModelBase.debit');
+
+  @override
+  bool get debit {
+    _$debitAtom.reportRead();
+    return super.debit;
+  }
+
+  @override
+  set debit(bool value) {
+    _$debitAtom.reportWrite(value, super.debit, () {
+      super.debit = value;
+    });
+  }
+
+  final _$creditAtom = Atom(name: '_CardModelBase.credit');
+
+  @override
+  bool get credit {
+    _$creditAtom.reportRead();
+    return super.credit;
+  }
+
+  @override
+  set credit(bool value) {
+    _$creditAtom.reportWrite(value, super.credit, () {
+      super.credit = value;
+    });
+  }
+
   final _$showAtom = Atom(name: '_CardModelBase.show');
 
   @override
@@ -527,6 +571,28 @@ mixin _$CardModel on _CardModelBase, Store {
   }
 
   @override
+  dynamic changeDebit(bool d) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeDebit');
+    try {
+      return super.changeDebit(d);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeCredit(bool c) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeCredit');
+    try {
+      return super.changeCredit(c);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeOptionsActive(bool v) {
     final _$actionInfo = _$_CardModelBaseActionController.startAction(
         name: '_CardModelBase.changeOptionsActive');
@@ -554,9 +620,12 @@ type: ${type},
 bestDateToPay: ${bestDateToPay},
 active: ${active},
 optionsActive: ${optionsActive},
+debit: ${debit},
+credit: ${credit},
 show: ${show},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
+creditDebitIsValid: ${creditDebitIsValid},
 actualTotalLimit: ${actualTotalLimit},
 totalThisMonth: ${totalThisMonth},
 pThisMonth: ${pThisMonth},
@@ -572,7 +641,8 @@ isValidLimit: ${isValidLimit},
 isAllValid: ${isAllValid},
 pSortedPayments: ${pSortedPayments},
 paymentsPerDate: ${paymentsPerDate},
-amountPaymentsThisMonth: ${amountPaymentsThisMonth}
+amountPaymentsThisMonth: ${amountPaymentsThisMonth},
+invalidString: ${invalidString}
     ''';
   }
 }

@@ -24,13 +24,14 @@ abstract class _CardsControllerBase with Store {
   ObservableList cards = [].asObservable();
   @observable
   double scroll;
-  _CardsControllerBase(
-      {this.card,
-      this.cValidate,
-      this.cBestDate,
-      this.cLimit,
-      this.cards,
-      this.scroll = 0});
+  _CardsControllerBase({
+    this.card,
+    this.cValidate,
+    this.cBestDate,
+    this.cLimit,
+    this.cards,
+    this.scroll = 0,
+  });
   @action
   changeValidate(bool v) => cValidate = v;
   @action
@@ -45,14 +46,18 @@ abstract class _CardsControllerBase with Store {
   addNewCard() => editCard = CardModel.emptyCard();
   @action
   changeEditCard(CardModel c) => editCard = c;
+  @action
+  startScroll() => scrollEditCard = ScrollController();
+  @action
+  cancelCard() => editCard = null;
 
   //Necessario verificar os dados
   @action
   saveCard(BuildContext context) {
     /* if (editCard != null) { */
     if (editCard.isAllValid) {
-      if (cards.indexOf(editCard) != -1) {
-        int v = cards.indexOf(editCard);
+      if (/* cards.indexOf(editCard) != -1 */ editCard.id != null) {
+        int v = cards.indexWhere((element) => element.id == editCard.id);
         cards[v] = editCard;
         changeEditCard(null);
       } else {
@@ -60,8 +65,7 @@ abstract class _CardsControllerBase with Store {
         changeEditCard(null);
       }
     } else {
-      flushBar(color: Colors.red, title: 'Necessario preencher os campos')
-          .show(context);
+      flushBar(color: Colors.red, title: editCard.invalidString).show(context);
     }
     /* } else if (card.id != null) {
       int id = cards.indexOf(card);

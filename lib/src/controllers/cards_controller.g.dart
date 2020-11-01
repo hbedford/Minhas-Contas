@@ -222,6 +222,28 @@ mixin _$CardsController on _CardsControllerBase, Store {
   }
 
   @override
+  dynamic changeEditCard(CardModel c) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.changeEditCard');
+    try {
+      return super.changeEditCard(c);
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic startScroll() {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.startScroll');
+    try {
+      return super.startScroll();
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic saveCard(BuildContext context) {
     final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
         name: '_CardsControllerBase.saveCard');

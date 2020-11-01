@@ -87,6 +87,8 @@ void main() async {
       ),
     ),
   );
+  final c = GetIt.I.get<CardsController>();
+  c.startScroll();
   runApp(App());
 
   final dbHelper = DatabaseHelper.instance;

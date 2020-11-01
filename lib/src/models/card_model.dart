@@ -41,6 +41,10 @@ abstract class _CardModelBase with Store {
   @observable
   bool optionsActive;
   @observable
+  bool debit;
+  @observable
+  bool credit;
+  @observable
   bool show;
 
   @observable
@@ -53,6 +57,8 @@ abstract class _CardModelBase with Store {
       this.active = false,
       this.optionsActive = false,
       this.show = false,
+      this.debit = false,
+      this.credit = false,
       this.limit = 0.0,
       this.number = "0000000000000000"});
 
@@ -64,7 +70,10 @@ abstract class _CardModelBase with Store {
       : this.name = '',
         this.color = Color(0xFF222059),
         this.show = false,
-        this.number = "0000000000000000";
+        this.number = "0000000000000000",
+        this.credit = false,
+        this.debit = false,
+        this.limit = 0.0;
   @action
   changeName(String n) => name = n;
   @action
@@ -94,6 +103,11 @@ abstract class _CardModelBase with Store {
   @action
   changeToDeactived() => active = false;
   @action
+  changeDebit(bool d) => debit = d;
+  @action
+  changeCredit(bool c) => credit = c;
+
+  @action
   changeOptionsActive(bool v) => optionsActive = v;
   @computed
   double get totalOfPayments {
@@ -106,7 +120,11 @@ abstract class _CardModelBase with Store {
   }
 
   @computed
-  String get actualTotalLimit => 'R\$' + (limit - totalOfPayments).toString();
+  bool get creditDebitIsValid =>
+      debit && !credit || debit && credit || !debit && credit;
+  @computed
+  String get actualTotalLimit =>
+      'R\$' + totalOfPayments.toStringAsFixed(2).replaceAll('.', ',');
   @computed
   double get totalThisMonth {
     DateTime d = DateTime.now();
@@ -150,13 +168,17 @@ abstract class _CardModelBase with Store {
   }
 
   @computed
-  String get number01 => number.substring(0, 4) ?? '0000';
+  String get number01 => number.length >= 4 ? number.substring(0, 4) : '0000';
   @computed
-  String get number02 => number.substring(4, 8) ?? '0000';
+  String get number02 => number.length >= 8 ? number.substring(4, 8) : '0000';
   @computed
-  String get number03 => number.substring(8, 12) ?? '0000';
+  String get number03 => number.length >= 12 ? number.substring(8, 12) : '0000';
   @computed
-  String get number04 => number.substring(12, 16) ?? '0000';
+  String get number04 =>
+      number.length >= 16 ? number.substring(12, 16) : '0000';
+  @computed
+  String get numbers =>
+      number01 + ' ' + number02 + ' ' + number03 + ' ' + number04;
   @computed
   bool get isValidName => name != null && name.length > 0;
   @computed
@@ -167,7 +189,11 @@ abstract class _CardModelBase with Store {
   bool get isValidLimit => limit != null && limit > 0;
   @computed
   bool get isAllValid =>
-      isValidName && isValidNumber && isValidColor && isValidLimit;
+      isValidName &&
+      isValidNumber &&
+      isValidColor &&
+      isValidLimit &&
+      creditDebitIsValid;
   /* @computed
   List<CategoryModel> get orderByCategory {
     List<CategoryModel> list = [];
@@ -252,5 +278,21 @@ abstract class _CardModelBase with Store {
       amount++;
     });
     return amount;
+  }
+
+  @computed
+  String get invalidString {
+    if (!isValidName)
+      return 'Necessario inserir um nome';
+    else if (!isValidColor)
+      return 'Necessario selecionar uma cor';
+    else if (!isValidLimit)
+      return 'Necessario colocar um limite no cartão';
+    else if (!isValidNumber)
+      return 'Necessario um número de cartão';
+    else if (!creditDebitIsValid)
+      return 'Necessario selecionar pelo menos 1 opção, Debito ou Credito ou ambos';
+    else
+      return 'Algum erro ocorreu';
   }
 }

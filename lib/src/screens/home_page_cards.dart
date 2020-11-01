@@ -79,7 +79,7 @@ class _HomePageCardsState extends State<HomePageCards> {
   cardsWidget() => Expanded(
       child: LayoutBuilder(
           builder: (context, constraints) => Observer(
-              builder: (_) => cc.cForList.length == 1
+              builder: (_) => cc.cForList.length == 1 || cc.editCard != null
                   ? Container(
                       width: constraints.maxWidth,
                       margin: EdgeInsets.symmetric(
@@ -160,7 +160,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   l: 0,
                                   child: loadContainer(
                                     child: Text(
-                                        'R\$${cc.card.limit.toStringAsFixed(2)}',
+                                        'R\$${cc.card.limit.toStringAsFixed(2).replaceAll('.', ',')}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline1),
@@ -232,8 +232,24 @@ class _HomePageCardsState extends State<HomePageCards> {
                     constraint: constraint),
                 margin(
                     t: 6,
-                    child: Text('Ultimas compras',
-                        style: Theme.of(context).textTheme.subtitle2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Ultimas compras',
+                            style: Theme.of(context).textTheme.subtitle2),
+                        Observer(
+                          builder: (_) => Visibility(
+                            visible:
+                                cc.card.name != null || cc.editCard == null,
+                            child: IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () => showBottomSheet(
+                                    context: context,
+                                    builder: (context) => null)),
+                          ),
+                        )
+                      ],
+                    ),
                     constraint: constraint),
                 margin(
                     t: 2,

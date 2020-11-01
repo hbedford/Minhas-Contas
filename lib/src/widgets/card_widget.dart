@@ -49,25 +49,49 @@ class CardWidget extends StatelessWidget {
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline2)),
-                              IconButton(
-                                  color: Colors.white,
-                                  icon: editing
-                                      ? Icon(Icons.save)
-                                      : Icon(Icons.settings),
-                                  onPressed: editing
-                                      ? () => c.saveCard(context)
-                                      : f /* c.changeCard(card) */)
+                              Row(
+                                children: [
+                                  IconButton(
+                                      color: Colors.white,
+                                      icon: editing
+                                          ? Icon(Icons.save)
+                                          : Icon(Icons.settings),
+                                      onPressed: editing
+                                          ? () => c.saveCard(context)
+                                          : f /* c.changeCard(card) */),
+                                  Visibility(
+                                    visible: editing && card.id == null,
+                                    child: IconButton(
+                                        color: Colors.white,
+                                        icon: Icon(Icons.close),
+                                        onPressed: c.cancelCard
+                                        /* c.changeCard(card) */),
+                                  ),
+                                ],
+                              )
                             ]),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'debito',
-                                style: Theme.of(context).textTheme.headline3,
+                              Observer(
+                                builder: (_) => Visibility(
+                                  visible: card.debit,
+                                  child: Text(
+                                    'debito',
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                ),
                               ),
-                              Text(
-                                'credito',
-                                style: Theme.of(context).textTheme.headline3,
+                              Observer(
+                                builder: (_) => Visibility(
+                                  visible: card.credit,
+                                  child: Text(
+                                    'credito',
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                ),
                               )
                             ]),
                         Row(
