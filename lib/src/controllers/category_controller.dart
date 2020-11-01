@@ -41,8 +41,7 @@ abstract class _CategoryControllerBase with Store {
   changeStep(int v) => step = v;
   @action
   getCategories() async {
-    final d = DatabaseHelper.instance;
-    categories = ObservableList.of(await d.getCategories());
+    categories = ObservableList.of(await CategoryDB().getCategories());
   }
 
   @action

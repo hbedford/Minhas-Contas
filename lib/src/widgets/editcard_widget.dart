@@ -54,7 +54,6 @@ class _EditCardWidgetState extends State<EditCardWidget> {
         fontWeight: FontWeight.w700,
         fontSize: 16);
     name.text = cc.editCard.name;
-    double keyboard = WidgetsBinding.instance.window.viewInsets.bottom;
 
     return Expanded(
       child: LayoutBuilder(

@@ -23,24 +23,12 @@ class DatabaseHelper {
   }
 
   Future _onCreate(Database db, int version) async {
-    await db.execute(
-        "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL UNIQUE,password TEXT NOT NULL,pin INT);");
-    await db.execute(
-        "CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,color TEXT NOT NULL);");
+    await db.execute(UserDB().createTable);
+    await db.execute(CategoryDB().createTable);
     await db.execute(
         "CREATE TABLE subcategories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,category_id INTEGER, FOREIGN KEY(category_id)REFERENCES categories);");
-    await db.execute(
-        "CREATE TABLE cards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER,number TEXT,color TEXT NOT NULL,limitcard REAL, FOREIGN KEY(user_id) REFERENCES users);");
-  }
-
-  Future<int> registerUser(UserModel user) async {
-    try {
-      Database db = await instance.database;
-
-      return await db.insert('users', user.map);
-    } catch (e) {
-      return null;
-    }
+    await db.execute(CardDB().createTable);
+    await db.execute(PaymentDB().createTable);
   }
 
   Future<int> registerCategory(CategoryModel category) async {
@@ -55,36 +43,68 @@ class DatabaseHelper {
         await db.insert('subcategories', subcategory.registerToMapSubCategory);
     return id;
   }
+}
 
+class CardDB {
+  CardDB();
+  get createTable =>
+      "CREATE TABLE cards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER,number TEXT,color TEXT NOT NULL,limitcard REAL, FOREIGN KEY(user_id) REFERENCES users);";
+}
+
+class CategoryDB {
+  CategoryDB();
+  get createTable =>
+      "CREATE TABLE categories(id INTEGER PRIMARY KEY,name TEXT NOT NULL,color TEXT NOT NULL);";
   Future<List> getCategories() async {
-    Database db = await instance.database;
+    Database db = await DatabaseHelper.instance.database;
     List<Map> list = await db.query('categories');
     List<CategoryModel> l = list.map((e) => CategoryModel.fromMap(e)).toList();
     return l;
   }
+}
 
+class UserDB {
+  UserDB();
+  Future<int> registerUser(UserModel user) async {
+    try {
+      Database db = await DatabaseHelper.instance.database;
+
+      return await db.insert('users', user.map);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  get createTable =>
+      "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT NOT NULL,email TEXT NOT NULL UNIQUE,password TEXT NOT NULL,pin INT);";
   Future<UserModel> getUserWithEmailAndPassword(
       String email, String password) async {
-    Database db = await instance.database;
+    Database db = await DatabaseHelper.instance.database;
     List<Map> list = await db.query('users',
         where: 'email = ? and password = ? ', whereArgs: [email, password]);
     return list.length > 0 ? UserModel.fromMap(list.first) : null;
   }
 
   Future<int> addPIN(int pin, int id) async {
-    Database db = await instance.database;
+    Database db = await DatabaseHelper.instance.database;
     return await db
         .rawUpdate('UPDATE users SET pin = ? WHERE id = ?', [pin, id]);
   }
 
   Future<int> updateUser(Map<String, dynamic> row) async {
-    Database db = await instance.database;
+    Database db = await DatabaseHelper.instance.database;
     return await db
         .update('users', row, where: 'id =?', whereArgs: [row['id']]);
   }
 
   Future<int> deleteUser(int id) async {
-    Database db = await instance.database;
+    Database db = await DatabaseHelper.instance.database;
     return await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }
+}
+
+class PaymentDB {
+  PaymentDB();
+  get createTable =>
+      "CREATE TABLE payments(id INTEGER PRIMARY KEY,name TEXT NOT NULL,category_id INTEGER NOT NULL,date TEXT NOT NULL,value REAL);";
 }

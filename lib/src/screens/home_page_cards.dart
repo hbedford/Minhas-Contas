@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
+import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
 import 'package:minhasconta/src/widgets/editcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -232,6 +233,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                     constraint: constraint),
                 margin(
                     t: 6,
+                    r: 3,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -239,13 +241,13 @@ class _HomePageCardsState extends State<HomePageCards> {
                             style: Theme.of(context).textTheme.subtitle2),
                         Observer(
                           builder: (_) => Visibility(
-                            visible:
-                                cc.card.name != null || cc.editCard == null,
-                            child: IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () => showBottomSheet(
+                            visible: cc.card.id != null && cc.editCard == null,
+                            child: InkWell(
+                                child: Icon(Icons.add),
+                                onTap: () => showBottomSheet(
                                     context: context,
-                                    builder: (context) => null)),
+                                    builder: (context) =>
+                                        AddNewPaymentWidget())),
                           ),
                         )
                       ],

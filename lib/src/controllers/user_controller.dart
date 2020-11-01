@@ -34,9 +34,8 @@ abstract class _UserControllerBase with Store {
       this.forgetSteps = false});
   @computed
   Future<bool> get getUserInfo async {
-    final db = DatabaseHelper.instance;
     UserModel u =
-        await db.getUserWithEmailAndPassword(user.email, user.password);
+        await UserDB().getUserWithEmailAndPassword(user.email, user.password);
     if (u != null) changeUser(u);
     return u != null;
   }
@@ -84,9 +83,7 @@ abstract class _UserControllerBase with Store {
 
   saveInfos() async {
     SharedPreferences s = await SharedPreferences.getInstance();
-    print(user.email);
     s.setString('email', user.email);
-    print(s.getString('email'));
     s.setString('password', user.password);
   }
 
@@ -100,8 +97,6 @@ abstract class _UserControllerBase with Store {
     SharedPreferences s = await SharedPreferences.getInstance();
     String email = s.getString('email');
     String password = s.getString('password');
-    print(email);
-    print(password);
     user.changeEmail(email);
     user.changePassword(password);
     startLogIn(context);
@@ -116,8 +111,7 @@ abstract class _UserControllerBase with Store {
         repeatPassword != null &&
         password == repeatPassword &&
         name != null) {
-      final db = DatabaseHelper.instance;
-      int i = await db.registerUser(
+      int i = await UserDB().registerUser(
           UserModel(email: email, name: name, password: password));
       if (i != null && i > 0) {
         changeUser(
@@ -137,8 +131,7 @@ abstract class _UserControllerBase with Store {
 
   @action
   addPin(BuildContext context) async {
-    final db = DatabaseHelper.instance;
-    int i = (await db.addPIN(pin, user.id));
+    int i = (await UserDB().addPIN(pin, user.id));
     if (i > 0) {
       Navigator.pushReplacementNamed(context, '/home');
       flushBar(
