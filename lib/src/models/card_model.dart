@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/user_controller.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/models/paymentsofday_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
@@ -74,6 +76,18 @@ abstract class _CardModelBase with Store {
         this.credit = false,
         this.debit = false,
         this.limit = 0.0;
+  _CardModelBase.fromMap(Map e) {
+    this.id = e['id'];
+    this.name = e['name'];
+    this.number = e['number'];
+    this.limit = e['limitcard'];
+    this.show = true;
+    this.credit = e['credit'] == 0 ? false : true;
+    this.debit = e['debit'] == 0 ? false : true;
+    this.color = Color(e['color']);
+  }
+  @action
+  changeId(int i) => id = i;
   @action
   changeName(String n) => name = n;
   @action
@@ -134,6 +148,20 @@ abstract class _CardModelBase with Store {
         total = total + e.value;
     });
     return total;
+  }
+
+  @computed
+  Map<String, dynamic> get map {
+    final c = GetIt.I.get<UserController>();
+    return {
+      'name': name,
+      'number': number,
+      'color': color.value,
+      'limitcard': limit,
+      'user_id': c.user.id,
+      'credit': (credit ?? false) ? 1 : 0,
+      'debit': (debit ?? false) ? 1 : 0,
+    };
   }
 
   @computed

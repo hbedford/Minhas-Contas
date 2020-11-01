@@ -30,7 +30,7 @@ void main() async {
   getIt.registerSingleton<CardsController>(
     CardsController(
       card: CardModel(),
-      cards: ObservableList.of(
+      /* cards: ObservableList.of(
         [
           CardModel(
             id: 1,
@@ -84,7 +84,7 @@ void main() async {
             ),
           ),
         ],
-      ),
+      ), */
     ),
   );
   final c = GetIt.I.get<CardsController>();

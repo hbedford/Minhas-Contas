@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
@@ -34,10 +35,13 @@ abstract class _UserControllerBase with Store {
       this.forgetSteps = false});
   @computed
   Future<bool> get getUserInfo async {
-    UserModel u =
-        await UserDB().getUserWithEmailAndPassword(user.email, user.password);
-    if (u != null) changeUser(u);
-    return u != null;
+    if (user.emailIsValid && user.passwordIsValid) {
+      UserModel u =
+          await UserDB().getUserWithEmailAndPassword(user.email, user.password);
+      changeUser(u);
+      return u != null;
+    } else
+      return false;
   }
 
   @action
@@ -50,19 +54,25 @@ abstract class _UserControllerBase with Store {
   changeRemember(bool v) => remember = v;
   @action
   startLogIn(BuildContext context) async {
-    if (user.emailIsValid && user.passwordIsValid) {
-      if (await getUserInfo) {
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-      } else
-        Navigator.pushReplacementNamed(context, '/login');
+    /* if (user.emailIsValid && user.passwordIsValid) { */
+
+    if (await getUserInfo) {
+      final c = GetIt.I.get<CardsController>();
+      c.changeCards(await CardDB().getCards(user.id));
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } else
       Navigator.pushReplacementNamed(context, '/login');
+    /* } else
+      Navigator.pushReplacementNamed(context, '/login');
+  } */
   }
 
   @action
   logIn(BuildContext context) async {
     if (user.emailIsValid && user.passwordIsValid) {
       if (await getUserInfo) {
+        final c = GetIt.I.get<CardsController>();
+        c.changeCards(await CardDB().getCards(user.id));
         Navigator.pushReplacementNamed(context, '/home');
         if (remember)
           saveInfos();
@@ -93,7 +103,7 @@ abstract class _UserControllerBase with Store {
     s.setString('password', null);
   }
 
-  Future getInfosShared(BuildContext context) async {
+  getInfosShared(BuildContext context) async {
     SharedPreferences s = await SharedPreferences.getInstance();
     String email = s.getString('email');
     String password = s.getString('password');
@@ -117,7 +127,7 @@ abstract class _UserControllerBase with Store {
         changeUser(
             UserModel(email: email, password: password, name: name, id: i));
 
-        saveInfos();
+        /* saveInfos(); */
         return true;
       } else {
         flushBar(
@@ -133,6 +143,8 @@ abstract class _UserControllerBase with Store {
   addPin(BuildContext context) async {
     int i = (await UserDB().addPIN(pin, user.id));
     if (i > 0) {
+      final c = GetIt.I.get<CardsController>();
+      c.changeCards(await CardDB().getCards(user.id));
       Navigator.pushReplacementNamed(context, '/home');
       flushBar(
               message: 'Você se registrou com sucesso',

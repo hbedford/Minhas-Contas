@@ -8,8 +8,7 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-        Duration(seconds: 3), () async => await c.getInfosShared(context));
+    Future.delayed(Duration(seconds: 3), () => c.getInfosShared(context));
     return BackGround(
       child: Scaffold(
         backgroundColor: Colors.transparent,

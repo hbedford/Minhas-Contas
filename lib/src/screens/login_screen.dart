@@ -267,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   )),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 FlatButton(
-                  onPressed: () => null,
+                  onPressed: () => c.changeRemember(!c.remember),
                   child: Row(
                     children: [
                       Icon(Icons.check_box_outline_blank),
@@ -330,11 +330,27 @@ class _LoginScreenState extends State<LoginScreen> {
           duration: Duration(milliseconds: !animate ? 100 : 700),
           curve: Curves.easeOut,
           right: loginWidget
-              ? (swap ? !animate ? constraint.maxWidth * 0.02 : 1.0 : null)
-              : (swap ? null : !animate ? constraint.maxWidth * 0.04 : 1.0),
+              ? (swap
+                  ? !animate
+                      ? constraint.maxWidth * 0.02
+                      : 1.0
+                  : null)
+              : (swap
+                  ? null
+                  : !animate
+                      ? constraint.maxWidth * 0.04
+                      : 1.0),
           left: loginWidget
-              ? (swap ? null : !animate ? constraint.maxWidth * 0.04 : 1.0)
-              : (swap ? !animate ? constraint.maxWidth * 0.02 : 1.0 : null),
+              ? (swap
+                  ? null
+                  : !animate
+                      ? constraint.maxWidth * 0.04
+                      : 1.0)
+              : (swap
+                  ? !animate
+                      ? constraint.maxWidth * 0.02
+                      : 1.0
+                  : null),
           child: AnimatedContainer(
             duration: Duration(milliseconds: !animate ? 400 : 100),
             margin: EdgeInsets.only(

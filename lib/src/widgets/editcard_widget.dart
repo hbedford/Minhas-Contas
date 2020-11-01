@@ -38,7 +38,10 @@ class _EditCardWidgetState extends State<EditCardWidget> {
 
   TextEditingController name = TextEditingController();
 
-  TextEditingController number = MaskedTextController(mask: '0000000000000000');
+  TextEditingController number = MaskedTextController(
+      mask: '#### #### #### ####',
+      translator: {"#": RegExp(r'[0-9]')},
+      text: '0000 0000 0000 0000');
   Duration duration = Duration(milliseconds: 200);
   dismissKeyboard(BuildContext context) {
     if (FocusScope.of(context).hasFocus) {
@@ -321,7 +324,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                   height: constraints.maxHeight - 5,
                   width: constraints.maxWidth,
                   child: textField(
-                      onChanged: (v) => cc.editCard.changeNumber(v),
+                      /* onChanged: (v) => cc.editCard.changeNumber(v), */
                       type: TextInputType.numberWithOptions(),
                       label: 'Número',
                       controller: number,

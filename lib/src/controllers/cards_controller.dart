@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
@@ -53,7 +54,9 @@ abstract class _CardsControllerBase with Store {
 
   //Necessario verificar os dados
   @action
-  saveCard(BuildContext context) {
+  changeCards(List<CardModel> l) => cards = ObservableList.of(l);
+  @action
+  saveCard(BuildContext context) async {
     /* if (editCard != null) { */
     if (editCard.isAllValid) {
       if (/* cards.indexOf(editCard) != -1 */ editCard.id != null) {
@@ -61,8 +64,12 @@ abstract class _CardsControllerBase with Store {
         cards[v] = editCard;
         changeEditCard(null);
       } else {
-        cards.add(editCard);
-        changeEditCard(null);
+        int v = await CardDB().registerCard(editCard);
+        if (v != null) {
+          editCard.changeId(v);
+          cards.add(editCard);
+          changeEditCard(null);
+        }
       }
     } else {
       flushBar(color: Colors.red, title: editCard.invalidString).show(context);
