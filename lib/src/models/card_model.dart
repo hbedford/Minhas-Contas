@@ -82,6 +82,8 @@ abstract class _CardModelBase with Store {
     this.number = e['number'];
     this.limit = e['limitcard'];
     this.show = true;
+    this.payments =
+        ObservableList.of([PaymentModel(value: 10, date: DateTime.now())]);
     this.credit = e['credit'] == 0 ? false : true;
     this.debit = e['debit'] == 0 ? false : true;
     this.color = Color(e['color']);

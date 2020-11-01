@@ -37,6 +37,13 @@ mixin _$CardModel on _CardModelBase, Store {
       (_$totalThisMonthComputed ??= Computed<double>(() => super.totalThisMonth,
               name: '_CardModelBase.totalThisMonth'))
           .value;
+  Computed<Map<String, dynamic>> _$mapComputed;
+
+  @override
+  Map<String, dynamic> get map =>
+      (_$mapComputed ??= Computed<Map<String, dynamic>>(() => super.map,
+              name: '_CardModelBase.map'))
+          .value;
   Computed<List<PaymentModel>> _$pThisMonthComputed;
 
   @override
@@ -79,6 +86,12 @@ mixin _$CardModel on _CardModelBase, Store {
       (_$number04Computed ??= Computed<String>(() => super.number04,
               name: '_CardModelBase.number04'))
           .value;
+  Computed<String> _$numbersComputed;
+
+  @override
+  String get numbers => (_$numbersComputed ??=
+          Computed<String>(() => super.numbers, name: '_CardModelBase.numbers'))
+      .value;
   Computed<bool> _$isValidNameComputed;
 
   @override
@@ -417,6 +430,17 @@ mixin _$CardModel on _CardModelBase, Store {
       ActionController(name: '_CardModelBase');
 
   @override
+  dynamic changeId(int i) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeId');
+    try {
+      return super.changeId(i);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeName(String n) {
     final _$actionInfo = _$_CardModelBaseActionController.startAction(
         name: '_CardModelBase.changeName');
@@ -628,12 +652,14 @@ totalOfPayments: ${totalOfPayments},
 creditDebitIsValid: ${creditDebitIsValid},
 actualTotalLimit: ${actualTotalLimit},
 totalThisMonth: ${totalThisMonth},
+map: ${map},
 pThisMonth: ${pThisMonth},
 orderByCategory: ${orderByCategory},
 number01: ${number01},
 number02: ${number02},
 number03: ${number03},
 number04: ${number04},
+numbers: ${numbers},
 isValidName: ${isValidName},
 isValidNumber: ${isValidNumber},
 isValidColor: ${isValidColor},

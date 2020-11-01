@@ -33,6 +33,10 @@ abstract class _PaymentModelBase with Store {
       this.value = 0,
       this.tPayment,
       this.cardId});
+  _PaymentModelBase.fromMap(Map e)
+      : this.id = e['id'],
+        this.name = e['name'],
+        this.date = DateTime.parse(e['date']);
   @action
   changeName(String n) => name = n;
   @action
@@ -48,4 +52,15 @@ abstract class _PaymentModelBase with Store {
 
   @computed
   String get dateToString => Converting().dateToString(date);
+  @computed
+  String get timeToString => Converting().timeToString(time);
+  @computed
+  Map get map => {
+        'id': id,
+        'name': name,
+        'date': dateToString,
+        'value': value,
+        'card_id': cardId,
+        'time': timeToString,
+      };
 }

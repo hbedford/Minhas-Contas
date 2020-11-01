@@ -21,20 +21,26 @@ class _HomePageCardsState extends State<HomePageCards> {
   double size = 0;
   double pointer = 0;
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: LayoutBuilder(
-            builder: (context, constraints) => Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      appBar(constraints),
-                      title(constraints),
-                      Observer(
-                          builder: (_) => cc.editCard != null
-                              ? EditCardWidget()
-                              : cardInfos())
-                    ])),
-      );
+  Widget build(BuildContext context) {
+    print((cc.card.totalThisMonth / cc.card.limit));
+    print(cc.card.limit);
+    print(cc.card.totalThisMonth);
+    return SafeArea(
+      child: LayoutBuilder(
+          builder: (context, constraints) => Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    appBar(constraints),
+                    title(constraints),
+                    Observer(
+                        builder: (_) => cc.editCard != null
+                            ? EditCardWidget()
+                            : cardInfos())
+                  ])),
+    );
+  }
+
   appBar(BoxConstraints constraints) => AnimatedContainer(
         duration: Duration(milliseconds: 200),
         child: Center(
@@ -161,7 +167,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   l: 0,
                                   child: loadContainer(
                                     child: Text(
-                                        'R\$${cc.card.limit.toStringAsFixed(2).replaceAll('.', ',')}',
+                                        'R\$${(cc.card.limit - cc.card.totalThisMonth).toStringAsFixed(2).replaceAll('.', ',')}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline1),
@@ -228,7 +234,9 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   color: Colors.green,
                                 ),
                                 height: constraint.maxHeight * 0.01,
-                                width: constraint.maxWidth * 0.4)
+                                width:
+                                    (cc.card.totalThisMonth / cc.card.limit) *
+                                        (constraint.maxWidth * 0.9))
                           ])),
                     constraint: constraint),
                 margin(
@@ -339,6 +347,10 @@ class _HomePageCardsState extends State<HomePageCards> {
           height: h * 0.9,
           width: w * 0.75,
           child: GestureDetector(
+            onTap: () {
+              cc.changeCard(card);
+              Navigator.pushNamed(context, '/card');
+            },
             onHorizontalDragStart: (d) {
               if (cc.editCard == null) {
                 pointer = d.globalPosition.dx;

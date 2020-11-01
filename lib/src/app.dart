@@ -8,6 +8,7 @@ import 'package:minhasconta/src/screens/login_screen1.dart';
 
 import 'controllers/home_controller.dart';
 import 'controllers/user_controller.dart';
+import 'screens/creditcard_screen.dart';
 
 class App extends StatelessWidget {
   final h = GetIt.instance<HomeController>();
@@ -28,7 +29,7 @@ class App extends StatelessWidget {
         '/login': (context) => LoginScreen1(),
         '/home': (context) => HomeScreen1(),
         '/categories': (context) => CategoriesScreen(),
-        /* '/card': (context) => CreditCardScreen(), */
+        '/card': (context) => CreditCardScreen(),
         '/cards': (context) => CreditCardsScreen(),
       },
       /* home: LoginScreen(), */

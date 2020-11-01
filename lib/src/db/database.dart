@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/models/category_model.dart';
+import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -126,4 +127,15 @@ class PaymentDB {
   PaymentDB();
   get createTable =>
       "CREATE TABLE payments(id INTEGER PRIMARY KEY,name TEXT NOT NULL,category_id INTEGER NOT NULL,date TEXT NOT NULL,value REAL);";
+  Future<int> registerPayment(Map map) async {
+    Database db = await DatabaseHelper.instance.database;
+    return await db.insert('payments', Map.from(map));
+  }
+
+  Future<List<PaymentModel>> getPaymentsOfMonth({int id, int month}) async {
+    Database db = await DatabaseHelper.instance.database;
+    List<Map> list = await db.query('payments',
+        where: 'card_id = ? and strftime(%m,date) = ?', whereArgs: [id, month]);
+    return list.map((e) => PaymentModel.fromMap(e)).toList();
+  }
 }

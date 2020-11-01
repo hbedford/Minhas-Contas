@@ -54,7 +54,11 @@ abstract class _CardsControllerBase with Store {
 
   //Necessario verificar os dados
   @action
-  changeCards(List<CardModel> l) => cards = ObservableList.of(l);
+  changeCards(List<CardModel> l) {
+    cards = ObservableList.of(l);
+    card = cForList.first;
+  }
+
   @action
   saveCard(BuildContext context) async {
     /* if (editCard != null) { */

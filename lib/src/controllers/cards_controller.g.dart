@@ -152,6 +152,13 @@ mixin _$CardsController on _CardsControllerBase, Store {
     });
   }
 
+  final _$saveCardAsyncAction = AsyncAction('_CardsControllerBase.saveCard');
+
+  @override
+  Future saveCard(BuildContext context) {
+    return _$saveCardAsyncAction.run(() => super.saveCard(context));
+  }
+
   final _$_CardsControllerBaseActionController =
       ActionController(name: '_CardsControllerBase');
 
@@ -244,11 +251,22 @@ mixin _$CardsController on _CardsControllerBase, Store {
   }
 
   @override
-  dynamic saveCard(BuildContext context) {
+  dynamic cancelCard() {
     final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
-        name: '_CardsControllerBase.saveCard');
+        name: '_CardsControllerBase.cancelCard');
     try {
-      return super.saveCard(context);
+      return super.cancelCard();
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeCards(List<CardModel> l) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.changeCards');
+    try {
+      return super.changeCards(l);
     } finally {
       _$_CardsControllerBaseActionController.endAction(_$actionInfo);
     }

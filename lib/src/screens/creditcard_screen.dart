@@ -1,7 +1,6 @@
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/card_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/menu_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
@@ -12,9 +11,10 @@ import '../models/menu_model.dart';
 class CreditCardScreen extends StatelessWidget {
   CreditCardScreen();
   final cardsController = GetIt.instance<CardsController>();
-  final c = GetIt.instance<CardController>();
+  final c = GetIt.instance<CardsController>();
 
   final Converting converting = Converting();
+  MenuModel actualWidget;
   final List<MenuModel> menu = [
     MenuModel(
       icon: Icon(Icons.format_list_bulleted),
@@ -31,7 +31,7 @@ class CreditCardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     menu[0].cW(0);
     menu[1].cW(1);
-    if (c.actualWidget == null) c.changeActualWidget(menu[0].widget);
+    actualWidget = menu[0];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -71,22 +71,45 @@ class CreditCardScreen extends StatelessWidget {
                     .map(
                       (e) => IconButton(
                         icon: e.icon,
-                        onPressed: () => c.changeActualWidget(e.widget),
+                        onPressed: () =>
+                            null /* c.changeActualWidget(e.widget) */,
                       ),
                     )
                     .toList(),
               )),
           Flexible(
             flex: 8,
-            child: Observer(
-                builder: (_) => Container(
-                      padding: EdgeInsets.all(20),
-                      child:
-                          c.actualWidget == 1 ? chartsWidget() : listWidget(),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20))),
+            child: LayoutBuilder(
+                builder: (context, constraint) => Container(
+                    height: constraint.maxHeight,
+                    width: constraint.maxWidth,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              icon: Icon(Icons.arrow_back_ios_outlined),
+                              onPressed: null),
+                          Text(''),
+                          IconButton(
+                              icon: Icon(Icons.arrow_forward_ios_outlined),
+                              onPressed: null)
+                        ],
+                      ),
+                      Card()
+                    ]) /* actualWidget == menu.first
+                            ? chartsWidget()
+                            : listWidget(),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20))), */
                     )),
           ),
         ],
@@ -252,4 +275,3 @@ class CreditCardScreen extends StatelessWidget {
   Widget configWidget() =>
       LayoutBuilder(builder: (context, constraints) => Column(children: []));
 }
- */

@@ -70,30 +70,54 @@ class CardWidget extends StatelessWidget {
                                 ],
                               )
                             ]),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Observer(
-                                builder: (_) => Visibility(
-                                  visible: card.debit,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Observer(
+                                    builder: (_) => Visibility(
+                                      visible: card.debit,
+                                      child: Text(
+                                        'debito',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
+                                      ),
+                                    ),
+                                  ),
+                                  Observer(
+                                    builder: (_) => Visibility(
+                                      visible: card.credit,
+                                      child: Text(
+                                        'credito',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Limite:',
+                                  style: Theme.of(context).textTheme.headline3,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
                                   child: Text(
-                                    'debito',
+                                    'R\$${card.limit}',
                                     style:
                                         Theme.of(context).textTheme.headline3,
                                   ),
                                 ),
-                              ),
-                              Observer(
-                                builder: (_) => Visibility(
-                                  visible: card.credit,
-                                  child: Text(
-                                    'credito',
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
-                                  ),
-                                ),
-                              )
-                            ]),
+                              ],
+                            )
+                          ],
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -147,6 +171,20 @@ class CardWidget extends StatelessWidget {
           ),
         ),
       );
+  margin(
+          {double t = 0,
+          double l,
+          double r = 0,
+          Widget child,
+          BoxConstraints constraint}) =>
+      Container(
+          margin: EdgeInsets.only(
+              right: (r / 100) * constraint.maxWidth ?? 0,
+              left: l == null
+                  ? constraint.maxWidth * 0.05
+                  : constraint.maxWidth * (l / 100),
+              top: constraint.maxHeight * (t / 100)),
+          child: child);
 }
 
 /* class CardWidgetAdd extends StatelessWidget {
