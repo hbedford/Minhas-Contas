@@ -1,3 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
+import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:mobx/mobx.dart';
 part 'payment_controller.g.dart';
@@ -16,8 +20,17 @@ abstract class _PaymentControllerBase with Store {
   changePayment(PaymentModel p) => payment = p;
   @action
   initiatePayment() {
-    changeStep(0);
-    payment = PaymentModel();
+    final c = GetIt.I.get<CardsController>();
+    if (c.card != null && c.card.types.length > 1) {
+      changeStep(0);
+      payment = PaymentModel(cardId: c.card.id, type: null);
+    } else if (c.card != null && c.card.types.length == 1) {
+      changeStep(2);
+      payment = PaymentModel(cardId: c.card.id, type: c.card.types.first);
+    } else {
+      changeStep(0);
+      payment = PaymentModel();
+    }
   }
 
   @action
@@ -27,20 +40,46 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
-  backStep(int v) {
-    if (v == 0) {
+  backStep(BuildContext context) {
+    if (step == 1) {
       payment.changeTypePayment(null);
       changeStep(0);
     }
-    if (v == 1) {
+    if (step == 2) {
       payment.changeCardId(null);
       changeStep(1);
+    } else if (step == 0) {
+      Navigator.pop(context);
+    } else if (step == 4) {
+      changeStep(2);
+    } else {
+      changeStep(step - 1);
     }
   }
 
   @action
+  cancelPayment(BuildContext context) {
+    changePayment(null);
+    changeStep(null);
+    Navigator.pop(context);
+  }
+
+  @action
   changeTypePayment(int i) {
-    changeStep(1);
-    payment.changeTypePayment(i);
+    final c = GetIt.I.get<CardsController>();
+    final cc = GetIt.I.get<PaymentsController>();
+    if (c.card == null)
+      changeStep(1);
+    else
+      changeStep(2);
+    payment.changeTypePayment(cc.types[i]);
+  }
+
+  @computed
+  double get sizeBottom {
+    if (step == 0)
+      return 0.7;
+    else
+      return 0.3;
   }
 }

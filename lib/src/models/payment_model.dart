@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
 
@@ -21,7 +22,7 @@ abstract class _PaymentModelBase with Store {
   @observable
   int cardId;
   @observable
-  int tPayment;
+  PaymentTypeModel type;
   //0 - credito / 1 - debito / 2 - dinheiro/transf
   @observable
   CategoryModel category = CategoryModel(name: '', color: Colors.red);
@@ -31,7 +32,7 @@ abstract class _PaymentModelBase with Store {
       this.category,
       this.date,
       this.value = 0,
-      this.tPayment,
+      this.type,
       this.cardId});
   _PaymentModelBase.fromMap(Map e)
       : this.id = e['id'],
@@ -46,7 +47,7 @@ abstract class _PaymentModelBase with Store {
   @action
   changeTime(TimeOfDay t) => time = t;
   @action
-  changeTypePayment(int t) => tPayment = t;
+  changeTypePayment(PaymentTypeModel t) => type = t;
   @action
   changeCardId(int i) => cardId = i;
 
@@ -62,5 +63,6 @@ abstract class _PaymentModelBase with Store {
         'value': value,
         'card_id': cardId,
         'time': timeToString,
+        'type': type.id,
       };
 }

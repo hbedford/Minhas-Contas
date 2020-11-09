@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/models/paymentsofday_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
 
-import 'cardtype_model.dart';
 import 'category_model.dart';
 part 'card_model.g.dart';
 
@@ -34,8 +35,6 @@ abstract class _CardModelBase with Store {
   String mark;
   @observable
   String company;
-  @observable
-  CardTypeModel type;
   @observable
   DateTime bestDateToPay;
   @observable
@@ -82,8 +81,7 @@ abstract class _CardModelBase with Store {
     this.number = e['number'];
     this.limit = e['limitcard'];
     this.show = true;
-    this.payments =
-        ObservableList.of([PaymentModel(value: 10, date: DateTime.now())]);
+    this.payments = ObservableList.of([]);
     this.credit = e['credit'] == 0 ? false : true;
     this.debit = e['debit'] == 0 ? false : true;
     this.color = Color(e['color']);
@@ -224,6 +222,14 @@ abstract class _CardModelBase with Store {
       isValidColor &&
       isValidLimit &&
       creditDebitIsValid;
+  @computed
+  List<PaymentTypeModel> get types {
+    List<PaymentTypeModel> t = [];
+    final c = GetIt.I.get<PaymentsController>();
+    if (debit) t.add(c.types[0]);
+    if (credit) t.add(c.types[1]);
+    return t;
+  }
   /* @computed
   List<CategoryModel> get orderByCategory {
     List<CategoryModel> list = [];

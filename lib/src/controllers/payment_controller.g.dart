@@ -9,6 +9,14 @@ part of 'payment_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PaymentController on _PaymentControllerBase, Store {
+  Computed<double> _$sizeBottomComputed;
+
+  @override
+  double get sizeBottom =>
+      (_$sizeBottomComputed ??= Computed<double>(() => super.sizeBottom,
+              name: '_PaymentControllerBase.sizeBottom'))
+          .value;
+
   final _$stepAtom = Atom(name: '_PaymentControllerBase.step');
 
   @override
@@ -87,11 +95,22 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
-  dynamic backStep(int v) {
+  dynamic backStep(BuildContext context) {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
         name: '_PaymentControllerBase.backStep');
     try {
-      return super.backStep(v);
+      return super.backStep(context);
+    } finally {
+      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic cancelPayment(BuildContext context) {
+    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
+        name: '_PaymentControllerBase.cancelPayment');
+    try {
+      return super.cancelPayment(context);
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -112,7 +131,8 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   String toString() {
     return '''
 step: ${step},
-payment: ${payment}
+payment: ${payment},
+sizeBottom: ${sizeBottom}
     ''';
   }
 }

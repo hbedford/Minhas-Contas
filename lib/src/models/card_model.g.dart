@@ -127,6 +127,13 @@ mixin _$CardModel on _CardModelBase, Store {
       (_$isAllValidComputed ??= Computed<bool>(() => super.isAllValid,
               name: '_CardModelBase.isAllValid'))
           .value;
+  Computed<List<PaymentTypeModel>> _$typesComputed;
+
+  @override
+  List<PaymentTypeModel> get types =>
+      (_$typesComputed ??= Computed<List<PaymentTypeModel>>(() => super.types,
+              name: '_CardModelBase.types'))
+          .value;
   Computed<List<dynamic>> _$pSortedPaymentsComputed;
 
   @override
@@ -303,21 +310,6 @@ mixin _$CardModel on _CardModelBase, Store {
   set company(String value) {
     _$companyAtom.reportWrite(value, super.company, () {
       super.company = value;
-    });
-  }
-
-  final _$typeAtom = Atom(name: '_CardModelBase.type');
-
-  @override
-  CardTypeModel get type {
-    _$typeAtom.reportRead();
-    return super.type;
-  }
-
-  @override
-  set type(CardTypeModel value) {
-    _$typeAtom.reportWrite(value, super.type, () {
-      super.type = value;
     });
   }
 
@@ -640,7 +632,6 @@ dueDate: ${dueDate},
 last4Digits: ${last4Digits},
 mark: ${mark},
 company: ${company},
-type: ${type},
 bestDateToPay: ${bestDateToPay},
 active: ${active},
 optionsActive: ${optionsActive},
@@ -665,6 +656,7 @@ isValidNumber: ${isValidNumber},
 isValidColor: ${isValidColor},
 isValidLimit: ${isValidLimit},
 isAllValid: ${isAllValid},
+types: ${types},
 pSortedPayments: ${pSortedPayments},
 paymentsPerDate: ${paymentsPerDate},
 amountPaymentsThisMonth: ${amountPaymentsThisMonth},

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
+import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
+import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
@@ -22,9 +24,6 @@ class _HomePageCardsState extends State<HomePageCards> {
   double pointer = 0;
   @override
   Widget build(BuildContext context) {
-    print((cc.card.totalThisMonth / cc.card.limit));
-    print(cc.card.limit);
-    print(cc.card.totalThisMonth);
     return SafeArea(
       child: LayoutBuilder(
           builder: (context, constraints) => Column(
@@ -167,7 +166,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   l: 0,
                                   child: loadContainer(
                                     child: Text(
-                                        'R\$${(cc.card.limit - cc.card.totalThisMonth).toStringAsFixed(2).replaceAll('.', ',')}',
+                                        'R\$${cc.card.name != null ? (cc.card.limit - cc.card.totalThisMonth).toStringAsFixed(2).replaceAll('.', ',') : '00,00'}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline1),
@@ -234,9 +233,10 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   color: Colors.green,
                                 ),
                                 height: constraint.maxHeight * 0.01,
-                                width:
-                                    (cc.card.totalThisMonth / cc.card.limit) *
-                                        (constraint.maxWidth * 0.9))
+                                width: cc.card.name != null
+                                    ? (cc.card.totalThisMonth / cc.card.limit) *
+                                        (constraint.maxWidth * 0.9)
+                                    : 0.0)
                           ])),
                     constraint: constraint),
                 margin(
@@ -252,10 +252,15 @@ class _HomePageCardsState extends State<HomePageCards> {
                             visible: cc.card.id != null && cc.editCard == null,
                             child: InkWell(
                                 child: Icon(Icons.add),
-                                onTap: () => showBottomSheet(
+                                onTap: () {
+                                  final p = GetIt.I.get<PaymentController>();
+                                  p.initiatePayment();
+                                  showBottomSheet(
+                                    backgroundColor: Colors.transparent,
                                     context: context,
-                                    builder: (context) =>
-                                        AddNewPaymentWidget())),
+                                    builder: (context) => AddNewPaymentWidget(),
+                                  );
+                                }),
                           ),
                         )
                       ],

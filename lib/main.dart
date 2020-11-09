@@ -4,18 +4,16 @@ import 'package:minhasconta/src/controllers/category_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
+import 'package:minhasconta/src/controllers/payments_controller.dart';
+import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/card_model.dart';
-import 'package:minhasconta/src/models/category_model.dart';
+import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
-
 import 'src/app.dart';
-/* 
-import 'src/controllers/card_controller.dart'; */
 import 'src/controllers/user_controller.dart';
-import 'src/models/payment_model.dart';
 
 void main() async {
   GetIt getIt = GetIt.instance;
@@ -25,6 +23,11 @@ void main() async {
   getIt.registerSingleton<CategoryController>(
       CategoryController(categories: [].asObservable()));
   getIt.registerSingleton<PaymentController>(PaymentController());
+  getIt.registerSingleton<PaymentsController>(PaymentsController(types: [
+    PaymentTypeModel(id: 0, name: 'Debito'),
+    PaymentTypeModel(id: 1, name: 'Credito')
+  ]));
+  getIt.registerSingleton<ProjectController>(ProjectController());
   getIt.registerSingleton<ProjectsController>(
       ProjectsController(projects: [].asObservable()));
   getIt.registerSingleton<CardsController>(

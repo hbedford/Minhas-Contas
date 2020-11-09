@@ -16,6 +16,20 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
       (_$dateToStringComputed ??= Computed<String>(() => super.dateToString,
               name: '_PaymentModelBase.dateToString'))
           .value;
+  Computed<String> _$timeToStringComputed;
+
+  @override
+  String get timeToString =>
+      (_$timeToStringComputed ??= Computed<String>(() => super.timeToString,
+              name: '_PaymentModelBase.timeToString'))
+          .value;
+  Computed<Map<dynamic, dynamic>> _$mapComputed;
+
+  @override
+  Map<dynamic, dynamic> get map =>
+      (_$mapComputed ??= Computed<Map<dynamic, dynamic>>(() => super.map,
+              name: '_PaymentModelBase.map'))
+          .value;
 
   final _$idAtom = Atom(name: '_PaymentModelBase.id');
 
@@ -107,18 +121,18 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
     });
   }
 
-  final _$tPaymentAtom = Atom(name: '_PaymentModelBase.tPayment');
+  final _$typeAtom = Atom(name: '_PaymentModelBase.type');
 
   @override
-  int get tPayment {
-    _$tPaymentAtom.reportRead();
-    return super.tPayment;
+  PaymentTypeModel get type {
+    _$typeAtom.reportRead();
+    return super.type;
   }
 
   @override
-  set tPayment(int value) {
-    _$tPaymentAtom.reportWrite(value, super.tPayment, () {
-      super.tPayment = value;
+  set type(PaymentTypeModel value) {
+    _$typeAtom.reportWrite(value, super.type, () {
+      super.type = value;
     });
   }
 
@@ -185,7 +199,7 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   }
 
   @override
-  dynamic changeTypePayment(int t) {
+  dynamic changeTypePayment(PaymentTypeModel t) {
     final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
         name: '_PaymentModelBase.changeTypePayment');
     try {
@@ -215,9 +229,11 @@ value: ${value},
 date: ${date},
 time: ${time},
 cardId: ${cardId},
-tPayment: ${tPayment},
+type: ${type},
 category: ${category},
-dateToString: ${dateToString}
+dateToString: ${dateToString},
+timeToString: ${timeToString},
+map: ${map}
     ''';
   }
 }
