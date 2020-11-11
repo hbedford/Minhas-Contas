@@ -27,6 +27,14 @@ class Converting {
       return false;
   }
 
+  dateDMYtoS(DateTime date) => date != null
+      ? date.day.toString().padLeft(2, '0') +
+          '-' +
+          date.month.toString().padLeft(2, '0') +
+          '-' +
+          date.year.toString()
+      : '';
+
   timeToString(TimeOfDay t) =>
       t.hour.toString().padLeft(2, '0') +
       ':' +

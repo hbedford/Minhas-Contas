@@ -12,14 +12,17 @@ abstract class _PaymentControllerBase with Store {
   @observable
   int step;
   @observable
+  int startStep;
+  @observable
   PaymentModel payment;
-  _PaymentControllerBase({this.step, this.payment});
+  _PaymentControllerBase({this.step, this.payment, this.startStep = 0});
   @action
   changeStep(int i) => step = i;
   @action
   changePayment(PaymentModel p) => payment = p;
   @action
-  initiatePayment() {
+  initiatePayment(int s) {
+    startStep = s;
     final c = GetIt.I.get<CardsController>();
     if (c.card != null && c.card.types.length > 1) {
       changeStep(0);
@@ -41,19 +44,23 @@ abstract class _PaymentControllerBase with Store {
 
   @action
   backStep(BuildContext context) {
-    if (step == 1) {
-      payment.changeTypePayment(null);
-      changeStep(0);
-    }
-    if (step == 2) {
-      payment.changeCardId(null);
-      changeStep(1);
-    } else if (step == 0) {
+    if (step == startStep) {
       Navigator.pop(context);
-    } else if (step == 4) {
-      changeStep(2);
     } else {
-      changeStep(step - 1);
+      if (step == 1) {
+        payment.changeTypePayment(null);
+        changeStep(0);
+      }
+      if (step == 2) {
+        payment.changeCardId(null);
+        changeStep(1);
+      } else if (step == 0) {
+        Navigator.pop(context);
+      } else if (step == 4) {
+        changeStep(2);
+      } else {
+        changeStep(step - 1);
+      }
     }
   }
 
@@ -79,6 +86,8 @@ abstract class _PaymentControllerBase with Store {
   double get sizeBottom {
     if (step == 0)
       return 0.7;
+    else if (step == 4)
+      return 0.4;
     else
       return 0.3;
   }

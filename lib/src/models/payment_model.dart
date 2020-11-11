@@ -50,9 +50,12 @@ abstract class _PaymentModelBase with Store {
   changeTypePayment(PaymentTypeModel t) => type = t;
   @action
   changeCardId(int i) => cardId = i;
-
+  @action
+  changeToToday() => date = DateTime.now();
   @computed
   String get dateToString => Converting().dateToString(date);
+  @computed
+  String get dateBr => Converting().dateDMYtoS(date);
   @computed
   String get timeToString => Converting().timeToString(time);
   @computed
@@ -65,4 +68,6 @@ abstract class _PaymentModelBase with Store {
         'time': timeToString,
         'type': type.id,
       };
+  @computed
+  bool get isToday => (date.compareTo(DateTime.now()) == 0);
 }

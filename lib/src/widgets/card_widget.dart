@@ -9,7 +9,13 @@ class CardWidget extends StatelessWidget {
   final Function f;
   final String title;
   final bool editing;
-  CardWidget({this.card, this.f, this.title = '', this.editing = false});
+  final bool bottomSheet;
+  CardWidget(
+      {this.card,
+      this.f,
+      this.title = '',
+      this.editing = false,
+      this.bottomSheet = false});
   final c = GetIt.I.get<CardsController>();
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -24,7 +30,8 @@ class CardWidget extends StatelessWidget {
                 horizontal: constraints.maxWidth * 0.01,
                 vertical: constraints.maxHeight * 0.07),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: card.color),
+                borderRadius: BorderRadius.circular(20),
+                color: bottomSheet ? Colors.grey : card.color),
             child: card.name == null
                 ? InkWell(
                     onTap: f,

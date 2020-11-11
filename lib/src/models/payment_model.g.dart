@@ -16,6 +16,13 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
       (_$dateToStringComputed ??= Computed<String>(() => super.dateToString,
               name: '_PaymentModelBase.dateToString'))
           .value;
+  Computed<String> _$dateBrComputed;
+
+  @override
+  String get dateBr =>
+      (_$dateBrComputed ??= Computed<String>(() => super.dateBr,
+              name: '_PaymentModelBase.dateBr'))
+          .value;
   Computed<String> _$timeToStringComputed;
 
   @override
@@ -30,6 +37,12 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
       (_$mapComputed ??= Computed<Map<dynamic, dynamic>>(() => super.map,
               name: '_PaymentModelBase.map'))
           .value;
+  Computed<bool> _$isTodayComputed;
+
+  @override
+  bool get isToday => (_$isTodayComputed ??= Computed<bool>(() => super.isToday,
+          name: '_PaymentModelBase.isToday'))
+      .value;
 
   final _$idAtom = Atom(name: '_PaymentModelBase.id');
 
@@ -221,6 +234,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   }
 
   @override
+  dynamic changeToToday() {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeToToday');
+    try {
+      return super.changeToToday();
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 id: ${id},
@@ -232,8 +256,10 @@ cardId: ${cardId},
 type: ${type},
 category: ${category},
 dateToString: ${dateToString},
+dateBr: ${dateBr},
 timeToString: ${timeToString},
-map: ${map}
+map: ${map},
+isToday: ${isToday}
     ''';
   }
 }

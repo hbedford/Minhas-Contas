@@ -32,6 +32,21 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
     });
   }
 
+  final _$startStepAtom = Atom(name: '_PaymentControllerBase.startStep');
+
+  @override
+  int get startStep {
+    _$startStepAtom.reportRead();
+    return super.startStep;
+  }
+
+  @override
+  set startStep(int value) {
+    _$startStepAtom.reportWrite(value, super.startStep, () {
+      super.startStep = value;
+    });
+  }
+
   final _$paymentAtom = Atom(name: '_PaymentControllerBase.payment');
 
   @override
@@ -73,11 +88,11 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
-  dynamic initiatePayment() {
+  dynamic initiatePayment(int s) {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
         name: '_PaymentControllerBase.initiatePayment');
     try {
-      return super.initiatePayment();
+      return super.initiatePayment(s);
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -131,6 +146,7 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   String toString() {
     return '''
 step: ${step},
+startStep: ${startStep},
 payment: ${payment},
 sizeBottom: ${sizeBottom}
     ''';

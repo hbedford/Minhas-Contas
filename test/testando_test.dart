@@ -3,7 +3,8 @@ import 'package:minhasconta/src/models/card_model.dart';
 
 void main() {
   test('testando', () {
-    CardModel card1;
-    print(card1.name ?? '');
+    DateTime date;
+    date = DateTime.now();
+    print(!(date.compareTo(DateTime.now()) == 0));
   });
 }

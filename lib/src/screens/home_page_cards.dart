@@ -35,7 +35,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                     Observer(
                         builder: (_) => cc.editCard != null
                             ? EditCardWidget()
-                            : cardInfos())
+                            : cardInfos(context))
                   ])),
     );
   }
@@ -112,7 +112,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                               .reversed
                               .toList()),
                     ))));
-  cardInfos() => Expanded(
+  cardInfos(BuildContext ctxt) => Expanded(
       flex: 2,
       child: LayoutBuilder(
           builder: (context, constraint) =>
@@ -254,10 +254,11 @@ class _HomePageCardsState extends State<HomePageCards> {
                                 child: Icon(Icons.add),
                                 onTap: () {
                                   final p = GetIt.I.get<PaymentController>();
-                                  p.initiatePayment();
-                                  showBottomSheet(
+                                  p.initiatePayment(2);
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
                                     backgroundColor: Colors.transparent,
-                                    context: context,
+                                    context: ctxt,
                                     builder: (context) => AddNewPaymentWidget(),
                                   );
                                 }),

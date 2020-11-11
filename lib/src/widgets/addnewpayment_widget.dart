@@ -4,16 +4,27 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
+import 'package:minhasconta/src/utils/dateandtime.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
 import 'package:minhasconta/src/widgets/project_widget.dart';
 
 import 'addproject_widget.dart';
 
-class AddNewPaymentWidget extends StatelessWidget {
+class AddNewPaymentWidget extends StatefulWidget {
+  @override
+  _AddNewPaymentWidgetState createState() => _AddNewPaymentWidgetState();
+}
+
+class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
   final cc = GetIt.instance<CardsController>();
+
   final c = GetIt.instance<PaymentController>();
+
   final cp = GetIt.instance<ProjectsController>();
+
   TextStyle titleStyle;
+  IconData icon = Icons.arrow_left;
+
   @override
   Widget build(BuildContext context) {
     titleStyle = TextStyle(
@@ -23,10 +34,12 @@ class AddNewPaymentWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraint) => Observer(
         builder: (_) => Container(
+          margin:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           padding: EdgeInsets.symmetric(
               horizontal: constraint.maxWidth * 0.05,
               vertical: constraint.maxHeight * 0.01),
-          height: c.sizeBottom * constraint.maxHeight,
+          height: (c.sizeBottom * constraint.maxHeight),
           width: constraint.maxWidth,
           decoration: BoxDecoration(
               color: Colors.white,
@@ -115,19 +128,23 @@ class AddNewPaymentWidget extends StatelessWidget {
           )
         ],
       );
+
   step1(BuildContext context) => Column(
         children: [
-          Flexible(
+          back(
+            () => c.backStep(context),
+            'Qual o cartão utilizado?',
+          ),
+          /* Flexible(
             child: Row(children: [
-              IconButton(
-                  icon: Icon(Icons.arrow_left),
-                  onPressed: () => c.backStep(context)),
+              back(() => c.backStep(context),
+                'Qual o cartão utilizado?',),
               Text(
                 'Qual o cartão utilizado?',
                 style: titleStyle,
               ),
             ]),
-          ),
+          ), */
           Expanded(
             flex: 4,
             child: LayoutBuilder(
@@ -139,6 +156,14 @@ class AddNewPaymentWidget extends StatelessWidget {
                         height: constraint.maxHeight * 0.3,
                         width: constraint.maxWidth * 0.9,
                         child: CardWidget(
+                          bottomSheet: cc.cForList[index] == cc.cForList.last
+                              ? true
+                              : false,
+                          f: () {
+                            Navigator.pop(context);
+                            cc.addNewCard();
+                          },
+                          title: 'Adicionar Cartão',
                           card: cc.cForList[index],
                         ),
                       ),
@@ -147,14 +172,18 @@ class AddNewPaymentWidget extends StatelessWidget {
           ),
         ],
       );
+
   step2(BuildContext context) => Column(children: [
-        Flexible(
+        back(
+          () => c.backStep(context),
+          'A despesa faz parte de algum projeto ou foi uma compra avulsa?',
+        ),
+
+        /*  Flexible(
           child: Row(children: [
             Flexible(
               flex: 1,
-              child: IconButton(
-                  icon: Icon(Icons.arrow_left),
-                  onPressed: () => c.backStep(context)),
+              child: back(() => c.backStep(context),'A despesa faz parte de algum projeto ou foi uma compra avulsa?',),
             ),
             Expanded(
               flex: 3,
@@ -164,7 +193,7 @@ class AddNewPaymentWidget extends StatelessWidget {
               ),
             )
           ]),
-        ),
+        ), */
         Expanded(
           flex: 3,
           child: Column(
@@ -183,15 +212,17 @@ class AddNewPaymentWidget extends StatelessWidget {
               ]),
         ),
       ]);
+
   step3(BuildContext context) => Column(
         children: [
-          Flexible(
+          back(() => c.backStep(context),
+              'Qual o projeto que deseja adicionar a despesa?'),
+          /* Flexible(
             child: Row(children: [
               Flexible(
                 flex: 1,
-                child: IconButton(
-                    icon: Icon(Icons.arrow_left),
-                    onPressed: () => c.backStep(context)),
+                child: back(() => c.backStep(context),
+                  'Qual o projeto que deseja adicionar a despesa?'),
               ),
               Expanded(
                 flex: 3,
@@ -200,7 +231,7 @@ class AddNewPaymentWidget extends StatelessWidget {
                 ),
               )
             ]),
-          ),
+          ), */
           Expanded(
             flex: 4,
             child: cp.projects.length > 0
@@ -228,15 +259,16 @@ class AddNewPaymentWidget extends StatelessWidget {
           )
         ],
       );
+
   step4(BuildContext context) => Column(children: [
-        Flexible(
+        back(() => c.backStep(context), 'Informações da despesa'),
+        /* Flexible(
           child: Row(
             children: [
               Flexible(
                 flex: 1,
-                child: IconButton(
-                    icon: Icon(Icons.arrow_left),
-                    onPressed: () => c.backStep(context)),
+                child: back(() => c.backStep(context),
+                  'Informações da despesa'),
               ),
               Expanded(
                 flex: 3,
@@ -247,25 +279,103 @@ class AddNewPaymentWidget extends StatelessWidget {
               )
             ],
           ),
-        ),
+        ), */
         Expanded(
+            flex: 5,
             child: Column(
-          children: [
-            Text('Produto'),
-            TextField(),
-            Text('Quantidade'),
-            TextField(),
-            Text('Foi comprado hoje?'),
-            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                RaisedButton(onPressed: () => null, child: Text('Sim')),
-                RaisedButton(
-                  onPressed: () => null,
-                  child: Text('Não'),
+                titleAndTextField(controller: null, title: 'Produto:'),
+                Spacer(
+                  flex: 1,
                 ),
+                titleAndTextField(title: 'Quantidade:'),
+                Expanded(
+                  flex: 5,
+                  child: Observer(
+                    builder: (_) => c.payment.date != null
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Dia da compra:'),
+                              InkWell(
+                                onTap: () => DateOrTimePicker().datePicker(
+                                    context: context,
+                                    first: DateTime.now()
+                                        .subtract(Duration(days: 30)),
+                                    initial: DateTime.now(),
+                                    last:
+                                        DateTime.now().add(Duration(days: 30))),
+                                child: Text(c.payment.dateBr),
+                              )
+                            ],
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Foi comprado hoje?',
+                                  style: Theme.of(context).textTheme.subtitle2),
+                              Observer(
+                                builder: (_) => Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    RaisedButton(
+                                        color: Theme.of(context).primaryColor,
+                                        onPressed: () =>
+                                            c.payment.changeToToday(),
+                                        child: Text(
+                                          'Sim',
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                    RaisedButton(
+                                      color: Theme.of(context).primaryColor,
+                                      onPressed: () => null,
+                                      child: Text(
+                                        'Não',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                )
               ],
-            ),
-          ],
-        ))
+            ))
       ]);
+  back(Function f, String title) => Flexible(
+        child: Row(
+          mainAxisAlignment: c.step > c.startStep
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
+          children: [
+            Flexible(
+                flex: 1,
+                child: Visibility(
+                  visible: c.step > c.startStep,
+                  child: IconButton(icon: Icon(Icons.arrow_left), onPressed: f),
+                )),
+            Expanded(
+              flex: 3,
+              child: Text(
+                title,
+                style: titleStyle,
+              ),
+            )
+          ],
+        ),
+      );
+  titleAndTextField({TextEditingController controller, String title}) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: Theme.of(context).textTheme.subtitle2),
+          TextField(
+            controller: controller,
+          ),
+        ],
+      );
 }
