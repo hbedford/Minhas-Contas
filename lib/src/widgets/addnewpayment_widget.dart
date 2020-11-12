@@ -173,45 +173,49 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
         ],
       );
 
-  step2(BuildContext context) => Column(children: [
-        back(
-          () => c.backStep(context),
-          'A despesa faz parte de algum projeto ou foi uma compra avulsa?',
-        ),
+  step2(BuildContext context) => Expanded(
+        flex: 10,
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          back(
+            () => c.backStep(context),
+            'A despesa faz parte de algum projeto ou foi uma compra avulsa?',
+          ),
 
-        /*  Flexible(
-          child: Row(children: [
-            Flexible(
-              flex: 1,
-              child: back(() => c.backStep(context),'A despesa faz parte de algum projeto ou foi uma compra avulsa?',),
-            ),
-            Expanded(
-              flex: 3,
-              child: Text(
-                'A despesa faz parte de algum projeto ou foi uma compra avulsa?',
-                style: titleStyle,
+          /*  Flexible(
+            child: Row(children: [
+              Flexible(
+                flex: 1,
+                child: back(() => c.backStep(context),'A despesa faz parte de algum projeto ou foi uma compra avulsa?',),
               ),
-            )
-          ]),
-        ), */
-        Expanded(
-          flex: 3,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () => c.changeStep(3),
-                  child: Text('Projeto'),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  'A despesa faz parte de algum projeto ou foi uma compra avulsa?',
+                  style: titleStyle,
                 ),
-                RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  child: Text('Avulsa'),
-                  onPressed: () => c.changeStep(4),
-                )
-              ]),
-        ),
-      ]);
+              )
+            ]),
+          ), */
+          Expanded(
+            flex: 2,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () => c.changeStep(3),
+                    child: Text('Projeto'),
+                  ),
+                  RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    child: Text('Avulsa'),
+                    onPressed: () => c.changeStep(4),
+                  )
+                ]),
+          ),
+        ]),
+      );
 
   step3(BuildContext context) => Column(
         children: [
@@ -262,42 +266,31 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
 
   step4(BuildContext context) => Column(children: [
         back(() => c.backStep(context), 'Informações da despesa'),
-        /* Flexible(
-          child: Row(
-            children: [
-              Flexible(
-                flex: 1,
-                child: back(() => c.backStep(context),
-                  'Informações da despesa'),
-              ),
-              Expanded(
-                flex: 3,
-                child: Text(
-                  'Informações da despesa',
-                  style: titleStyle,
-                ),
-              )
-            ],
-          ),
-        ), */
         Expanded(
-            flex: 5,
+            flex: 6,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                titleAndTextField(controller: null, title: 'Produto:'),
-                Spacer(
-                  flex: 1,
-                ),
-                titleAndTextField(title: 'Quantidade:'),
                 Expanded(
-                  flex: 5,
-                  child: Observer(
-                    builder: (_) => c.payment.date != null
-                        ? Column(
+                  flex: 2,
+                  child: titleAndTextField(controller: null, title: 'Produto:'),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: titleAndTextField(title: 'Quantidade:'),
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text('Dia da compra:'),
+                              Text('Dia da compra:',
+                                  style: Theme.of(context).textTheme.subtitle2),
                               InkWell(
                                 onTap: () => DateOrTimePicker().datePicker(
                                     context: context,
@@ -309,45 +302,30 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                                 child: Text(c.payment.dateBr),
                               )
                             ],
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text('Foi comprado hoje?',
-                                  style: Theme.of(context).textTheme.subtitle2),
-                              Observer(
-                                builder: (_) => Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    RaisedButton(
-                                        color: Theme.of(context).primaryColor,
-                                        onPressed: () =>
-                                            c.payment.changeToToday(),
-                                        child: Text(
-                                          'Sim',
-                                          style: TextStyle(color: Colors.white),
-                                        )),
-                                    RaisedButton(
-                                      color: Theme.of(context).primaryColor,
-                                      onPressed: () => null,
-                                      child: Text(
-                                        'Não',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                          ))
+                    ],
                   ),
-                )
+                ),
+                Spacer(),
+                Flexible(
+                    flex: 2,
+                    child: RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () => null,
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        'Registrar Despesa',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
+                      ),
+                    ))
               ],
             ))
       ]);
   back(Function f, String title) => Flexible(
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: c.step > c.startStep
               ? MainAxisAlignment.start
               : MainAxisAlignment.center,
@@ -368,14 +346,25 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
           ],
         ),
       );
-  titleAndTextField({TextEditingController controller, String title}) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: Theme.of(context).textTheme.subtitle2),
-          TextField(
-            controller: controller,
+  titleAndTextField({TextEditingController controller, String title}) =>
+      LayoutBuilder(
+        builder: (context, constraint) => Container(
+          height: constraint.maxHeight,
+          width: constraint.maxWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: Theme.of(context).textTheme.subtitle2),
+              Container(
+                height: constraint.maxHeight * 0.5,
+                width: constraint.maxWidth,
+                child: TextField(
+                  controller: controller,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       );
 }

@@ -26,13 +26,15 @@ abstract class _PaymentControllerBase with Store {
     final c = GetIt.I.get<CardsController>();
     if (c.card != null && c.card.types.length > 1) {
       changeStep(0);
-      payment = PaymentModel(cardId: c.card.id, type: null);
+      payment =
+          PaymentModel(cardId: c.card.id, type: null, date: DateTime.now());
     } else if (c.card != null && c.card.types.length == 1) {
       changeStep(2);
-      payment = PaymentModel(cardId: c.card.id, type: c.card.types.first);
+      payment = PaymentModel(
+          cardId: c.card.id, type: c.card.types.first, date: DateTime.now());
     } else {
       changeStep(0);
-      payment = PaymentModel();
+      payment = PaymentModel(date: DateTime.now());
     }
   }
 
@@ -86,8 +88,10 @@ abstract class _PaymentControllerBase with Store {
   double get sizeBottom {
     if (step == 0)
       return 0.7;
+    else if (step == 2)
+      return 0.25;
     else if (step == 4)
-      return 0.4;
+      return 0.3;
     else
       return 0.3;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
@@ -21,6 +22,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [const Locale('pt', 'BR')],
+      locale: Locale('pt', 'BR'),
       initialRoute: '/',
       routes: {
         /* 
