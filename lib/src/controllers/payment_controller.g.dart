@@ -143,6 +143,17 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
+  dynamic registerPayment(BuildContext context) {
+    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
+        name: '_PaymentControllerBase.registerPayment');
+    try {
+      return super.registerPayment(context);
+    } finally {
+      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 step: ${step},

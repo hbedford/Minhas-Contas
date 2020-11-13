@@ -43,6 +43,69 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   bool get isToday => (_$isTodayComputed ??= Computed<bool>(() => super.isToday,
           name: '_PaymentModelBase.isToday'))
       .value;
+  Computed<bool> _$nameIsValidComputed;
+
+  @override
+  bool get nameIsValid =>
+      (_$nameIsValidComputed ??= Computed<bool>(() => super.nameIsValid,
+              name: '_PaymentModelBase.nameIsValid'))
+          .value;
+  Computed<bool> _$dateIsValidComputed;
+
+  @override
+  bool get dateIsValid =>
+      (_$dateIsValidComputed ??= Computed<bool>(() => super.dateIsValid,
+              name: '_PaymentModelBase.dateIsValid'))
+          .value;
+  Computed<bool> _$valueIsValidComputed;
+
+  @override
+  bool get valueIsValid =>
+      (_$valueIsValidComputed ??= Computed<bool>(() => super.valueIsValid,
+              name: '_PaymentModelBase.valueIsValid'))
+          .value;
+  Computed<bool> _$cardIsValidComputed;
+
+  @override
+  bool get cardIsValid =>
+      (_$cardIsValidComputed ??= Computed<bool>(() => super.cardIsValid,
+              name: '_PaymentModelBase.cardIsValid'))
+          .value;
+  Computed<bool> _$amountIsValidComputed;
+
+  @override
+  bool get amountIsValid =>
+      (_$amountIsValidComputed ??= Computed<bool>(() => super.amountIsValid,
+              name: '_PaymentModelBase.amountIsValid'))
+          .value;
+  Computed<bool> _$timeIsValidComputed;
+
+  @override
+  bool get timeIsValid =>
+      (_$timeIsValidComputed ??= Computed<bool>(() => super.timeIsValid,
+              name: '_PaymentModelBase.timeIsValid'))
+          .value;
+  Computed<bool> _$typeIsValidComputed;
+
+  @override
+  bool get typeIsValid =>
+      (_$typeIsValidComputed ??= Computed<bool>(() => super.typeIsValid,
+              name: '_PaymentModelBase.typeIsValid'))
+          .value;
+  Computed<bool> _$isAllValidWithCardComputed;
+
+  @override
+  bool get isAllValidWithCard => (_$isAllValidWithCardComputed ??=
+          Computed<bool>(() => super.isAllValidWithCard,
+              name: '_PaymentModelBase.isAllValidWithCard'))
+      .value;
+  Computed<String> _$isNotValidWithCardComputed;
+
+  @override
+  String get isNotValidWithCard => (_$isNotValidWithCardComputed ??=
+          Computed<String>(() => super.isNotValidWithCard,
+              name: '_PaymentModelBase.isNotValidWithCard'))
+      .value;
 
   final _$idAtom = Atom(name: '_PaymentModelBase.id');
 
@@ -119,6 +182,21 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
     });
   }
 
+  final _$amountAtom = Atom(name: '_PaymentModelBase.amount');
+
+  @override
+  int get amount {
+    _$amountAtom.reportRead();
+    return super.amount;
+  }
+
+  @override
+  set amount(int value) {
+    _$amountAtom.reportWrite(value, super.amount, () {
+      super.amount = value;
+    });
+  }
+
   final _$cardIdAtom = Atom(name: '_PaymentModelBase.cardId');
 
   @override
@@ -146,6 +224,51 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   set type(PaymentTypeModel value) {
     _$typeAtom.reportWrite(value, super.type, () {
       super.type = value;
+    });
+  }
+
+  final _$nameEditAtom = Atom(name: '_PaymentModelBase.nameEdit');
+
+  @override
+  TextEditingController get nameEdit {
+    _$nameEditAtom.reportRead();
+    return super.nameEdit;
+  }
+
+  @override
+  set nameEdit(TextEditingController value) {
+    _$nameEditAtom.reportWrite(value, super.nameEdit, () {
+      super.nameEdit = value;
+    });
+  }
+
+  final _$amountEditAtom = Atom(name: '_PaymentModelBase.amountEdit');
+
+  @override
+  TextEditingController get amountEdit {
+    _$amountEditAtom.reportRead();
+    return super.amountEdit;
+  }
+
+  @override
+  set amountEdit(TextEditingController value) {
+    _$amountEditAtom.reportWrite(value, super.amountEdit, () {
+      super.amountEdit = value;
+    });
+  }
+
+  final _$valueEditAtom = Atom(name: '_PaymentModelBase.valueEdit');
+
+  @override
+  TextEditingController get valueEdit {
+    _$valueEditAtom.reportRead();
+    return super.valueEdit;
+  }
+
+  @override
+  set valueEdit(TextEditingController value) {
+    _$valueEditAtom.reportWrite(value, super.valueEdit, () {
+      super.valueEdit = value;
     });
   }
 
@@ -184,6 +307,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
         name: '_PaymentModelBase.changeValue');
     try {
       return super.changeValue(v);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeAmount(int a) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeAmount');
+    try {
+      return super.changeAmount(a);
     } finally {
       _$_PaymentModelBaseActionController.endAction(_$actionInfo);
     }
@@ -252,14 +386,27 @@ name: ${name},
 value: ${value},
 date: ${date},
 time: ${time},
+amount: ${amount},
 cardId: ${cardId},
 type: ${type},
+nameEdit: ${nameEdit},
+amountEdit: ${amountEdit},
+valueEdit: ${valueEdit},
 category: ${category},
 dateToString: ${dateToString},
 dateBr: ${dateBr},
 timeToString: ${timeToString},
 map: ${map},
-isToday: ${isToday}
+isToday: ${isToday},
+nameIsValid: ${nameIsValid},
+dateIsValid: ${dateIsValid},
+valueIsValid: ${valueIsValid},
+cardIsValid: ${cardIsValid},
+amountIsValid: ${amountIsValid},
+timeIsValid: ${timeIsValid},
+typeIsValid: ${typeIsValid},
+isAllValidWithCard: ${isAllValidWithCard},
+isNotValidWithCard: ${isNotValidWithCard}
     ''';
   }
 }

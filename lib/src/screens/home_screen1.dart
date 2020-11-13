@@ -5,6 +5,7 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/screens/home_page_cards.dart';
 import 'package:minhasconta/src/screens/projects_screen1.dart';
+import 'package:minhasconta/src/screens/schedules_screen.dart';
 import 'package:minhasconta/src/utils/bottomnavigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
@@ -62,7 +63,11 @@ class _HomeScreen1State extends State<HomeScreen1> {
       ), */
       body: LayoutBuilder(
         builder: (context, constraint) => Stack(children: [
-          _page == 0 ? HomePageCards() : ProjectsScreen1(),
+          _page == 0
+              ? HomePageCards()
+              : _page == 1
+                  ? ProjectsScreen1()
+                  : SchedulesScreen(),
           WidgetsBinding.instance.window.viewInsets.bottom > 0.0
               ? Container()
               : Positioned(

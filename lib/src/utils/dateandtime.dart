@@ -28,4 +28,24 @@ class DateOrTimePicker {
           },
           lastDate: last);
   }
+
+  Future<TimeOfDay> timePicker({BuildContext context, Duration initial}) async {
+    if (Platform.isIOS) {
+      CupertinoTimerPicker(
+          mode: CupertinoTimerPickerMode.hm,
+          initialTimerDuration: initial,
+          minuteInterval: 5,
+          onTimerDurationChanged: (d) {
+            return d;
+          });
+    } else
+      return await showTimePicker(
+          builder: (context, child) => Theme(
+                data: Theme.of(context),
+                child: child,
+              ),
+          context: context,
+          initialTime: TimeOfDay(
+              hour: initial.inHours, minute: initial.inMinutes.remainder(60)));
+  }
 }

@@ -116,7 +116,7 @@ class CardWidget extends StatelessWidget {
                                 Container(
                                   margin: EdgeInsets.only(top: 5),
                                   child: Text(
-                                    'R\$${card.limit}',
+                                    'R\$${card.limit.toStringAsFixed(2)}',
                                     style:
                                         Theme.of(context).textTheme.headline3,
                                   ),

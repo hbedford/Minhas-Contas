@@ -295,7 +295,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                   child: InkWell(
                     onTap: () => setState(() {
                       showTxtEditingNumber = !showTxtEditingNumber;
-                      number.text = cc.editCard.numbers.replaceAll(' ', '');
+                      number.text = cc.editCard.numbers;
                     }),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,7 +332,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                           icon: Icon(Icons.save),
                           onPressed: () => number.text.length > 0
                               ? setState(() {
-                                  cc.editCard.changeNumber(number.text);
+                                  cc.editCard.changeNumber(
+                                      number.text.replaceAll(' ', ''));
                                   showTxtEditingNumber = false;
                                 })
                               : flushBar(

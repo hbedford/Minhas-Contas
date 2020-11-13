@@ -20,9 +20,17 @@ abstract class _PaymentModelBase with Store {
   @observable
   TimeOfDay time;
   @observable
+  int amount;
+  @observable
   int cardId;
   @observable
   PaymentTypeModel type;
+  @observable
+  TextEditingController nameEdit;
+  @observable
+  TextEditingController amountEdit;
+  @observable
+  TextEditingController valueEdit;
   //0 - credito / 1 - debito / 2 - dinheiro/transf
   @observable
   CategoryModel category = CategoryModel(name: '', color: Colors.red);
@@ -31,17 +39,26 @@ abstract class _PaymentModelBase with Store {
       this.name = '',
       this.category,
       this.date,
+      this.time,
+      this.amountEdit,
+      this.nameEdit,
       this.value = 0,
+      this.valueEdit,
+      this.amount = 0,
       this.type,
       this.cardId});
   _PaymentModelBase.fromMap(Map e)
       : this.id = e['id'],
         this.name = e['name'],
-        this.date = DateTime.parse(e['date']);
+        this.amount = e['amount'],
+        this.date = DateTime.parse(e['date']),
+        this.value = e['value'];
   @action
   changeName(String n) => name = n;
   @action
   changeValue(double v) => value = v;
+  @action
+  changeAmount(int a) => amount = a;
   @action
   changeDate(DateTime d) => date = d;
   @action
@@ -70,4 +87,41 @@ abstract class _PaymentModelBase with Store {
       };
   @computed
   bool get isToday => (date.compareTo(DateTime.now()) == 0);
+  @computed
+  bool get nameIsValid => name.length > 2;
+  @computed
+  bool get dateIsValid => date != null;
+  @computed
+  bool get valueIsValid => value != null && value > 0;
+  @computed
+  bool get cardIsValid => cardId != null;
+  @computed
+  bool get amountIsValid => amount != null && amount > 0;
+  @computed
+  bool get timeIsValid => time != null;
+  @computed
+  bool get typeIsValid => type != null;
+  @computed
+  bool get isAllValidWithCard =>
+      nameIsValid &&
+      amountIsValid &&
+      dateIsValid &&
+      valueIsValid &&
+      cardIsValid &&
+      timeIsValid &&
+      typeIsValid;
+  @computed
+  String get isNotValidWithCard => !nameIsValid
+      ? 'Necessario ter um nome'
+      : !amountIsValid
+          ? 'Necessario uma quantidade'
+          : !dateIsValid
+              ? 'Necessario uma data'
+              : !valueIsValid
+                  ? 'Necessario um valor'
+                  : !cardIsValid
+                      ? 'Necessario um cartão'
+                      : !timeIsValid
+                          ? 'Necessario um horario'
+                          : 'Necessario uma forma de pagamento';
 }

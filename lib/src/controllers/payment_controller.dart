@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
 part 'payment_controller.g.dart';
 
@@ -26,15 +28,29 @@ abstract class _PaymentControllerBase with Store {
     final c = GetIt.I.get<CardsController>();
     if (c.card != null && c.card.types.length > 1) {
       changeStep(0);
-      payment =
-          PaymentModel(cardId: c.card.id, type: null, date: DateTime.now());
+      payment = PaymentModel(
+          cardId: c.card.id,
+          type: null,
+          date: DateTime.now(),
+          nameEdit: TextEditingController(),
+          amountEdit: TextEditingController(),
+          time: TimeOfDay.now());
     } else if (c.card != null && c.card.types.length == 1) {
       changeStep(2);
       payment = PaymentModel(
-          cardId: c.card.id, type: c.card.types.first, date: DateTime.now());
+          cardId: c.card.id,
+          type: c.card.types.first,
+          nameEdit: TextEditingController(),
+          amountEdit: TextEditingController(),
+          date: DateTime.now(),
+          time: TimeOfDay.now());
     } else {
       changeStep(0);
-      payment = PaymentModel(date: DateTime.now());
+      payment = PaymentModel(
+          date: DateTime.now(),
+          time: TimeOfDay.now(),
+          nameEdit: TextEditingController(),
+          amountEdit: TextEditingController());
     }
   }
 
@@ -82,6 +98,13 @@ abstract class _PaymentControllerBase with Store {
     else
       changeStep(2);
     payment.changeTypePayment(cc.types[i]);
+  }
+
+  @action
+  registerPayment(BuildContext context) {
+    if (payment.isAllValidWithCard) {
+    } else
+      flushBar(color: Colors.red).show(context);
   }
 
   @computed
