@@ -193,7 +193,7 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                             Expanded(
                                 flex: 1,
                                 child: titleAndTextField(
-                                    controller: c.payment.amountEdit,
+                                    controller: c.payment.valueEdit,
                                     title: 'Preço total',
                                     type: TextInputType.number)),
                             Expanded(
