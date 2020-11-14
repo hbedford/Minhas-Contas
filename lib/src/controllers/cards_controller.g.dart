@@ -273,6 +273,17 @@ mixin _$CardsController on _CardsControllerBase, Store {
   }
 
   @override
+  dynamic removeCard(BuildContext context) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.removeCard');
+    try {
+      return super.removeCard(context);
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 card: ${card},

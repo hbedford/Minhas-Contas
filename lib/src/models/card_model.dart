@@ -47,6 +47,8 @@ abstract class _CardModelBase with Store {
   bool credit;
   @observable
   bool show;
+  @observable
+  bool removeOption;
 
   @observable
   ObservableList payments = [].asObservable();
@@ -59,6 +61,7 @@ abstract class _CardModelBase with Store {
       this.optionsActive = false,
       this.show = false,
       this.debit = false,
+      this.removeOption = false,
       this.credit = false,
       this.limit = 0.0,
       this.number = "0000000000000000"});
@@ -66,6 +69,7 @@ abstract class _CardModelBase with Store {
   // ignore: unused_element
   _CardModelBase.addNew()
       : this.color = Colors.white,
+        this.removeOption = false,
         this.show = false;
   _CardModelBase.emptyCard()
       : this.name = '',
@@ -73,6 +77,7 @@ abstract class _CardModelBase with Store {
         this.show = false,
         this.number = "0000000000000000",
         this.credit = false,
+        this.removeOption = false,
         this.debit = false,
         this.limit = 0.0;
   _CardModelBase.fromMap(Map e) {
@@ -81,6 +86,7 @@ abstract class _CardModelBase with Store {
     this.number = e['number'];
     this.limit = e['limitcard'];
     this.show = true;
+    this.removeOption = false;
     this.payments = ObservableList.of([]);
     this.credit = e['credit'] == 0 ? false : true;
     this.debit = e['debit'] == 0 ? false : true;
@@ -102,6 +108,8 @@ abstract class _CardModelBase with Store {
   changeDueDate(DateTime d) => dueDate = d;
   @action
   changeShow(bool s) => show = s;
+  @action
+  changeCheckRemove(bool c) => removeOption = c;
   @action
   changeLast4Digits(int l) => last4Digits = l;
   @action

@@ -61,29 +61,27 @@ abstract class _CardsControllerBase with Store {
 
   @action
   saveCard(BuildContext context) async {
-    /* if (editCard != null) { */
     if (editCard.isAllValid) {
-      if (/* cards.indexOf(editCard) != -1 */ editCard.id != null) {
+      if (editCard.id != null) {
         int v = cards.indexWhere((element) => element.id == editCard.id);
         cards[v] = editCard;
+        card = editCard;
         changeEditCard(null);
       } else {
         int v = await CardDB().registerCard(editCard);
         if (v != null) {
           editCard.changeId(v);
           cards.add(editCard);
+          card = editCard;
           changeEditCard(null);
         }
       }
-    } else {
+    } else
       flushBar(color: Colors.red, title: editCard.invalidString).show(context);
-    }
-    /* } else if (card.id != null) {
-      int id = cards.indexOf(card);
-      cards[id] = card;
-    } */
   }
 
+  @action
+  removeCard(BuildContext context) {}
   @computed
   int get actualCard => cards.indexOf(card);
   @computed

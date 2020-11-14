@@ -403,6 +403,21 @@ mixin _$CardModel on _CardModelBase, Store {
     });
   }
 
+  final _$removeOptionAtom = Atom(name: '_CardModelBase.removeOption');
+
+  @override
+  bool get removeOption {
+    _$removeOptionAtom.reportRead();
+    return super.removeOption;
+  }
+
+  @override
+  set removeOption(bool value) {
+    _$removeOptionAtom.reportWrite(value, super.removeOption, () {
+      super.removeOption = value;
+    });
+  }
+
   final _$paymentsAtom = Atom(name: '_CardModelBase.payments');
 
   @override
@@ -504,6 +519,17 @@ mixin _$CardModel on _CardModelBase, Store {
         name: '_CardModelBase.changeShow');
     try {
       return super.changeShow(s);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeCheckRemove(bool c) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeCheckRemove');
+    try {
+      return super.changeCheckRemove(c);
     } finally {
       _$_CardModelBaseActionController.endAction(_$actionInfo);
     }
@@ -638,6 +664,7 @@ optionsActive: ${optionsActive},
 debit: ${debit},
 credit: ${credit},
 show: ${show},
+removeOption: ${removeOption},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
 creditDebitIsValid: ${creditDebitIsValid},
