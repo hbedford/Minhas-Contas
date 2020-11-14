@@ -58,7 +58,7 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                 child: getWidget(context))));
   }
 
-  step0(BuildContext context) =>
+  step1(BuildContext context) =>
       Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Flexible(
             child: Row(
@@ -89,7 +89,7 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                         .toList())))
       ]);
 
-  step1(BuildContext context) => Column(children: [
+  step0(BuildContext context) => Column(children: [
         back(() => c.backStep(context), 'Qual o cartão utilizado?'),
         Expanded(
             flex: 4,
@@ -175,72 +175,100 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(
-                      flex: 2,
-                      child: titleAndTextField(
-                          controller: c.payment.nameEdit, title: 'Produto:')),
+                  Flexible(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            flex: 5,
+                            child: titleAndTextField(
+                                controller: c.payment.nameEdit,
+                                title: 'Produto:')),
+                        Spacer(
+                          flex: 1,
+                        ),
+                        Spacer(
+                          flex: 1,
+                        ),
+                      ],
+                    ),
+                  ),
                   Flexible(
                       flex: 2,
                       child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
+                                flex: 3,
+                                child: Observer(
+                                    builder: (_) => titleAndTextField(
+                                        controller: c.payment.valueEdit,
+                                        title: c.payment.typePrice
+                                            ? 'Preço unitario'
+                                            : 'Preço total',
+                                        titleWidget: Observer(
+                                          builder: (_) => Switch(
+                                              activeColor: Theme.of(context)
+                                                  .primaryColor,
+                                              value: c.payment.typePrice,
+                                              onChanged: (d) =>
+                                                  c.payment.changeTypePrice(d)),
+                                        ),
+                                        type: TextInputType.number))),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            Expanded(
                                 flex: 1,
                                 child: titleAndTextField(
                                     controller: c.payment.amountEdit,
                                     title: 'Qtd:',
                                     type: TextInputType.number)),
-                            Expanded(
-                                flex: 1,
-                                child: titleAndTextField(
-                                    controller: c.payment.valueEdit,
-                                    title: 'Preço total',
-                                    type: TextInputType.number)),
-                            Expanded(
-                                flex: 3,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            subtitle('Horario'),
-                                            InkWell(
-                                              onTap: () => DateOrTimePicker()
-                                                  .timePicker(context: context),
-                                              child:
-                                                  Text(c.payment.timeToString),
-                                            )
-                                          ],
-                                        )),
-                                    Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              subtitle('Data:'),
-                                              InkWell(
-                                                onTap: () => DateOrTimePicker()
-                                                    .datePicker(
-                                                        context: context,
-                                                        first: DateTime.now()
-                                                            .subtract(Duration(
-                                                                days: 30)),
-                                                        initial: DateTime.now(),
-                                                        last: DateTime.now()
-                                                            .add(Duration(
-                                                                days: 30))),
-                                                child: Text(c.payment.dateBr),
-                                              )
-                                            ]))
-                                  ],
-                                ))
                           ])),
-                  Spacer(),
+                  Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  subtitle('Horario'),
+                                  InkWell(
+                                    onTap: () => DateOrTimePicker()
+                                        .timePicker(context: context),
+                                    child: Text(c.payment.timeToString),
+                                  )
+                                ],
+                              )),
+                          Expanded(
+                              flex: 2,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    subtitle('Data:'),
+                                    InkWell(
+                                      onTap: () => DateOrTimePicker()
+                                          .datePicker(
+                                              context: context,
+                                              first: DateTime.now()
+                                                  .subtract(Duration(days: 30)),
+                                              initial: DateTime.now(),
+                                              last: DateTime.now()
+                                                  .add(Duration(days: 30))),
+                                      child: Text(c.payment.dateBr),
+                                    )
+                                  ]))
+                        ],
+                      )),
+                  /* Spacer(), */
                   Flexible(
                       flex: 2,
                       child: RaisedButton(
@@ -271,7 +299,8 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
   titleAndTextField(
           {TextEditingController controller,
           String title,
-          TextInputType type}) =>
+          TextInputType type,
+          Widget titleWidget}) =>
       LayoutBuilder(
           builder: (context, constraint) => Container(
               height: constraint.maxHeight,
@@ -280,9 +309,19 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    subtitle(title),
+                    titleWidget != null
+                        ? Container(
+                            height: constraint.maxHeight * 0.35,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [subtitle(title), titleWidget],
+                            ),
+                          )
+                        : subtitle(title),
                     Container(
-                        height: constraint.maxHeight * 0.5,
+                        height: titleWidget != null
+                            ? constraint.maxHeight * 0.35
+                            : constraint.maxHeight * 0.5,
                         width: constraint.maxWidth,
                         child: TextField(
                           controller: controller,

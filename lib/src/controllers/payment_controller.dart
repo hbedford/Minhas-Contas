@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payments_controller.dart';
@@ -23,34 +24,52 @@ abstract class _PaymentControllerBase with Store {
   @action
   changePayment(PaymentModel p) => payment = p;
   @action
-  initiatePayment(int s) {
-    startStep = s;
+  initiatePayment() {
     final c = GetIt.I.get<CardsController>();
     if (c.card != null && c.card.types.length > 1) {
-      changeStep(0);
+      changeStep(1);
+      startStep = 1;
       payment = PaymentModel(
           cardId: c.card.id,
           type: null,
           date: DateTime.now(),
           nameEdit: TextEditingController(),
           amountEdit: TextEditingController(),
+          valueEdit: MoneyMaskedTextController(
+            initialValue: 0.0,
+            leftSymbol: 'R\$ ',
+            precision: 2,
+          ),
           time: TimeOfDay.now());
     } else if (c.card != null && c.card.types.length == 1) {
       changeStep(2);
+      startStep = 2;
       payment = PaymentModel(
           cardId: c.card.id,
           type: c.card.types.first,
           nameEdit: TextEditingController(),
           amountEdit: TextEditingController(),
+          valueEdit: MoneyMaskedTextController(
+            initialValue: 0.0,
+            leftSymbol: 'R\$ ',
+            precision: 2,
+          ),
           date: DateTime.now(),
           time: TimeOfDay.now());
     } else {
       changeStep(0);
+      startStep = 0;
       payment = PaymentModel(
-          date: DateTime.now(),
-          time: TimeOfDay.now(),
-          nameEdit: TextEditingController(),
-          amountEdit: TextEditingController());
+        date: DateTime.now(),
+        time: TimeOfDay.now(),
+        nameEdit: TextEditingController(),
+        amountEdit: TextEditingController(),
+        valueEdit: MoneyMaskedTextController(
+          initialValue: 0.0,
+          leftSymbol: 'R\$ ',
+          precision: 2,
+        ),
+      );
     }
   }
 
@@ -104,17 +123,18 @@ abstract class _PaymentControllerBase with Store {
   registerPayment(BuildContext context) {
     if (payment.isAllValidWithCard) {
     } else
-      flushBar(color: Colors.red).show(context);
+      flushBar(color: Colors.red, title: payment.isNotValidWithCard)
+          .show(context);
   }
 
   @computed
   double get sizeBottom {
     if (step == 0)
-      return 0.7;
+      return 0.3;
     else if (step == 2)
       return 0.25;
     else if (step == 4)
-      return 0.3;
+      return 0.7;
     else
       return 0.3;
   }

@@ -76,13 +76,19 @@ class CardWidget extends StatelessWidget {
                                         /* c.changeCard(card) */),
                                   ),
                                   Visibility(
-                                      visible: editing && card.id != null,
+                                      visible: editing && c.editCard.id != null,
                                       child: IconButton(
                                         color: Colors.white,
                                         icon: Icon(Icons.close),
-                                        onPressed: () => c.editCard
-                                            .changeCheckRemove(
-                                                !c.editCard.removeOption),
+                                        onPressed: () => c.changeEditCard(null),
+                                      )),
+                                  Visibility(
+                                      visible: !editing,
+                                      child: IconButton(
+                                        color: Colors.red[800],
+                                        icon: Icon(Icons.close),
+                                        onPressed: () => card.changeCheckRemove(
+                                            !card.removeOption),
                                       ))
                                 ],
                               )
@@ -156,7 +162,7 @@ class CardWidget extends StatelessWidget {
                                         Container(
                                           margin: EdgeInsets.only(top: 5),
                                           child: Text(
-                                            'R\$${card.limit.toStringAsFixed(2)}',
+                                            'R\$ ${card.limit.toStringAsFixed(2)}',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline3,
@@ -235,57 +241,3 @@ class CardWidget extends StatelessWidget {
               top: constraint.maxHeight * (t / 100)),
           child: child);
 }
-
-/* class CardWidgetAdd extends StatelessWidget {
-  final Function f;
-  final String title;
-  final BoxConstraints constraint;
-  CardWidgetAdd({this.f, this.title, this.constraint});
-  @override
-  Widget build(BuildContext context) {
-    double h = constraint.maxHeight;
-    double w = constraint.maxWidth;
-    return AnimatedContainer(
-      duration: Duration(microseconds: 200),
-      height: h * 0.25,
-      width: w * 0.7,
-      padding: EdgeInsets.symmetric(vertical: h * 0.02, horizontal: w * 0.05),
-      margin: EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.03),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-      ),
-      child: InkWell(
-        onTap: f,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.add),
-              Text(title),
-            ]),
-      ),
-    );
-  }
-} */
-
-/* class EditCardWidget extends StatelessWidget {
-  final BoxConstraints constraint;
-  EditCardWidget({this.constraint});
-  final c = GetIt.I.get<CardsController>();
-  @override
-  Widget build(BuildContext context) {
-    double h = constraint.maxHeight;
-    double w = constraint.maxWidth;
-    return Container(
-      height: h * 0.25,
-      width: w * 0.7,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: c.newCard.color,
-      ),
-      padding: EdgeInsets.symmetric(vertical: h * 0.02, horizontal: w * 0.05),
-      margin: EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.03),
-    );
-  }
-} */

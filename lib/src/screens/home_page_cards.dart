@@ -134,7 +134,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                     t: 2,
                     child: loadContainer(
                         child: Text(
-                          'R\$250,00',
+                          'R\$ 250,00',
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         enable: cc.card.name == null,
@@ -166,7 +166,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   l: 0,
                                   child: loadContainer(
                                     child: Text(
-                                        'R\$${cc.card.name != null ? (cc.card.limit - cc.card.totalThisMonth).toStringAsFixed(2).replaceAll('.', ',') : '00,00'}',
+                                        'R\$ ${cc.card.name != null ? (cc.card.limit - cc.card.totalThisMonth).toStringAsFixed(2).replaceAll('.', ',') : '00,00'}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline1),
@@ -198,7 +198,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                     child: Text(
                                       cc.card != null
                                           ? cc.card.actualTotalLimit
-                                          : 'R\$00,00',
+                                          : 'R\$ 00,00',
                                       style:
                                           Theme.of(context).textTheme.headline1,
                                     ),
@@ -254,7 +254,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                 child: Icon(Icons.add),
                                 onTap: () {
                                   final p = GetIt.I.get<PaymentController>();
-                                  p.initiatePayment(2);
+                                  p.initiatePayment();
                                   showModalBottomSheet(
                                     isScrollControlled: true,
                                     backgroundColor: Colors.transparent,
@@ -316,7 +316,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                                                 cc.card.name ==
                                                                     null,
                                                             child: Text(
-                                                                'R\$250,00'),
+                                                                'R\$ 250,00'),
                                                             bColor:
                                                                 Colors.green)
                                                       ])))

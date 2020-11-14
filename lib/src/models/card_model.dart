@@ -146,7 +146,7 @@ abstract class _CardModelBase with Store {
       debit && !credit || debit && credit || !debit && credit;
   @computed
   String get actualTotalLimit =>
-      'R\$' + totalOfPayments.toStringAsFixed(2).replaceAll('.', ',');
+      'R\$ ' + totalOfPayments.toStringAsFixed(2).replaceAll('.', ',');
   @computed
   double get totalThisMonth {
     DateTime d = DateTime.now();

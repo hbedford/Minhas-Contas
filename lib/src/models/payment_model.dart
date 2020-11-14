@@ -26,6 +26,8 @@ abstract class _PaymentModelBase with Store {
   @observable
   PaymentTypeModel type;
   @observable
+  bool typePrice;
+  @observable
   TextEditingController nameEdit;
   @observable
   TextEditingController amountEdit;
@@ -45,12 +47,14 @@ abstract class _PaymentModelBase with Store {
       this.value = 0,
       this.valueEdit,
       this.amount = 0,
+      this.typePrice = false,
       this.type,
       this.cardId});
   _PaymentModelBase.fromMap(Map e)
       : this.id = e['id'],
         this.name = e['name'],
         this.amount = e['amount'],
+        this.typePrice = false,
         this.date = DateTime.parse(e['date']),
         this.value = e['value'];
   @action
@@ -65,6 +69,8 @@ abstract class _PaymentModelBase with Store {
   changeTime(TimeOfDay t) => time = t;
   @action
   changeTypePayment(PaymentTypeModel t) => type = t;
+  @action
+  changeTypePrice(bool t) => typePrice = t;
   @action
   changeCardId(int i) => cardId = i;
   @action

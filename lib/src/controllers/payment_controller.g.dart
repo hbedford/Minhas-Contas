@@ -88,11 +88,11 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
-  dynamic initiatePayment(int s) {
+  dynamic initiatePayment() {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
         name: '_PaymentControllerBase.initiatePayment');
     try {
-      return super.initiatePayment(s);
+      return super.initiatePayment();
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }

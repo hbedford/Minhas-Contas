@@ -227,6 +227,21 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
     });
   }
 
+  final _$typePriceAtom = Atom(name: '_PaymentModelBase.typePrice');
+
+  @override
+  bool get typePrice {
+    _$typePriceAtom.reportRead();
+    return super.typePrice;
+  }
+
+  @override
+  set typePrice(bool value) {
+    _$typePriceAtom.reportWrite(value, super.typePrice, () {
+      super.typePrice = value;
+    });
+  }
+
   final _$nameEditAtom = Atom(name: '_PaymentModelBase.nameEdit');
 
   @override
@@ -357,6 +372,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   }
 
   @override
+  dynamic changeTypePrice(bool t) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeTypePrice');
+    try {
+      return super.changeTypePrice(t);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeCardId(int i) {
     final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
         name: '_PaymentModelBase.changeCardId');
@@ -389,6 +415,7 @@ time: ${time},
 amount: ${amount},
 cardId: ${cardId},
 type: ${type},
+typePrice: ${typePrice},
 nameEdit: ${nameEdit},
 amountEdit: ${amountEdit},
 valueEdit: ${valueEdit},
