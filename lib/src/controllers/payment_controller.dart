@@ -52,7 +52,6 @@ abstract class _PaymentControllerBase with Store {
           amountEdit: TextEditingController(),
           valueEdit: MoneyMaskedTextController(
             initialValue: 0.0,
-            leftSymbol: 'R\$ ',
             precision: 2,
           ),
           date: DateTime.now(),
@@ -67,7 +66,6 @@ abstract class _PaymentControllerBase with Store {
         amountEdit: TextEditingController(),
         valueEdit: MoneyMaskedTextController(
           initialValue: 0.0,
-          leftSymbol: 'R\$ ',
           precision: 2,
         ),
       );
@@ -122,11 +120,14 @@ abstract class _PaymentControllerBase with Store {
 
   @action
   registerPayment(BuildContext context) async {
+    payment.checkInfos();
     if (payment.isAllValidWithCard) {
       PaymentDB().registerPayment(payment.map);
       final c = GetIt.I.get<CardsController>();
-      c.card.changePayments(
-          ObservableList.of(await PaymentDB().getPaymentsOfMonth()));
+      c.card.changePayments(ObservableList.of(await PaymentDB()
+          .getPaymentsOfMonth(
+              id: payment.cardId,
+              month: DateTime.now().month.toString().padLeft(2, '0'))));
     } else
       flushBar(color: Colors.red, title: payment.isNotValidWithCard)
           .show(context);

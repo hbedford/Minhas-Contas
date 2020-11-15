@@ -203,6 +203,7 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                                 flex: 3,
                                 child: Observer(
                                     builder: (_) => titleAndTextField(
+                                        left: 'R\$ ',
                                         controller: c.payment.valueEdit,
                                         title: c.payment.typePrice
                                             ? 'Preço unitario'
@@ -299,6 +300,7 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
           ]));
   titleAndTextField(
           {TextEditingController controller,
+          String left,
           String title,
           TextInputType type,
           Widget titleWidget}) =>
@@ -325,6 +327,7 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                             : constraint.maxHeight * 0.5,
                         width: constraint.maxWidth,
                         child: TextField(
+                          decoration: InputDecoration(prefixText: left),
                           controller: controller,
                           keyboardType: type,
                         ))

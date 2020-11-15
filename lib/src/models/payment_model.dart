@@ -57,6 +57,15 @@ abstract class _PaymentModelBase with Store {
         this.typePrice = false,
         this.date = DateTime.parse(e['date']),
         this.value = e['value'];
+
+  @action
+  checkInfos() {
+    if (nameEdit.text.isNotEmpty) changeName(nameEdit.text);
+    if (amountEdit.text.isNotEmpty) changeAmount(int.parse(amountEdit.text));
+    if (valueEdit.text.isNotEmpty)
+      changeValue(double.parse(valueEdit.text.replaceAll(',', '.')));
+  }
+
   @action
   changeName(String n) => name = n;
   @action
@@ -84,28 +93,27 @@ abstract class _PaymentModelBase with Store {
   @computed
   Map get map => {
         'id': id,
-        'name': nameEdit.text,
+        'name': name,
         'date': dateToString,
-        'value': valueEdit.text,
+        'value': value,
         'card_id': cardId,
         'time': timeToString,
         'type': type.id,
-        'amount': amountEdit.text,
+        'amount': amount,
         'type_price': typePrice ? 1 : 0,
       };
   @computed
   bool get isToday => (date.compareTo(DateTime.now()) == 0);
   @computed
-  bool get nameIsValid => nameEdit.text.length > 2;
+  bool get nameIsValid => name != null && name.length > 2;
   @computed
   bool get dateIsValid => date != null;
   @computed
-  bool get valueIsValid => valueEdit.text != null && valueEdit.text.length > 0;
+  bool get valueIsValid => value != null && value > 0;
   @computed
   bool get cardIsValid => cardId != null;
   @computed
-  bool get amountIsValid =>
-      amountEdit.text != null && amountEdit.text.length > 0;
+  bool get amountIsValid => amount != null && amount > 0;
   @computed
   bool get timeIsValid => time != null;
   @computed

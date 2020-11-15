@@ -13,6 +13,7 @@ abstract class _CardControllerBase with Store {
   _CardControllerBase({this.month});
   Future<List<PaymentModel>> get paymentsMonth async {
     final c = GetIt.I.get<CardsController>();
-    return await PaymentDB().getPaymentsOfMonth(id: c.card.id, month: month);
+    return await PaymentDB().getPaymentsOfMonth(
+        id: c.card.id, month: month.toString().padLeft(2, '0'));
   }
 }

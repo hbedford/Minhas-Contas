@@ -313,6 +313,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
       ActionController(name: '_PaymentModelBase');
 
   @override
+  dynamic checkInfos() {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.checkInfos');
+    try {
+      return super.checkInfos();
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeName(String n) {
     final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
         name: '_PaymentModelBase.changeName');
