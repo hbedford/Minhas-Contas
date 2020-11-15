@@ -23,10 +23,12 @@ void main() async {
   getIt.registerSingleton<CategoryController>(
       CategoryController(categories: [].asObservable()));
   getIt.registerSingleton<PaymentController>(PaymentController());
-  getIt.registerSingleton<PaymentsController>(PaymentsController(types: [
+  getIt.registerSingleton<PaymentsController>(PaymentsController(
+      /* types: */ /*  [
     PaymentTypeModel(id: 0, name: 'Debito'),
     PaymentTypeModel(id: 1, name: 'Credito')
-  ]));
+  ] */
+      ));
   getIt.registerSingleton<ProjectController>(ProjectController());
   getIt.registerSingleton<ProjectsController>(
       ProjectsController(projects: [].asObservable()));

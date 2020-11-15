@@ -290,7 +290,12 @@ class _HomePageCardsState extends State<HomePageCards> {
                                               child: Row(children: [
                                                 loadContainer(
                                                     child: Text(
-                                                      'VXCase Digital LTDA.',
+                                                      cc.card.name == null
+                                                          ? 'Testando'
+                                                          : cc
+                                                              .card
+                                                              .pThisMonth[index]
+                                                              .name,
                                                     ),
                                                     enable:
                                                         cc.card.name == null,
@@ -300,7 +305,14 @@ class _HomePageCardsState extends State<HomePageCards> {
                                               flex: 2,
                                               child: Row(children: [
                                                 loadContainer(
-                                                    child: Text('Credito'),
+                                                    child: Text(cc.card.name ==
+                                                            null
+                                                        ? 'Testando'
+                                                        : cc
+                                                            .card
+                                                            .pThisMonth[index]
+                                                            .type
+                                                            .name),
                                                     enable:
                                                         cc.card.name == null,
                                                     bColor: Colors.grey)
@@ -315,7 +327,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                                                 cc.card.name ==
                                                                     null,
                                                             child: Text(
-                                                                'R\$ 250,00'),
+                                                                "R\$ ${cc.card.name == null ? 'Testando' : cc.card.pThisMonth[index].value}"),
                                                             bColor:
                                                                 Colors.green)
                                                       ])))

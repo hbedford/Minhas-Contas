@@ -11,9 +11,10 @@ abstract class _CardControllerBase with Store {
   @observable
   int month;
   _CardControllerBase({this.month});
-  Future<List<PaymentModel>> get paymentsMonth async {
+  /*  @action
+  Future<List<PaymentModel>> paymentsMonth() async {
     final c = GetIt.I.get<CardsController>();
     return await PaymentDB().getPaymentsOfMonth(
         id: c.card.id, month: month.toString().padLeft(2, '0'));
-  }
+  } */
 }

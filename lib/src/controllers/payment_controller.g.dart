@@ -141,11 +141,11 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
-  dynamic changeTypePayment(int i) {
+  dynamic changeTypePayment(PaymentTypeModel t) {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
         name: '_PaymentControllerBase.changeTypePayment');
     try {
-      return super.changeTypePayment(i);
+      return super.changeTypePayment(t);
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }

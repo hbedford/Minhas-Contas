@@ -23,6 +23,20 @@ mixin _$CardModel on _CardModelBase, Store {
           Computed<bool>(() => super.creditDebitIsValid,
               name: '_CardModelBase.creditDebitIsValid'))
       .value;
+  Computed<bool> _$onlyDebitOrCreditComputed;
+
+  @override
+  bool get onlyDebitOrCredit => (_$onlyDebitOrCreditComputed ??= Computed<bool>(
+          () => super.onlyDebitOrCredit,
+          name: '_CardModelBase.onlyDebitOrCredit'))
+      .value;
+  Computed<bool> _$debitAndCreditComputed;
+
+  @override
+  bool get debitAndCredit =>
+      (_$debitAndCreditComputed ??= Computed<bool>(() => super.debitAndCredit,
+              name: '_CardModelBase.debitAndCredit'))
+          .value;
   Computed<String> _$actualTotalLimitComputed;
 
   @override
@@ -126,13 +140,6 @@ mixin _$CardModel on _CardModelBase, Store {
   bool get isAllValid =>
       (_$isAllValidComputed ??= Computed<bool>(() => super.isAllValid,
               name: '_CardModelBase.isAllValid'))
-          .value;
-  Computed<List<PaymentTypeModel>> _$typesComputed;
-
-  @override
-  List<PaymentTypeModel> get types =>
-      (_$typesComputed ??= Computed<List<PaymentTypeModel>>(() => super.types,
-              name: '_CardModelBase.types'))
           .value;
   Computed<List<dynamic>> _$pSortedPaymentsComputed;
 
@@ -679,6 +686,8 @@ removeOption: ${removeOption},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
 creditDebitIsValid: ${creditDebitIsValid},
+onlyDebitOrCredit: ${onlyDebitOrCredit},
+debitAndCredit: ${debitAndCredit},
 actualTotalLimit: ${actualTotalLimit},
 totalThisMonth: ${totalThisMonth},
 map: ${map},
@@ -694,7 +703,6 @@ isValidNumber: ${isValidNumber},
 isValidColor: ${isValidColor},
 isValidLimit: ${isValidLimit},
 isAllValid: ${isAllValid},
-types: ${types},
 pSortedPayments: ${pSortedPayments},
 paymentsPerDate: ${paymentsPerDate},
 amountPaymentsThisMonth: ${amountPaymentsThisMonth},

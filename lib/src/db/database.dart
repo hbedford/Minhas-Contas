@@ -36,7 +36,9 @@ class DatabaseHelper {
     await db.execute(CardDB().createTable);
     await db.execute(PaymentDB().createTable);
     await db.execute(PaymentTypesDB().createTable);
-    await db.execute(PaymentTypesDB().types());
+    await db.insert('payment_types', {'name': PaymentTypesDB().types[0]});
+    await db.insert('payment_types', {'name': PaymentTypesDB().types[1]});
+    await db.insert('payment_types', {'name': PaymentTypesDB().types[2]});
   }
 
   Future<int> registerCategory(CategoryModel category) async {

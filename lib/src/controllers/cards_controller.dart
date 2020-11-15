@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minhasconta/src/db/models/card_db_model.dart';
+import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
@@ -56,6 +57,15 @@ abstract class _CardsControllerBase with Store {
   @action
   changeCards(List<CardModel> l) {
     cards = ObservableList.of(l);
+    cards.forEach((element) async {
+      if (element.id != null) {
+        print(element.id);
+        ObservableList list = ObservableList.of(
+            await PaymentDB().getPayments(cardId: element.id));
+        print(list.length);
+        element.changePayments(list);
+      }
+    });
     card = cForList.first;
   }
 

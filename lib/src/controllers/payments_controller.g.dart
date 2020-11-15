@@ -12,13 +12,13 @@ mixin _$PaymentsController on _PaymentsControllerBase, Store {
   final _$typesAtom = Atom(name: '_PaymentsControllerBase.types');
 
   @override
-  List<PaymentTypeModel> get types {
+  ObservableList<PaymentTypeModel> get types {
     _$typesAtom.reportRead();
     return super.types;
   }
 
   @override
-  set types(List<PaymentTypeModel> value) {
+  set types(ObservableList<PaymentTypeModel> value) {
     _$typesAtom.reportWrite(value, super.types, () {
       super.types = value;
     });
@@ -63,6 +63,39 @@ mixin _$PaymentsController on _PaymentsControllerBase, Store {
         name: '_PaymentsControllerBase.addPayment');
     try {
       return super.addPayment(p);
+    } finally {
+      _$_PaymentsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeTypes(List<PaymentTypeModel> l) {
+    final _$actionInfo = _$_PaymentsControllerBaseActionController.startAction(
+        name: '_PaymentsControllerBase.changeTypes');
+    try {
+      return super.changeTypes(l);
+    } finally {
+      _$_PaymentsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  PaymentTypeModel getTypeWithId(int i) {
+    final _$actionInfo = _$_PaymentsControllerBaseActionController.startAction(
+        name: '_PaymentsControllerBase.getTypeWithId');
+    try {
+      return super.getTypeWithId(i);
+    } finally {
+      _$_PaymentsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  PaymentTypeModel getTypeWithName(String name) {
+    final _$actionInfo = _$_PaymentsControllerBaseActionController.startAction(
+        name: '_PaymentsControllerBase.getTypeWithName');
+    try {
+      return super.getTypeWithName(name);
     } finally {
       _$_PaymentsControllerBaseActionController.endAction(_$actionInfo);
     }

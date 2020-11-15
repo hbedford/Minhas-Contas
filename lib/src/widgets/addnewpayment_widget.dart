@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
+import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/utils/dateandtime.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
@@ -16,9 +17,10 @@ class AddNewPaymentWidget extends StatefulWidget {
 }
 
 class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
-  final cc = GetIt.instance<CardsController>();
-  final c = GetIt.instance<PaymentController>();
-  final cp = GetIt.instance<ProjectsController>();
+  final cc = GetIt.I.get<CardsController>();
+  final c = GetIt.I.get<PaymentController>();
+  final cp = GetIt.I.get<ProjectsController>();
+  final ps = GetIt.I.get<PaymentsController>();
   TextStyle titleStyle;
   Widget getWidget(BuildContext context) {
     if (c.step == 0)
@@ -77,16 +79,14 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
         Expanded(
             flex: 4,
-            child: Observer(
-                builder: (_) => Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: cc.card.types
-                        .map((e) => RaisedButton(
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () => c.changeTypePayment(e.id),
-                            child:
-                                Text(e.name, style: TextStyle(fontSize: 16))))
-                        .toList())))
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: ps.types
+                    .map((e) => RaisedButton(
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () => c.changeTypePayment(e),
+                        child: Text(e.name, style: TextStyle(fontSize: 16))))
+                    .toList()))
       ]);
 
   step0(BuildContext context) => Column(children: [

@@ -11,4 +11,7 @@ abstract class _PaymentTypeModelBase with Store {
   @observable
   bool active;
   _PaymentTypeModelBase({this.id, this.name, this.active = false});
+  _PaymentTypeModelBase.fromMap(Map e)
+      : this.id = e['id'],
+        this.name = e['name'];
 }

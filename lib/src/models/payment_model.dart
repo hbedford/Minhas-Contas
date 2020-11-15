@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/payment_controller.dart';
+import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';
 import 'package:mobx/mobx.dart';
@@ -50,14 +53,17 @@ abstract class _PaymentModelBase with Store {
       this.typePrice = false,
       this.type,
       this.cardId});
-  _PaymentModelBase.fromMap(Map e)
-      : this.id = e['id'],
-        this.name = e['name'],
-        this.amount = e['amount'],
-        this.typePrice = false,
-        this.date = DateTime.parse(e['date']),
-        this.value = e['value'];
-
+  _PaymentModelBase.fromMap(Map e) {
+    final c = GetIt.I.get<PaymentsController>();
+    this.id = e['id'];
+    this.name = e['name'];
+    this.amount = e['amount'];
+    this.cardId = e['card_id'];
+    this.type = c.getTypeWithId(e['type_id']);
+    this.typePrice = false;
+    this.date = DateTime.parse(e['date']);
+    this.value = e['value'];
+  }
   @action
   checkInfos() {
     if (nameEdit.text.isNotEmpty) changeName(nameEdit.text);
@@ -97,8 +103,8 @@ abstract class _PaymentModelBase with Store {
         'date': dateToString,
         'value': value,
         'card_id': cardId,
-        'time': timeToString,
-        'type': type.id,
+        /* 'time': timeToString, */
+        'type_id': type.id,
         'amount': amount,
         'type_price': typePrice ? 1 : 0,
       };

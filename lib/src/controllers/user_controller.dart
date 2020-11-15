@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
+import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/db/models/card_db_model.dart';
+import 'package:minhasconta/src/db/models/payment_types_db_model.dart';
 import 'package:minhasconta/src/db/models/user_db_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
@@ -59,6 +61,11 @@ abstract class _UserControllerBase with Store {
 
     if (await getUserInfo) {
       final c = GetIt.I.get<CardsController>();
+      final cc = GetIt.I.get<PaymentsController>();
+      cc.changeTypes(await PaymentTypesDB().getTypes());
+      cc.types.forEach((element) {
+        print(element.id.toString() + ' ' + element.name);
+      });
       c.changeCards(await CardDB().getCards(user.id));
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } else
@@ -72,6 +79,8 @@ abstract class _UserControllerBase with Store {
   logIn(BuildContext context) async {
     if (user.emailIsValid && user.passwordIsValid) {
       if (await getUserInfo) {
+        final cc = GetIt.I.get<PaymentsController>();
+        cc.changeTypes(await PaymentTypesDB().getTypes());
         final c = GetIt.I.get<CardsController>();
         c.changeCards(await CardDB().getCards(user.id));
         Navigator.pushReplacementNamed(context, '/home');
@@ -144,6 +153,8 @@ abstract class _UserControllerBase with Store {
   addPin(BuildContext context) async {
     int i = (await UserDB().addPIN(pin, user.id));
     if (i > 0) {
+      final cc = GetIt.I.get<PaymentsController>();
+      cc.changeTypes(await PaymentTypesDB().getTypes());
       final c = GetIt.I.get<CardsController>();
       c.changeCards(await CardDB().getCards(user.id));
       Navigator.pushReplacementNamed(context, '/home');

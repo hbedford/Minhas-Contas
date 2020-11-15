@@ -6,6 +6,7 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
 part 'payment_controller.g.dart';
@@ -27,7 +28,8 @@ abstract class _PaymentControllerBase with Store {
   @action
   initiatePayment() {
     final c = GetIt.I.get<CardsController>();
-    if (c.card != null && c.card.types.length > 1) {
+    final cc = GetIt.I.get<PaymentsController>();
+    if (c.card != null && c.card.debitAndCredit) {
       changeStep(1);
       startStep = 1;
       payment = PaymentModel(
@@ -42,12 +44,17 @@ abstract class _PaymentControllerBase with Store {
             precision: 2,
           ),
           time: TimeOfDay.now());
-    } else if (c.card != null && c.card.types.length == 1) {
-      changeStep(2);
-      startStep = 2;
+    } else if (c.card != null && c.card.onlyDebitOrCredit) {
+      if (!c.card.debit) {
+        changeStep(2);
+        startStep = 2;
+      } else {
+        changeStep(1);
+        startStep = 1;
+      }
       payment = PaymentModel(
           cardId: c.card.id,
-          type: c.card.types.first,
+          type: c.card.debit ? null : cc.getTypeWithName('Credito'),
           nameEdit: TextEditingController(),
           amountEdit: TextEditingController(),
           valueEdit: MoneyMaskedTextController(
@@ -108,14 +115,13 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
-  changeTypePayment(int i) {
+  changeTypePayment(PaymentTypeModel t) {
     final c = GetIt.I.get<CardsController>();
-    final cc = GetIt.I.get<PaymentsController>();
     if (c.card == null)
       changeStep(1);
     else
       changeStep(2);
-    payment.changeTypePayment(cc.types[i]);
+    payment.changeTypePayment(t);
   }
 
   @action
@@ -124,10 +130,9 @@ abstract class _PaymentControllerBase with Store {
     if (payment.isAllValidWithCard) {
       PaymentDB().registerPayment(payment.map);
       final c = GetIt.I.get<CardsController>();
-      c.card.changePayments(ObservableList.of(await PaymentDB()
-          .getPaymentsOfMonth(
-              id: payment.cardId,
-              month: DateTime.now().month.toString().padLeft(2, '0'))));
+      c.card.changePayments(ObservableList.of(
+          await PaymentDB().getPayments(cardId: payment.cardId)));
+      print(c.card.payments.length);
     } else
       flushBar(color: Colors.red, title: payment.isNotValidWithCard)
           .show(context);

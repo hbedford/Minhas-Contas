@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/controllers/user_controller.dart';
+import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/models/paymentsofday_model.dart';
@@ -146,6 +147,10 @@ abstract class _CardModelBase with Store {
   bool get creditDebitIsValid =>
       debit && !credit || debit && credit || !debit && credit;
   @computed
+  bool get onlyDebitOrCredit => debit && !credit || !debit && credit;
+  @computed
+  bool get debitAndCredit => debit && credit;
+  @computed
   String get actualTotalLimit =>
       'R\$ ' + totalOfPayments.toStringAsFixed(2).replaceAll('.', ',');
   @computed
@@ -231,14 +236,7 @@ abstract class _CardModelBase with Store {
       isValidColor &&
       isValidLimit &&
       creditDebitIsValid;
-  @computed
-  List<PaymentTypeModel> get types {
-    List<PaymentTypeModel> t = [];
-    final c = GetIt.I.get<PaymentsController>();
-    if (debit) t.add(c.types[0]);
-    if (credit) t.add(c.types[1]);
-    return t;
-  }
+
   /* @computed
   List<CategoryModel> get orderByCategory {
     List<CategoryModel> list = [];
