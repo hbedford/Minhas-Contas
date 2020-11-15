@@ -240,8 +240,9 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                                 children: [
                                   subtitle('Horario'),
                                   InkWell(
-                                    onTap: () => DateOrTimePicker()
-                                        .timePicker(context: context),
+                                    onTap: () => DateOrTimePicker().timePicker(
+                                        context: context,
+                                        initial: c.payment.timeToDuration),
                                     child: Text(c.payment.timeToString),
                                   )
                                 ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
-import 'package:minhasconta/src/db/database.dart';
+import 'package:minhasconta/src/db/models/card_db_model.dart';
+import 'package:minhasconta/src/db/models/user_db_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';

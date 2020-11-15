@@ -62,6 +62,15 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
     });
   }
 
+  final _$registerPaymentAsyncAction =
+      AsyncAction('_PaymentControllerBase.registerPayment');
+
+  @override
+  Future registerPayment(BuildContext context) {
+    return _$registerPaymentAsyncAction
+        .run(() => super.registerPayment(context));
+  }
+
   final _$_PaymentControllerBaseActionController =
       ActionController(name: '_PaymentControllerBase');
 
@@ -137,17 +146,6 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
         name: '_PaymentControllerBase.changeTypePayment');
     try {
       return super.changeTypePayment(i);
-    } finally {
-      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic registerPayment(BuildContext context) {
-    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
-        name: '_PaymentControllerBase.registerPayment');
-    try {
-      return super.registerPayment(context);
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }

@@ -92,6 +92,13 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
       (_$typeIsValidComputed ??= Computed<bool>(() => super.typeIsValid,
               name: '_PaymentModelBase.typeIsValid'))
           .value;
+  Computed<Duration> _$timeToDurationComputed;
+
+  @override
+  Duration get timeToDuration => (_$timeToDurationComputed ??=
+          Computed<Duration>(() => super.timeToDuration,
+              name: '_PaymentModelBase.timeToDuration'))
+      .value;
   Computed<bool> _$isAllValidWithCardComputed;
 
   @override
@@ -432,6 +439,7 @@ cardIsValid: ${cardIsValid},
 amountIsValid: ${amountIsValid},
 timeIsValid: ${timeIsValid},
 typeIsValid: ${typeIsValid},
+timeToDuration: ${timeToDuration},
 isAllValidWithCard: ${isAllValidWithCard},
 isNotValidWithCard: ${isNotValidWithCard}
     ''';

@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:minhasconta/src/models/card_model.dart';
 import 'package:http/http.dart' as http;
 
 void main() {

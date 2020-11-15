@@ -389,7 +389,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                               'Limite',
                               style: titleStyle,
                             ),
-                            Text('R\$' + (cc.editCard.limit.toStringAsFixed(2)))
+                            Text(
+                                'R\$ ' + (cc.editCard.limit.toStringAsFixed(2)))
                           ],
                         ),
                       ),
@@ -406,7 +407,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                         child: textField(
                             label: 'Limite',
                             controller: limit,
-                            prefixText: 'R\$',
+                            prefixText: 'R\$ ',
                             suffix: IconButton(
                                 icon: Icon(Icons.save),
                                 onPressed: () => limit.text.length > 0

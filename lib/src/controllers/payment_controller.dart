@@ -4,6 +4,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payments_controller.dart';
+import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
@@ -120,8 +121,12 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
-  registerPayment(BuildContext context) {
+  registerPayment(BuildContext context) async {
     if (payment.isAllValidWithCard) {
+      PaymentDB().registerPayment(payment.map);
+      final c = GetIt.I.get<CardsController>();
+      c.card.changePayments(
+          ObservableList.of(await PaymentDB().getPaymentsOfMonth()));
     } else
       flushBar(color: Colors.red, title: payment.isNotValidWithCard)
           .show(context);

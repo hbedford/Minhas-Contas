@@ -84,29 +84,35 @@ abstract class _PaymentModelBase with Store {
   @computed
   Map get map => {
         'id': id,
-        'name': name,
+        'name': nameEdit.text,
         'date': dateToString,
-        'value': value,
+        'value': valueEdit.text,
         'card_id': cardId,
         'time': timeToString,
         'type': type.id,
+        'amount': amountEdit.text,
+        'type_price': typePrice ? 1 : 0,
       };
   @computed
   bool get isToday => (date.compareTo(DateTime.now()) == 0);
   @computed
-  bool get nameIsValid => name.length > 2;
+  bool get nameIsValid => nameEdit.text.length > 2;
   @computed
   bool get dateIsValid => date != null;
   @computed
-  bool get valueIsValid => value != null && value > 0;
+  bool get valueIsValid => valueEdit.text != null && valueEdit.text.length > 0;
   @computed
   bool get cardIsValid => cardId != null;
   @computed
-  bool get amountIsValid => amount != null && amount > 0;
+  bool get amountIsValid =>
+      amountEdit.text != null && amountEdit.text.length > 0;
   @computed
   bool get timeIsValid => time != null;
   @computed
   bool get typeIsValid => type != null;
+  @computed
+  Duration get timeToDuration =>
+      Duration(hours: time.hour, minutes: time.minute);
   @computed
   bool get isAllValidWithCard =>
       nameIsValid &&
@@ -118,7 +124,7 @@ abstract class _PaymentModelBase with Store {
       typeIsValid;
   @computed
   String get isNotValidWithCard => !nameIsValid
-      ? 'Necessario ter um nome'
+      ? 'Necessario ter um nome para a despesa'
       : !amountIsValid
           ? 'Necessario uma quantidade'
           : !dateIsValid

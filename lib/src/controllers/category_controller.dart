@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:minhasconta/src/db/database.dart';
+import 'package:minhasconta/src/db/models/category_db_model.dart';
 import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/subcategory_model.dart';
 import 'package:mobx/mobx.dart';

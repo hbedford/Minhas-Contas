@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:minhasconta/src/db/database.dart';
+import 'package:minhasconta/src/db/models/card_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';

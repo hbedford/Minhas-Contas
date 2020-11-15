@@ -128,7 +128,8 @@ abstract class _CardModelBase with Store {
   changeDebit(bool d) => debit = d;
   @action
   changeCredit(bool c) => credit = c;
-
+  @action
+  changePayments(ObservableList l) => payments = l;
   @action
   changeOptionsActive(bool v) => optionsActive = v;
   @computed

@@ -635,6 +635,17 @@ mixin _$CardModel on _CardModelBase, Store {
   }
 
   @override
+  dynamic changePayments(ObservableList<dynamic> l) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changePayments');
+    try {
+      return super.changePayments(l);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeOptionsActive(bool v) {
     final _$actionInfo = _$_CardModelBaseActionController.startAction(
         name: '_CardModelBase.changeOptionsActive');

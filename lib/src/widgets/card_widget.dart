@@ -94,8 +94,7 @@ class CardWidget extends StatelessWidget {
                               )
                             ]),
                         Observer(
-                          builder: (_) => c.editCard == card &&
-                                  c.editCard.removeOption
+                          builder: (_) => !editing && card.removeOption
                               ? Row(children: [
                                   Expanded(
                                     flex: 2,
@@ -112,6 +111,7 @@ class CardWidget extends StatelessWidget {
                                   Spacer(),
                                   Flexible(
                                       child: InkWell(
+                                    onTap: null,
                                     child: Text(
                                       'Remover',
                                       style: TextStyle(color: Colors.red),
