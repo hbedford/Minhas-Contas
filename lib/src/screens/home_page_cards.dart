@@ -279,62 +279,53 @@ class _HomePageCardsState extends State<HomePageCards> {
                                 itemCount: cc.card.name == null
                                     ? 3
                                     : cc.card.pThisMonth.length,
-                                itemBuilder: (context, int index) => Container(
-                                    height: constraint.maxHeight * 0.05,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: Row(children: [
-                                                loadContainer(
-                                                    child: Text(
-                                                      cc.card.name == null
-                                                          ? 'Testando'
-                                                          : cc
-                                                              .card
-                                                              .pThisMonth[index]
-                                                              .name,
-                                                    ),
-                                                    enable:
-                                                        cc.card.name == null,
-                                                    bColor: Colors.grey[700])
-                                              ])),
-                                          Flexible(
-                                              flex: 2,
-                                              child: Row(children: [
-                                                loadContainer(
-                                                    child: Text(cc.card.name ==
-                                                            null
-                                                        ? 'Testando'
-                                                        : cc
-                                                            .card
-                                                            .pThisMonth[index]
-                                                            .type
-                                                            .name),
-                                                    enable:
-                                                        cc.card.name == null,
-                                                    bColor: Colors.grey)
-                                              ])),
-                                          Flexible(
-                                              flex: 2,
-                                              child: Observer(
-                                                  builder: (_) =>
-                                                      Row(children: [
-                                                        loadContainer(
-                                                            enable:
-                                                                cc.card.name ==
-                                                                    null,
-                                                            child: Text(
-                                                                "R\$ ${cc.card.name == null ? 'Testando' : cc.card.pThisMonth[index].value}"),
-                                                            bColor:
-                                                                Colors.green)
-                                                      ])))
-                                        ])))),
+                                itemBuilder: (context, int index) =>
+                                    cc.card.name == null
+                                        ? paymentWidget(
+                                            constraint,
+                                            'Testando testando',
+                                            'Testando',
+                                            'testando',
+                                            true)
+                                        : paymentWidget(
+                                            constraint,
+                                            cc.card.pThisMonth[index].name,
+                                            cc.card.pThisMonth[index].type.name,
+                                            'R\$ ' +
+                                                cc.card.pThisMonth[index].value
+                                                    .toString(),
+                                            false))),
                     constraint: constraint)
               ])));
-
+  paymentWidget(BoxConstraints constraint, String title, String type,
+          String price, bool loading) =>
+      Container(
+          height: constraint.maxHeight * 0.05,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+                flex: 4,
+                child: Row(children: [
+                  loadContainer(
+                      child: Text(
+                        title,
+                      ),
+                      enable: loading,
+                      bColor: Colors.grey[700])
+                ])),
+            Flexible(
+                flex: 2,
+                child: Row(children: [
+                  loadContainer(
+                      child: Text(type), enable: loading, bColor: Colors.grey)
+                ])),
+            Flexible(
+                flex: 2,
+                child: Row(children: [
+                  loadContainer(
+                      enable: loading, child: Text(price), bColor: Colors.green)
+                ]))
+          ]));
   card(int index, BoxConstraints constraint, CardModel card) {
     double w = constraint.maxWidth;
     double h = constraint.maxHeight;

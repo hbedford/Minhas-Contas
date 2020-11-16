@@ -290,7 +290,13 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                               textAlign: TextAlign.center)))
                 ]))
       ]);
-
+  stepCategory(BuildContext context) => Expanded(
+        child: Column(
+          children: [
+            back(() => c.backStep(context), 'Selecione uma categoria')
+          ],
+        ),
+      );
   stepsInfo() => Expanded(
         child: LayoutBuilder(
             builder: (context, constraint) => Row(
