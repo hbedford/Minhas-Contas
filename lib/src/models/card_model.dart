@@ -50,6 +50,8 @@ abstract class _CardModelBase with Store {
   bool show;
   @observable
   bool removeOption;
+  @observable
+  double balance;
 
   @observable
   ObservableList payments = [].asObservable();
@@ -63,6 +65,7 @@ abstract class _CardModelBase with Store {
       this.show = false,
       this.debit = false,
       this.removeOption = false,
+      this.balance = 0.0,
       this.credit = false,
       this.limit = 0.0,
       this.number = "0000000000000000"});
@@ -80,12 +83,14 @@ abstract class _CardModelBase with Store {
         this.credit = false,
         this.removeOption = false,
         this.debit = false,
+        this.balance = 0.0,
         this.limit = 0.0;
   _CardModelBase.fromMap(Map e) {
     this.id = e['id'];
     this.name = e['name'];
     this.number = e['number'];
     this.limit = e['limitcard'];
+    this.balance = e['balance'];
     this.show = true;
     this.removeOption = false;
     this.payments = ObservableList.of([]);
@@ -97,6 +102,8 @@ abstract class _CardModelBase with Store {
   changeId(int i) => id = i;
   @action
   changeName(String n) => name = n;
+  @action
+  changeBalance(double b) => balance = b;
   @action
   changeNumber(String n) => number = n;
   @action
@@ -173,6 +180,7 @@ abstract class _CardModelBase with Store {
       'color': color.value,
       'limitcard': limit,
       'user_id': c.user.id,
+      'balance': balance,
       'credit': (credit ?? false) ? 1 : 0,
       'debit': (debit ?? false) ? 1 : 0,
     };
@@ -230,11 +238,14 @@ abstract class _CardModelBase with Store {
   @computed
   bool get isValidLimit => limit != null && limit > 0;
   @computed
+  bool get isValidBalance => balance != 0;
+  @computed
   bool get isAllValid =>
       isValidName &&
       isValidNumber &&
       isValidColor &&
       isValidLimit &&
+      isValidBalance &&
       creditDebitIsValid;
 
   /* @computed

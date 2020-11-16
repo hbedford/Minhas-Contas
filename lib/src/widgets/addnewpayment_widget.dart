@@ -22,6 +22,8 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
   final cp = GetIt.I.get<ProjectsController>();
   final ps = GetIt.I.get<PaymentsController>();
   TextStyle titleStyle;
+  List<Widget> list = [];
+  List<bool> steps = List.filled(5, false);
   Widget getWidget(BuildContext context) {
     if (c.step == 0)
       return step0(context);
@@ -43,6 +45,17 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
         fontWeight: FontWeight.w700,
         fontSize: 14,
         color: Theme.of(context).primaryColor);
+
+    list = ps.types
+        .map((e) => cc.getCardWithId(c.payment.cardId).debit ==
+                    (e.id == 1 || e.id == 3) ||
+                cc.getCardWithId(c.payment.cardId).credit == (e.id == 2)
+            ? RaisedButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () => c.changeTypePayment(e),
+                child: Text(e.name, style: TextStyle(fontSize: 16)))
+            : Container())
+        .toList();
     return LayoutBuilder(
         builder: (context, constraint) => Observer(
             builder: (_) => Container(
@@ -51,7 +64,9 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                 padding: EdgeInsets.symmetric(
                     horizontal: constraint.maxWidth * 0.05,
                     vertical: constraint.maxHeight * 0.01),
-                height: (c.sizeBottom * constraint.maxHeight),
+                height:
+                    (((c.step == 1 ? (-list.length) / 100 : 0) + c.sizeBottom) *
+                        constraint.maxHeight),
                 width: constraint.maxWidth,
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -60,34 +75,26 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                 child: getWidget(context))));
   }
 
-  step1(BuildContext context) =>
-      Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Flexible(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-              Text(
-                'Nova despesa',
-                style: titleStyle,
-              ),
-              InkWell(
-                  onTap: () => c.cancelPayment(context),
-                  child: Text('Cancelar'))
-            ])),
-        Flexible(
-            child: Text('Selecione a forma de pagamento',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
-        Expanded(
-            flex: 4,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: ps.types
-                    .map((e) => RaisedButton(
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () => c.changeTypePayment(e),
-                        child: Text(e.name, style: TextStyle(fontSize: 16))))
-                    .toList()))
-      ]);
+  step1(BuildContext context) {
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Flexible(
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Text(
+          'Nova despesa',
+          style: titleStyle,
+        ),
+        InkWell(onTap: () => c.cancelPayment(context), child: Text('Cancelar'))
+      ])),
+      Flexible(
+          child: Text('Selecione a forma de pagamento',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
+      Expanded(
+          flex: 4,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround, children: list))
+    ]);
+  }
 
   step0(BuildContext context) => Column(children: [
         back(() => c.backStep(context), 'Qual o cartão utilizado?'),
@@ -283,6 +290,24 @@ class _AddNewPaymentWidgetState extends State<AddNewPaymentWidget> {
                               textAlign: TextAlign.center)))
                 ]))
       ]);
+
+  stepsInfo() => Expanded(
+        child: LayoutBuilder(
+            builder: (context, constraint) => Row(
+                  children: steps
+                      .map((e) => Container(
+                            height: constraint.maxHeight,
+                            width: constraint.maxWidth * 0.2,
+                            decoration: BoxDecoration(
+                                color: steps.indexOf(e) > c.step
+                                    ? Colors.green
+                                    : Colors.grey[300],
+                                borderRadius: BorderRadius.horizontal(
+                                    right: Radius.circular(20))),
+                          ))
+                      .toList(),
+                )),
+      );
   back(Function f, String title) => Flexible(
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

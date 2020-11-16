@@ -16,6 +16,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   bool showTxtEditingLimit = false;
   bool showTxtEditingName = false;
   bool showTxtEditingNumber = false;
+  bool showTxtEditingBalance = false;
   bool editColor = false;
 
   final List<Color> list = [
@@ -35,6 +36,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
     Colors.grey
   ];
   TextEditingController limit = MoneyMaskedTextController(precision: 2);
+  TextEditingController balance = MoneyMaskedTextController(precision: 2);
 
   TextEditingController name = TextEditingController();
 
@@ -46,6 +48,22 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   dismissKeyboard(BuildContext context) {
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (cc.editCard.id != null) {
+      limit = MoneyMaskedTextController(
+          precision: 2, initialValue: cc.editCard.limit);
+      name = TextEditingController(text: cc.editCard.name);
+      number = MaskedTextController(
+          mask: '#### #### #### ####',
+          translator: {"#": RegExp(r'[0-9]')},
+          text: cc.editCard.numbers);
+      balance = MoneyMaskedTextController(
+          precision: 2, initialValue: cc.editCard.balance);
     }
   }
 
@@ -232,6 +250,15 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                           l: 5,
                           r: 5,
                           t: 1),
+                      Observer(
+                          builder: (_) => Visibility(
+                                visible: cc.editCard.debit,
+                                child: margin(
+                                    r: 5,
+                                    l: 5,
+                                    child: balanceAccountWidget(constraint),
+                                    constraint: constraint),
+                              )),
                       margin(
                           child: Observer(
                             builder: (_) => SwitchListTile(
@@ -312,6 +339,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                   cc.editCard.changeNumber(
                                       number.text.replaceAll(' ', ''));
                                   showTxtEditingNumber = false;
+                                  FocusScope.of(context).unfocus();
                                 })
                               : flushBar(
                                       color: Colors.red,
@@ -321,6 +349,78 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                   .show(context)))),
               duration: duration,
               right: showTxtEditingNumber ? 0 : -constraint.maxWidth,
+            ),
+          ],
+        ),
+      ));
+  balanceAccountWidget(BoxConstraints constraint) => Container(
+      height: constraint.maxHeight * 0.1,
+      width: constraint.maxWidth * 0.7,
+      child: LayoutBuilder(
+        builder: (context, constraints) => Stack(
+          children: [
+            AnimatedPositioned(
+              child: SizedBox(
+                width: constraints.maxWidth,
+                height: constraint.maxHeight * 0.1,
+                child: margin(
+                  l: 4,
+                  r: 4,
+                  constraint: constraint,
+                  child: InkWell(
+                    onTap: () => setState(() {
+                      showTxtEditingBalance = !showTxtEditingBalance;
+                      balance.text =
+                          cc.editCard.balance.toString().padLeft(2, '0');
+                    }),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Saldo',
+                          style: titleStyle,
+                        ),
+                        Text(('R\$ ' + cc.editCard.balance.toStringAsFixed(2)))
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              /* ListTile(
+                      onTap: () => setState(
+                          () => showTxtEditingNumber = !showTxtEditingNumber),
+                      title: Text('Número'),
+                      trailing: Text((cc.editCard.limit.toStringAsFixed(2))))), */
+              duration: duration,
+              left: showTxtEditingBalance ? -constraint.maxWidth : 0,
+            ),
+            AnimatedPositioned(
+              child: Container(
+                  margin: EdgeInsets.only(top: 5),
+                  height: constraints.maxHeight - 5,
+                  width: constraints.maxWidth,
+                  child: textField(
+                      prefixText: 'R\$ ',
+                      type: TextInputType.numberWithOptions(),
+                      label: 'Saldo',
+                      controller: balance,
+                      suffix: IconButton(
+                          icon: Icon(Icons.save),
+                          onPressed: () => number.text.length > 0
+                              ? setState(() {
+                                  cc.editCard.changeBalance(double.parse(
+                                      balance.text.replaceAll(',', '.')));
+                                  showTxtEditingBalance = false;
+                                  FocusScope.of(context).unfocus();
+                                })
+                              : flushBar(
+                                      color: Colors.red,
+                                      title: 'Campo necessário',
+                                      message:
+                                          'Necessário colocar saldo no cartão')
+                                  .show(context)))),
+              duration: duration,
+              right: showTxtEditingBalance ? 0 : -constraint.maxWidth,
             ),
           ],
         ),
@@ -417,7 +517,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                                 .replaceAll('.', '')
                                                 .replaceAll(',', '.')));
                                         showTxtEditingLimit = false;
-                                        print(cc.editCard.limit);
+
+                                        FocusScope.of(context).unfocus();
                                       })
                                     : flushBar(
                                             color: Colors.red,

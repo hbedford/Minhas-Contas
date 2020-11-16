@@ -69,6 +69,8 @@ abstract class _CardsControllerBase with Store {
     card = cForList.first;
   }
 
+  CardModel getCardWithId(int id) =>
+      cards[cards.indexWhere((element) => element.id == id)];
   @action
   saveCard(BuildContext context) async {
     if (editCard.isAllValid) {
@@ -76,6 +78,7 @@ abstract class _CardsControllerBase with Store {
         int v = cards.indexWhere((element) => element.id == editCard.id);
         cards[v] = editCard;
         card = editCard;
+        await CardDB().updateCard(editCard);
         changeEditCard(null);
       } else {
         int v = await CardDB().registerCard(editCard);

@@ -6,7 +6,7 @@ import '../database.dart';
 class CardDB {
   CardDB();
   get createTable =>
-      "CREATE TABLE cards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER,number TEXT,color INTEGER NOT NULL,limitcard REAL,credit INTEGER,debit INTEGER, FOREIGN KEY(user_id) REFERENCES users);";
+      "CREATE TABLE cards(id INTEGER PRIMARY KEY,name TEXT NOT NULL,user_id INTEGER,number TEXT,color INTEGER NOT NULL,balance REAL,limitcard REAL,credit INTEGER,debit INTEGER, FOREIGN KEY(user_id) REFERENCES users);";
   Future<List<CardModel>> getCards(int userId) async {
     Database db = await DatabaseHelper.instance.database;
     List<Map> list =
@@ -23,6 +23,17 @@ class CardDB {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future updateCard(CardModel card) async {
+    try {
+      Database db = await DatabaseHelper.instance.database;
+      await db.update('cards', card.map, where: 'id = ?', whereArgs: [card.id]);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 }

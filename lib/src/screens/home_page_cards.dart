@@ -133,7 +133,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                     t: 2,
                     child: loadContainer(
                         child: Text(
-                          'R\$ 250,00',
+                          'R\$ ${cc.card.balance.toString().padLeft(2, '0')}',
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         enable: cc.card.name == null,

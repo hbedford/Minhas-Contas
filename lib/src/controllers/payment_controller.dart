@@ -40,7 +40,6 @@ abstract class _PaymentControllerBase with Store {
           amountEdit: TextEditingController(),
           valueEdit: MoneyMaskedTextController(
             initialValue: 0.0,
-            leftSymbol: 'R\$ ',
             precision: 2,
           ),
           time: TimeOfDay.now());
@@ -91,11 +90,11 @@ abstract class _PaymentControllerBase with Store {
       Navigator.pop(context);
     } else {
       if (step == 1) {
-        payment.changeTypePayment(null);
+        payment.changeCardId(null);
         changeStep(0);
       }
       if (step == 2) {
-        payment.changeCardId(null);
+        payment.changeTypePayment(null);
         changeStep(1);
       } else if (step == 0) {
         Navigator.pop(context);
@@ -140,8 +139,9 @@ abstract class _PaymentControllerBase with Store {
 
   @computed
   double get sizeBottom {
-    if (step == 0)
-      return 0.3;
+    if (step == 0) return 0.3;
+    if (step == 1)
+      return 0.35;
     else if (step == 2)
       return 0.25;
     else if (step == 4)
