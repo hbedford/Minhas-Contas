@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:minhasconta/src/db/models/card_db_model.dart';
 import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
+import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 import 'package:mobx/mobx.dart';
 part 'cards_controller.g.dart';
@@ -60,7 +61,7 @@ abstract class _CardsControllerBase with Store {
     cards.forEach((element) async {
       if (element.id != null) {
         print(element.id);
-        ObservableList list = ObservableList.of(
+        ObservableList<PaymentModel> list = ObservableList.of(
             await PaymentDB().getPayments(cardId: element.id));
         print(list.length);
         element.changePayments(list);

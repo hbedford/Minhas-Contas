@@ -54,7 +54,7 @@ abstract class _CardModelBase with Store {
   double balance;
 
   @observable
-  ObservableList payments = [].asObservable();
+  ObservableList<PaymentModel> payments = ObservableList<PaymentModel>();
   _CardModelBase(
       {this.id,
       this.name,
@@ -137,15 +137,15 @@ abstract class _CardModelBase with Store {
   @action
   changeCredit(bool c) => credit = c;
   @action
-  changePayments(ObservableList l) => payments = l;
+  changePayments(ObservableList<PaymentModel> l) => payments = l;
   @action
   changeOptionsActive(bool v) => optionsActive = v;
   @computed
   double get totalOfPayments {
     double total = 0;
-    if (payments != null)
-      payments.forEach((element) {
-        total = total + element.value;
+    if (pThisMonth != null)
+      pThisMonth.forEach((element) {
+        if (element.type.id == 2) total = total + element.value;
       });
     return total;
   }
@@ -161,11 +161,18 @@ abstract class _CardModelBase with Store {
   String get actualTotalLimit =>
       'R\$ ' + totalOfPayments.toStringAsFixed(2).replaceAll('.', ',');
   @computed
-  double get totalThisMonth {
+  String get limitDisponible {
+    return (limit - totalThisMonthCredit)
+        .toStringAsFixed(2)
+        .replaceAll('.', ',');
+  }
+
+  @computed
+  double get totalThisMonthCredit {
     DateTime d = DateTime.now();
     double total = 0.0;
     payments.forEach((e) {
-      if (d.month == e.date.month && d.year == e.date.year)
+      if (d.month == e.date.month && d.year == e.date.year && e.type.id == 2)
         total = total + e.value;
     });
     return total;

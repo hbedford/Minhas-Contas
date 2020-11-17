@@ -129,7 +129,7 @@ abstract class _PaymentControllerBase with Store {
     if (payment.isAllValidWithCard) {
       PaymentDB().registerPayment(payment.map);
       final c = GetIt.I.get<CardsController>();
-      c.card.changePayments(ObservableList.of(
+      c.card.changePayments(ObservableList<PaymentModel>.of(
           await PaymentDB().getPayments(cardId: payment.cardId)));
       print(c.card.payments.length);
     } else

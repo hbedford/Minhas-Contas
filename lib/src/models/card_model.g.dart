@@ -44,13 +44,20 @@ mixin _$CardModel on _CardModelBase, Store {
           Computed<String>(() => super.actualTotalLimit,
               name: '_CardModelBase.actualTotalLimit'))
       .value;
-  Computed<double> _$totalThisMonthComputed;
+  Computed<String> _$limitDisponibleComputed;
 
   @override
-  double get totalThisMonth =>
-      (_$totalThisMonthComputed ??= Computed<double>(() => super.totalThisMonth,
-              name: '_CardModelBase.totalThisMonth'))
-          .value;
+  String get limitDisponible => (_$limitDisponibleComputed ??= Computed<String>(
+          () => super.limitDisponible,
+          name: '_CardModelBase.limitDisponible'))
+      .value;
+  Computed<double> _$totalThisMonthCreditComputed;
+
+  @override
+  double get totalThisMonthCredit => (_$totalThisMonthCreditComputed ??=
+          Computed<double>(() => super.totalThisMonthCredit,
+              name: '_CardModelBase.totalThisMonthCredit'))
+      .value;
   Computed<Map<String, dynamic>> _$mapComputed;
 
   @override
@@ -133,6 +140,13 @@ mixin _$CardModel on _CardModelBase, Store {
   bool get isValidLimit =>
       (_$isValidLimitComputed ??= Computed<bool>(() => super.isValidLimit,
               name: '_CardModelBase.isValidLimit'))
+          .value;
+  Computed<bool> _$isValidBalanceComputed;
+
+  @override
+  bool get isValidBalance =>
+      (_$isValidBalanceComputed ??= Computed<bool>(() => super.isValidBalance,
+              name: '_CardModelBase.isValidBalance'))
           .value;
   Computed<bool> _$isAllValidComputed;
 
@@ -425,16 +439,31 @@ mixin _$CardModel on _CardModelBase, Store {
     });
   }
 
+  final _$balanceAtom = Atom(name: '_CardModelBase.balance');
+
+  @override
+  double get balance {
+    _$balanceAtom.reportRead();
+    return super.balance;
+  }
+
+  @override
+  set balance(double value) {
+    _$balanceAtom.reportWrite(value, super.balance, () {
+      super.balance = value;
+    });
+  }
+
   final _$paymentsAtom = Atom(name: '_CardModelBase.payments');
 
   @override
-  ObservableList<dynamic> get payments {
+  ObservableList<PaymentModel> get payments {
     _$paymentsAtom.reportRead();
     return super.payments;
   }
 
   @override
-  set payments(ObservableList<dynamic> value) {
+  set payments(ObservableList<PaymentModel> value) {
     _$paymentsAtom.reportWrite(value, super.payments, () {
       super.payments = value;
     });
@@ -460,6 +489,17 @@ mixin _$CardModel on _CardModelBase, Store {
         name: '_CardModelBase.changeName');
     try {
       return super.changeName(n);
+    } finally {
+      _$_CardModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeBalance(double b) {
+    final _$actionInfo = _$_CardModelBaseActionController.startAction(
+        name: '_CardModelBase.changeBalance');
+    try {
+      return super.changeBalance(b);
     } finally {
       _$_CardModelBaseActionController.endAction(_$actionInfo);
     }
@@ -642,7 +682,7 @@ mixin _$CardModel on _CardModelBase, Store {
   }
 
   @override
-  dynamic changePayments(ObservableList<dynamic> l) {
+  dynamic changePayments(ObservableList<PaymentModel> l) {
     final _$actionInfo = _$_CardModelBaseActionController.startAction(
         name: '_CardModelBase.changePayments');
     try {
@@ -683,13 +723,15 @@ debit: ${debit},
 credit: ${credit},
 show: ${show},
 removeOption: ${removeOption},
+balance: ${balance},
 payments: ${payments},
 totalOfPayments: ${totalOfPayments},
 creditDebitIsValid: ${creditDebitIsValid},
 onlyDebitOrCredit: ${onlyDebitOrCredit},
 debitAndCredit: ${debitAndCredit},
 actualTotalLimit: ${actualTotalLimit},
-totalThisMonth: ${totalThisMonth},
+limitDisponible: ${limitDisponible},
+totalThisMonthCredit: ${totalThisMonthCredit},
 map: ${map},
 pThisMonth: ${pThisMonth},
 orderByCategory: ${orderByCategory},
@@ -702,6 +744,7 @@ isValidName: ${isValidName},
 isValidNumber: ${isValidNumber},
 isValidColor: ${isValidColor},
 isValidLimit: ${isValidLimit},
+isValidBalance: ${isValidBalance},
 isAllValid: ${isAllValid},
 pSortedPayments: ${pSortedPayments},
 paymentsPerDate: ${paymentsPerDate},

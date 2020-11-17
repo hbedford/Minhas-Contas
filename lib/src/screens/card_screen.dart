@@ -259,7 +259,7 @@ class CardScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        cardsController.card.totalThisMonth.toString(),
+                        cardsController.card.totalThisMonthCredit.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),

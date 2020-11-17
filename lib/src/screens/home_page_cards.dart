@@ -6,6 +6,7 @@ import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
+import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
 import 'package:minhasconta/src/widgets/editcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -25,17 +26,26 @@ class _HomePageCardsState extends State<HomePageCards> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: LayoutBuilder(
-          builder: (context, constraints) => Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    appBar(constraints),
-                    title(constraints),
-                    Observer(
-                        builder: (_) => cc.editCard != null
-                            ? EditCardWidget()
-                            : cardInfos(context))
-                  ])),
+          builder: (context, constraints) => Stack(children: [
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      appBar(constraints),
+                      title(constraints),
+                      Observer(
+                          builder: (_) => cc.editCard != null
+                              ? EditCardWidget()
+                              : cardInfos(context))
+                    ]),
+                SizedBox(
+                    width: constraints.maxHeight * 0.06,
+                    height: constraints.maxHeight * 0.1,
+                    child: CustomPaint(
+                      child: Icon(Icons.add),
+                      painter: BubbleWidget(),
+                    ))
+              ])),
     );
   }
 
@@ -165,7 +175,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                   l: 0,
                                   child: loadContainer(
                                     child: Text(
-                                        'R\$ ${cc.card.name != null ? (cc.card.limit - cc.card.totalThisMonth).toStringAsFixed(2).replaceAll('.', ',') : '00,00'}',
+                                        'R\$ ${cc.card.name != null ? cc.card.limitDisponible : '00,00'}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline1),
@@ -233,7 +243,8 @@ class _HomePageCardsState extends State<HomePageCards> {
                                 ),
                                 height: constraint.maxHeight * 0.01,
                                 width: cc.card.name != null
-                                    ? (cc.card.totalThisMonth / cc.card.limit) *
+                                    ? (cc.card.totalThisMonthCredit /
+                                            cc.card.limit) *
                                         (constraint.maxWidth * 0.9)
                                     : 0.0)
                           ])),
