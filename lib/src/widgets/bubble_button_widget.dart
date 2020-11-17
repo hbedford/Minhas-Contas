@@ -8,7 +8,13 @@ class BubbleWidget extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = Path();
     path.moveTo(size.width, 0);
-    path.quadraticBezierTo(size.width, y1, x2, y2)
+    path.quadraticBezierTo(
+        size.width, size.height * 0.3, size.width * 0.5, size.height * 0.4);
+    path.quadraticBezierTo(size.width * 0.1, size.height * 0.5,
+        size.width * 0.5, size.height * 0.6);
+    // path.lineTo(size.width * 0.5, size.height * 0.6);
+    path.quadraticBezierTo(
+        size.width, size.height * 0.7, size.width, size.height);
     /*  final Rect beforeRect = Rect.fromLTWH(0, (size.height / 2) - 10, 10, 10);
     final Rect largeRect = Rect.fromLTWH(10, 0, size.width - 20, 70);
     final Rect afterRect =

@@ -22,6 +22,7 @@ class _HomePageCardsState extends State<HomePageCards> {
   double v = 0;
   double size = 0;
   double pointer = 0;
+  double pos = 0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,13 +39,21 @@ class _HomePageCardsState extends State<HomePageCards> {
                               ? EditCardWidget()
                               : cardInfos(context))
                     ]),
-                SizedBox(
-                    width: constraints.maxHeight * 0.06,
-                    height: constraints.maxHeight * 0.1,
-                    child: CustomPaint(
-                      child: Icon(Icons.add),
-                      painter: BubbleWidget(),
-                    ))
+                Positioned(
+                  right: 0,
+                  top: pos,
+                  child: SizedBox(
+                      width: constraints.maxHeight * 0.1,
+                      height: constraints.maxHeight * 0.4,
+                      child: CustomPaint(
+                        child: GestureDetector(
+                          onVerticalDragUpdate: (d) =>
+                              setState(() =>),
+                          child: Icon(Icons.add),
+                        ),
+                        painter: BubbleWidget(),
+                      )),
+                ),
               ])),
     );
   }
