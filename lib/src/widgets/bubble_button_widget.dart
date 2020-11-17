@@ -12,24 +12,21 @@ class BubbleWidget extends CustomPainter {
         size.width, size.height * 0.3, size.width * 0.5, size.height * 0.4);
     path.quadraticBezierTo(size.width * 0.1, size.height * 0.5,
         size.width * 0.5, size.height * 0.6);
-    // path.lineTo(size.width * 0.5, size.height * 0.6);
     path.quadraticBezierTo(
         size.width, size.height * 0.7, size.width, size.height);
-    /*  final Rect beforeRect = Rect.fromLTWH(0, (size.height / 2) - 10, 10, 10);
-    final Rect largeRect = Rect.fromLTWH(10, 0, size.width - 20, 70);
-    final Rect afterRect =
-        Rect.fromLTWH(size.width - 10, (size.height / 2) - 10, 10, 10);
-
-    final path = Path();
-    path.arcTo(beforeRect, vector.radians(0), vector.radians(90), false);
-    path.lineTo(20, size.height / 2);
-    path.arcTo(largeRect, vector.radians(0), -vector.radians(180), false);
-    path.moveTo(size.width - 10, size.height / 2);
-    path.lineTo(size.width - 10, (size.height / 2) - 10);
-    path.arcTo(afterRect, vector.radians(180), vector.radians(-90), false);
-    path.close(); */
 
     canvas.drawPath(path, Paint()..color = Colors.blue);
+
+    /* final path = Path();
+    path.moveTo(size.width, 0);
+    path.quadraticBezierTo(
+        size.width, size.height * 0.3, size.width * 0.5, size.height * 0.4);
+    path.quadraticBezierTo(size.width * 0.1, size.height * 0.5,
+        size.width * 0.5, size.height * 0.6);
+    path.quadraticBezierTo(
+        size.width, size.height * 0.7, size.width, size.height);
+
+    canvas.drawPath(path, Paint()..color = Colors.blue); */
   }
 
   @override

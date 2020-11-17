@@ -43,12 +43,22 @@ class _HomePageCardsState extends State<HomePageCards> {
                   right: 0,
                   top: pos,
                   child: SizedBox(
-                      width: constraints.maxHeight * 0.1,
-                      height: constraints.maxHeight * 0.4,
+                      width: constraints.maxHeight * 0.05,
+                      height: constraints.maxHeight * 0.2,
                       child: CustomPaint(
                         child: GestureDetector(
-                          onVerticalDragUpdate: (d) =>
-                              setState(() =>),
+                          onVerticalDragUpdate: (d) => setState(() {
+                            print(pos + d.delta.dy);
+                            if (pos + d.delta.dy >
+                                    MediaQuery.of(context).size.height * 0.0 &&
+                                pos + d.delta.dy <
+                                    MediaQuery.of(context).size.height -
+                                        MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom) {
+                              pos = pos + d.delta.dy;
+                            }
+                          }),
                           child: Icon(Icons.add),
                         ),
                         painter: BubbleWidget(),
