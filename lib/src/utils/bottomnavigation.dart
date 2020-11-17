@@ -151,7 +151,6 @@ class NavCustomPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final path = Path()
-      ..moveTo(0, 0)
       ..lineTo((loc - 0.00) * size.width, 0)
       ..cubicTo(
         (loc + s * 0.20) * size.width,
@@ -170,8 +169,13 @@ class NavCustomPainter extends CustomPainter {
         0,
       )
       ..lineTo(size.width, 0)
+      /* ..lineTo(size.width - 30, 0) */
+      /*  ..quadraticBezierTo(
+          size.width, size.height * 0.5, size.width * 0.95, size.height) */
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
+      /* ..quadraticBezierTo(size.width * 0.1, size.height * 0.9, size.width * 0.1,
+          size.height * 0.9) */
       ..close();
     canvas.drawPath(path, paint);
   }
