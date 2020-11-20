@@ -42,34 +42,39 @@ class _HomePageCardsState extends State<HomePageCards> {
                 Positioned(
                   right: 0,
                   top: pos,
-                  child: SizedBox(
-                      width: constraints.maxHeight * 0.06,
-                      height: constraints.maxHeight * 0.25,
-                      child: CustomPaint(
-                          child: GestureDetector(
-                            onVerticalDragUpdate: (d) => setState(() {
-                              print(pos + d.delta.dy);
-                              if (pos + d.delta.dy >
-                                      MediaQuery.of(context).size.height *
-                                          0.0 &&
-                                  pos + d.delta.dy <
-                                      MediaQuery.of(context).size.height -
-                                          MediaQuery.of(context)
-                                              .viewInsets
-                                              .bottom) {
-                                pos = pos + d.delta.dy;
-                              }
-                            }),
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  left: constraints.maxHeight * 0.02),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
+                  child: Observer(
+                    builder: (_) => Visibility(
+                      visible: cc.card != null && cc.card.id != null,
+                      child: SizedBox(
+                          width: constraints.maxHeight * 0.06,
+                          height: constraints.maxHeight * 0.25,
+                          child: CustomPaint(
+                              child: GestureDetector(
+                                onVerticalDragUpdate: (d) => setState(() {
+                                  print(pos + d.delta.dy);
+                                  if (pos + d.delta.dy >
+                                          MediaQuery.of(context).size.height *
+                                              0.0 &&
+                                      pos + d.delta.dy <
+                                          MediaQuery.of(context).size.height -
+                                              MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom) {
+                                    pos = pos + d.delta.dy;
+                                  }
+                                }),
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                      left: constraints.maxHeight * 0.02),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          painter: BubbleWidget(color: cc.card.color))),
+                              painter: BubbleWidget(color: cc.card.color))),
+                    ),
+                  ),
                 ),
               ])),
     );

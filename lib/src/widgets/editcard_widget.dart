@@ -41,8 +41,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   TextEditingController name = TextEditingController();
 
   TextEditingController number = MaskedTextController(
-      mask: '#### #### #### ####',
-      translator: {"#": RegExp(r'[0-9]')},
+      mask: '0000 0000 0000 0000',
+      translator: {"0": RegExp(r'[0-9]')},
       text: '0000 0000 0000 0000');
   Duration duration = Duration(milliseconds: 200);
   dismissKeyboard(BuildContext context) {
@@ -59,8 +59,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
           precision: 2, initialValue: cc.editCard.limit);
       name = TextEditingController(text: cc.editCard.name);
       number = MaskedTextController(
-          mask: '#### #### #### ####',
-          translator: {"#": RegExp(r'[0-9]')},
+          mask: '0000 0000 0000 0000',
+          translator: {"0": RegExp(r'[0-9]')},
           text: cc.editCard.numbers);
       balance = MoneyMaskedTextController(
           precision: 2, initialValue: cc.editCard.balance);
