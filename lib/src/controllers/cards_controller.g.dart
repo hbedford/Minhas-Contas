@@ -122,6 +122,21 @@ mixin _$CardsController on _CardsControllerBase, Store {
     });
   }
 
+  final _$cardViewAtom = Atom(name: '_CardsControllerBase.cardView');
+
+  @override
+  bool get cardView {
+    _$cardViewAtom.reportRead();
+    return super.cardView;
+  }
+
+  @override
+  set cardView(bool value) {
+    _$cardViewAtom.reportWrite(value, super.cardView, () {
+      super.cardView = value;
+    });
+  }
+
   final _$cardsAtom = Atom(name: '_CardsControllerBase.cards');
 
   @override
@@ -168,6 +183,17 @@ mixin _$CardsController on _CardsControllerBase, Store {
         name: '_CardsControllerBase.changeValidate');
     try {
       return super.changeValidate(v);
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeCardView(bool v) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.changeCardView');
+    try {
+      return super.changeCardView(v);
     } finally {
       _$_CardsControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -292,6 +318,7 @@ cValidate: ${cValidate},
 cBestDate: ${cBestDate},
 cLimit: ${cLimit},
 scrollEditCard: ${scrollEditCard},
+cardView: ${cardView},
 cards: ${cards},
 scroll: ${scroll},
 actualCard: ${actualCard},

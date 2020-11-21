@@ -24,6 +24,8 @@ abstract class _CardsControllerBase with Store {
   @observable
   ScrollController scrollEditCard = ScrollController();
   @observable
+  bool cardView;
+  @observable
   ObservableList cards = [].asObservable();
   @observable
   double scroll;
@@ -34,9 +36,12 @@ abstract class _CardsControllerBase with Store {
     this.cLimit,
     this.cards,
     this.scroll = 0,
+    this.cardView = false,
   });
   @action
   changeValidate(bool v) => cValidate = v;
+  @action
+  changeCardView(bool v) => cardView = v;
   @action
   changeBestDate(bool v) => cBestDate = v;
   @action

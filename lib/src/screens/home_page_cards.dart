@@ -8,6 +8,7 @@ import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
+import 'package:minhasconta/src/widgets/cardview_widget.dart';
 import 'package:minhasconta/src/widgets/editcard_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -28,17 +29,32 @@ class _HomePageCardsState extends State<HomePageCards> {
     return SafeArea(
       child: LayoutBuilder(
           builder: (context, constraints) => Stack(children: [
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      appBar(constraints),
-                      title(constraints),
-                      Observer(
-                          builder: (_) => cc.editCard != null
-                              ? EditCardWidget()
-                              : cardInfos(context))
-                    ]),
+                Observer(
+                  builder: (_) => Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        appBar(constraints),
+                        title(constraints),
+                        // Observer(
+                        //   builder: (_) =>
+                        Visibility(child: cardsWidget(), visible: !cc.cardView),
+                        // ),
+                        // Observer(
+                        //   builder: (_) =>
+                        Visibility(
+                            visible: !cc.cardView,
+                            child: cc.editCard != null
+                                ? EditCardWidget()
+                                : cardInfos(context)),
+                        // ),
+                        // Observer(
+                        //     builder: (_) =>
+                        Visibility(
+                            visible: cc.cardView, child: CardViewWidget())
+                        // )
+                      ]),
+                ),
                 Positioned(
                   right: 0,
                   top: pos,
@@ -46,8 +62,8 @@ class _HomePageCardsState extends State<HomePageCards> {
                     builder: (_) => Visibility(
                       visible: cc.card != null && cc.card.id != null,
                       child: SizedBox(
-                          width: constraints.maxHeight * 0.06,
-                          height: constraints.maxHeight * 0.25,
+                          width: constraints.maxWidth * 0.13,
+                          height: constraints.maxWidth * 0.5,
                           child: CustomPaint(
                               child: GestureDetector(
                                 onVerticalDragUpdate: (d) => setState(() {
@@ -65,7 +81,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                                 }),
                                 child: Container(
                                   margin: EdgeInsets.only(
-                                      left: constraints.maxHeight * 0.02),
+                                      left: constraints.maxWidth * 0.02),
                                   child: Icon(
                                     Icons.add,
                                     color: Colors.white,
@@ -95,7 +111,7 @@ class _HomePageCardsState extends State<HomePageCards> {
       );
   title(BoxConstraints constraints) => Container(
       height: constraints.maxHeight *
-          0.3 /*  +
+          0.05 /*  +
           (WidgetsBinding.instance.window.viewInsets.bottom * 0.1) */
       ,
       width: constraints.maxWidth,
@@ -120,9 +136,9 @@ class _HomePageCardsState extends State<HomePageCards> {
                           ),
                           constraint: constraint),
                     ),
-                    cardsWidget()
                   ])));
   cardsWidget() => Expanded(
+      flex: 1,
       child: LayoutBuilder(
           builder: (context, constraints) => Observer(
               builder: (_) => cc.cForList.length == 1 || cc.editCard != null
@@ -397,6 +413,7 @@ class _HomePageCardsState extends State<HomePageCards> {
           height: h * 0.9,
           width: w * 0.75,
           child: GestureDetector(
+            onLongPress: () => cc.changeCardView(true),
             onTap: () {
               cc.changeCard(card);
               Navigator.pushNamed(context, '/card');

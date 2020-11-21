@@ -41,9 +41,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   TextEditingController name = TextEditingController();
 
   TextEditingController number = MaskedTextController(
-      mask: '0000 0000 0000 0000',
-      translator: {"0": RegExp(r'[0-9]')},
-      text: '0000 0000 0000 0000');
+    mask: '0000 0000 0000 0000',
+  );
   Duration duration = Duration(milliseconds: 200);
   dismissKeyboard(BuildContext context) {
     if (FocusScope.of(context).hasFocus) {
@@ -59,9 +58,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
           precision: 2, initialValue: cc.editCard.limit);
       name = TextEditingController(text: cc.editCard.name);
       number = MaskedTextController(
-          mask: '0000 0000 0000 0000',
-          translator: {"0": RegExp(r'[0-9]')},
-          text: cc.editCard.numbers);
+          mask: '0000 0000 0000 0000', text: cc.editCard.numbers);
       balance = MoneyMaskedTextController(
           precision: 2, initialValue: cc.editCard.balance);
     }
@@ -77,6 +74,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
     name.text = cc.editCard.name;
 
     return Expanded(
+      flex: 2,
       child: LayoutBuilder(
         builder: (context, constraint) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,7 +271,9 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                           constraint: constraint,
                           l: 5,
                           r: 5,
-                          t: 1)
+                          t: 1),
+                      Container(
+                          height: MediaQuery.of(context).viewInsets.bottom)
                     ],
                   ),
                 ))
