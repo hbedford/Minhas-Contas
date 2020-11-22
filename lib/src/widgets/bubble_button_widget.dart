@@ -10,16 +10,16 @@ class BubbleWidget extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = Path();
     path.moveTo(size.width, 0);
-    path.quadraticBezierTo(
-        size.width, size.height * 0.3, size.width * 0.7, size.height * 0.4);
+    path.quadraticBezierTo(size.width * 0.98, size.height * 0.08,
+        size.width * 0.5, size.height * 0.26);
     /*  path.lineTo(size.width * 0.7, size.height * 0.4); */
     /* 
 path.arcTo(Rect.fromLTWH(0, 0, size.width, size.height - 20), -pi, pi, false); */
-    path.lineTo(size.width * 0.7, size.height * 0.6);
+    path.lineTo(size.width * 0.5, size.height * 0.7);
     /* path.quadraticBezierTo(size.width * 0.0, size.height * 0.5,
         size.width * 0.7, size.height * 0.6); */
     path.quadraticBezierTo(
-        size.width, size.height * 0.7, size.width, size.height);
+        size.width * 0.98, size.height * 0.95, size.width, size.height);
 
     canvas.drawPath(path, Paint()..color = color);
     final path1 = Path();
@@ -28,8 +28,8 @@ path.arcTo(Rect.fromLTWH(0, 0, size.width, size.height - 20), -pi, pi, false); *
     /* 
     path1.lineTo(size.width, size.height * 0.4); */
     path1.arcTo(
-        Rect.fromLTWH(
-            10, size.height * 0.37, size.width, size.height * 0.5 / 2),
+        Rect.fromLTWH(size.width * 0.35, size.height * 0.15, size.width,
+            size.height * 0.7),
         vector.radians(40),
         vector.radians(280),
         true);

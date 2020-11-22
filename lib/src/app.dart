@@ -64,7 +64,7 @@ class App extends StatelessWidget {
                 color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
             headline3: TextStyle(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: 15,
             )),
         primaryTextTheme: TextTheme(
             headline6: TextStyle(color: menuPurple),

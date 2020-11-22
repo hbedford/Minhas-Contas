@@ -63,7 +63,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                       visible: cc.card != null && cc.card.id != null,
                       child: SizedBox(
                           width: constraints.maxWidth * 0.13,
-                          height: constraints.maxWidth * 0.5,
+                          height: constraints.maxWidth * 0.18,
                           child: CustomPaint(
                               child: GestureDetector(
                                 onVerticalDragUpdate: (d) => setState(() {

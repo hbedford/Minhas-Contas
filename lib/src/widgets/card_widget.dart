@@ -56,7 +56,8 @@ class CardWidget extends StatelessWidget {
                                       card.name.isEmpty ? 'Nome' : card.name,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline2)),
+                                          .headline2
+                                          .copyWith(fontSize: 32))),
                               Row(
                                 children: [
                                   IconButton(
@@ -130,7 +131,7 @@ class CardWidget extends StatelessWidget {
                                             builder: (_) => Visibility(
                                               visible: card.debit,
                                               child: Text(
-                                                'debito',
+                                                'Debito',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .headline3,
@@ -141,7 +142,7 @@ class CardWidget extends StatelessWidget {
                                             builder: (_) => Visibility(
                                               visible: card.credit,
                                               child: Text(
-                                                'credito',
+                                                'Credito',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .headline3,
