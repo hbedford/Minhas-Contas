@@ -6,10 +6,12 @@ import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
+import 'dart:ui' as ui;
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
 import 'package:minhasconta/src/widgets/cardview_widget.dart';
 import 'package:minhasconta/src/widgets/editcard_widget.dart';
+import 'package:minhasconta/src/widgets/payment_popup_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomePageCards extends StatefulWidget {
@@ -20,6 +22,7 @@ class HomePageCards extends StatefulWidget {
 class _HomePageCardsState extends State<HomePageCards> {
   ScrollController controller;
   final cc = GetIt.I.get<CardsController>();
+  final c = GetIt.I.get<PaymentController>();
   double v = 0;
   double size = 0;
   double pointer = 0;
@@ -36,66 +39,66 @@ class _HomePageCardsState extends State<HomePageCards> {
                       children: [
                         appBar(constraints),
                         title(constraints),
-                        // Observer(
-                        //   builder: (_) =>
                         Visibility(child: cardsWidget(), visible: !cc.cardView),
-                        // ),
-                        // Observer(
-                        //   builder: (_) =>
                         Visibility(
                             visible: !cc.cardView,
                             child: cc.editCard != null
                                 ? EditCardWidget()
                                 : cardInfos(context)),
-                        // ),
-                        // Observer(
-                        //     builder: (_) =>
                         Visibility(
                             visible: cc.cardView, child: CardViewWidget())
-                        // )
                       ]),
                 ),
-                Positioned(
-                  right: 0,
-                  top: pos,
-                  child: Observer(
-                    builder: (_) => Visibility(
-                      visible: cc.card != null && cc.card.id != null,
-                      child: SizedBox(
-                          width: constraints.maxWidth * 0.13,
-                          height: constraints.maxWidth * 0.18,
-                          child: CustomPaint(
-                              child: GestureDetector(
-                                onVerticalDragUpdate: (d) => setState(() {
-                                  print(pos + d.delta.dy);
-                                  if (pos + d.delta.dy >
-                                          MediaQuery.of(context).size.height *
-                                              0.0 &&
-                                      pos + d.delta.dy <
-                                          MediaQuery.of(context).size.height -
-                                              MediaQuery.of(context)
-                                                  .viewInsets
-                                                  .bottom) {
-                                    pos = pos + d.delta.dy;
-                                  }
-                                }),
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: constraints.maxWidth * 0.02),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              painter: BubbleWidget(color: cc.card.color))),
-                    ),
-                  ),
-                ),
+                bubbleButton(constraints),
+                PaymentPopUpWidget(constraints: constraints)
               ])),
     );
   }
 
+  bubbleButton(BoxConstraints constraints) => Visibility(
+        visible: c.payment == null,
+        child: Positioned(
+          right: 0,
+          top: constraints.maxHeight * 0.68,
+          child: Observer(
+            builder: (_) => Visibility(
+              visible:
+                  cc.card != null && cc.card.id != null && cc.editCard == null,
+              child: SizedBox(
+                  width: constraints.maxWidth * 0.13,
+                  height: constraints.maxWidth * 0.18,
+                  child: CustomPaint(
+                      child: GestureDetector(
+                        onTap: () {
+                          final p = GetIt.I.get<PaymentController>();
+                          p.initiatePayment();
+                        },
+                        /* onVerticalDragUpdate: (d) => setState(() {
+                          print(pos + d.delta.dy);
+                          if (pos + d.delta.dy >
+                                  MediaQuery.of(context).size.height * 0.0 &&
+                              pos + d.delta.dy <
+                                  MediaQuery.of(context).size.height -
+                                      MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom) {
+                            pos = pos + d.delta.dy;
+                          }
+                        }), */
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              left: constraints.maxWidth * 0.02),
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      painter: BubbleWidget(color: cc.card.color))),
+            ),
+          ),
+        ),
+      );
   appBar(BoxConstraints constraints) => AnimatedContainer(
         duration: Duration(milliseconds: 200),
         child: Center(
@@ -169,9 +172,10 @@ class _HomePageCardsState extends State<HomePageCards> {
                               .toList()),
                     ))));
   cardInfos(BuildContext ctxt) => Expanded(
-      flex: 2,
-      child: LayoutBuilder(
-          builder: (context, constraint) =>
+        flex: 2,
+        child: LayoutBuilder(
+          builder: (context, constraint) => Stack(
+            children: [
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 margin(
                     t: 3,
@@ -304,23 +308,23 @@ class _HomePageCardsState extends State<HomePageCards> {
                       children: [
                         Text('Ultimas compras',
                             style: Theme.of(context).textTheme.subtitle2),
-                        Observer(
-                          builder: (_) => Visibility(
-                            visible: cc.card.id != null && cc.editCard == null,
-                            child: InkWell(
-                                child: Icon(Icons.add),
-                                onTap: () {
-                                  final p = GetIt.I.get<PaymentController>();
-                                  p.initiatePayment();
-                                  showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: ctxt,
-                                    builder: (context) => AddNewPaymentWidget(),
-                                  );
-                                }),
-                          ),
-                        )
+                        /*  Observer(
+                                builder: (_) => Visibility(
+                                  visible: cc.card.id != null && cc.editCard == null,
+                                  child: InkWell(
+                                      child: Icon(Icons.add),
+                                      onTap: () {
+                                        final p = GetIt.I.get<PaymentController>();
+                                        p.initiatePayment();
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: ctxt,
+                                          builder: (context) => AddNewPaymentWidget(),
+                                        );
+                                      }),
+                                ),
+                              ) */
                       ],
                     ),
                     constraint: constraint),
@@ -354,7 +358,29 @@ class _HomePageCardsState extends State<HomePageCards> {
                                                     .toString(),
                                             false))),
                     constraint: constraint)
-              ])));
+              ]),
+              Observer(
+                builder: (_) => Visibility(
+                  visible: c.payment != null,
+                  child: ClipRect(
+                    child: BackdropFilter(
+                        filter: ui.ImageFilter.blur(
+                          sigmaX: 5.0,
+                          sigmaY: 5.0,
+                        ),
+                        child: Container(
+                          height: constraint.maxHeight,
+                          width: constraint.maxWidth,
+                          decoration: BoxDecoration(
+                              color: Colors.white10 /* .withOpacity(0.8) */),
+                        )),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
   paymentWidget(BoxConstraints constraint, String title, String type,
           String price, bool loading) =>
       Container(
