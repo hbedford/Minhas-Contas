@@ -50,6 +50,12 @@ class _HomePageCardsState extends State<HomePageCards> {
                       ]),
                 ),
                 bubbleButton(constraints),
+                Observer(
+                  builder: (_) => c.payment != null
+                      ? Positioned.fill(
+                          child: InkWell(onTap: () => c.cancelPayment(context)))
+                      : Container(),
+                ),
                 PaymentPopUpWidget(constraints: constraints)
               ])),
     );

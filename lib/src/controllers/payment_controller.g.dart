@@ -16,6 +16,13 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
       (_$sizeBottomComputed ??= Computed<double>(() => super.sizeBottom,
               name: '_PaymentControllerBase.sizeBottom'))
           .value;
+  Computed<List<PaymentTypeModel>> _$typesCardComputed;
+
+  @override
+  List<PaymentTypeModel> get typesCard => (_$typesCardComputed ??=
+          Computed<List<PaymentTypeModel>>(() => super.typesCard,
+              name: '_PaymentControllerBase.typesCard'))
+      .value;
 
   final _$stepAtom = Atom(name: '_PaymentControllerBase.step');
 
@@ -157,7 +164,8 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
 step: ${step},
 startStep: ${startStep},
 payment: ${payment},
-sizeBottom: ${sizeBottom}
+sizeBottom: ${sizeBottom},
+typesCard: ${typesCard}
     ''';
   }
 }

@@ -68,7 +68,7 @@ abstract class _CardModelBase with Store {
       this.balance = 0.0,
       this.credit = false,
       this.limit = 0.0,
-      this.number = "0000000000000000"});
+      this.number});
 
   // ignore: unused_element
   _CardModelBase.addNew()
@@ -79,7 +79,6 @@ abstract class _CardModelBase with Store {
       : this.name = '',
         this.color = Color(0xFF222059),
         this.show = false,
-        this.number = "0000000000000000",
         this.credit = false,
         this.removeOption = false,
         this.debit = false,
@@ -185,7 +184,7 @@ abstract class _CardModelBase with Store {
       'name': name,
       'number': number,
       'color': color.value,
-      'limitcard': limit,
+      'limitcard': debit ? limit : 0.0,
       'user_id': c.user.id,
       'balance': balance,
       'credit': (credit ?? false) ? 1 : 0,
@@ -225,14 +224,17 @@ abstract class _CardModelBase with Store {
   }
 
   @computed
-  String get number01 => number.length >= 4 ? number.substring(0, 4) : '0000';
+  String get number01 =>
+      number != null && number.length >= 4 ? number.substring(0, 4) : '0000';
   @computed
-  String get number02 => number.length >= 8 ? number.substring(4, 8) : '0000';
+  String get number02 =>
+      number != null && number.length >= 8 ? number.substring(4, 8) : '0000';
   @computed
-  String get number03 => number.length >= 12 ? number.substring(8, 12) : '0000';
+  String get number03 =>
+      number != null && number.length >= 12 ? number.substring(8, 12) : '0000';
   @computed
   String get number04 =>
-      number.length >= 16 ? number.substring(12, 16) : '0000';
+      number != null && number.length >= 16 ? number.substring(12, 16) : '0000';
   @computed
   String get numbers =>
       number01 + ' ' + number02 + ' ' + number03 + ' ' + number04;
@@ -245,15 +247,15 @@ abstract class _CardModelBase with Store {
   @computed
   bool get isValidLimit => limit != null && limit > 0;
   @computed
-  bool get isValidBalance => balance != 0;
+  bool get isValidBalance => debit ? balance != 0 : true;
   @computed
   bool get isAllValid =>
       isValidName &&
       isValidNumber &&
       isValidColor &&
       isValidLimit &&
-      isValidBalance &&
-      creditDebitIsValid;
+      creditDebitIsValid &&
+      isValidBalance;
 
   /* @computed
   List<CategoryModel> get orderByCategory {
@@ -345,14 +347,16 @@ abstract class _CardModelBase with Store {
   String get invalidString {
     if (!isValidName)
       return 'Necessario inserir um nome';
+    else if (!isValidNumber)
+      return 'Necessario um número de cartão';
     else if (!isValidColor)
       return 'Necessario selecionar uma cor';
     else if (!isValidLimit)
       return 'Necessario colocar um limite no cartão';
-    else if (!isValidNumber)
-      return 'Necessario um número de cartão';
     else if (!creditDebitIsValid)
       return 'Necessario selecionar pelo menos 1 opção, Debito ou Credito ou ambos';
+    else if (!isValidBalance)
+      return 'Necessario um saldo';
     else
       return 'Algum erro ocorreu';
   }
