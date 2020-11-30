@@ -110,7 +110,6 @@ abstract class _PaymentControllerBase with Store {
   cancelPayment(BuildContext context) {
     changePayment(null);
     changeStep(null);
-    Navigator.pop(context);
   }
 
   @action
@@ -148,5 +147,18 @@ abstract class _PaymentControllerBase with Store {
       return 0.7;
     else
       return 0.3;
+  }
+
+  @computed
+  List<PaymentTypeModel> get typesCard {
+    final p = GetIt.I.get<PaymentsController>();
+    final c = GetIt.I.get<CardsController>();
+    List<PaymentTypeModel> l = [];
+    if (c.card.debit) {
+      l.add(p.getTypeWithName('Debito'));
+      l.add(p.getTypeWithName('Transferencia'));
+    }
+    if (c.card.credit) l.add(p.getTypeWithName('Credito'));
+    return l;
   }
 }
