@@ -114,11 +114,11 @@ abstract class _PaymentControllerBase with Store {
 
   @action
   changeTypePayment(PaymentTypeModel t) {
-    final c = GetIt.I.get<CardsController>();
-    if (c.card == null)
+    /* final c = GetIt.I.get<CardsController>();
+    /* if (c.card == null)
       changeStep(1);
-    else
-      changeStep(2);
+    else */ */
+    changeStep(2);
     payment.changeTypePayment(t);
   }
 

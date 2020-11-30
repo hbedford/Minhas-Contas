@@ -29,14 +29,19 @@ class PaymentPopUpWidget extends StatelessWidget {
                 builder: (context, constraint) => Observer(
                       builder: (_) => p.step == 0
                           ? step0(context, constraint)
-                          : step1(context, constraint),
+                          : p.step == 1
+                              ? step1(context, constraint)
+                              : step2(context, constraint),
                     )),
           ),
           duration: Duration(milliseconds: 100)),
     );
   }
 
-  step0(BuildContext context, BoxConstraints constraint) => Row(
+  step0(BuildContext context, BoxConstraints constraint) => Column(
+        children: [],
+      );
+  step1(BuildContext context, BoxConstraints constraint) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
@@ -106,7 +111,9 @@ class PaymentPopUpWidget extends StatelessWidget {
                                                           0.01, */
                                         bottom: constraints.maxHeight * 0.01,
                                         left: constraints.maxWidth * 0.02),
-                                    child: Text(e.name),
+                                    child: InkWell(
+                                        onTap: () => p.changeTypePayment(e),
+                                        child: Text(e.name)),
                                   ))
                               .toList(),
                         )
@@ -119,7 +126,7 @@ class PaymentPopUpWidget extends StatelessWidget {
           )
         ],
       );
-  step1(BuildContext context, BoxConstraints constraint) => Column(
+  step2(BuildContext context, BoxConstraints constraint) => Column(
         children: [],
       );
   title(String title, Function f) => Row(
