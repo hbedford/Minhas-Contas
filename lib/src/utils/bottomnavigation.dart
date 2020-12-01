@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:minhasconta/src/controllers/cards_controller.dart';
 
 class CurvedNavigationBar extends StatefulWidget {
   final List<Widget> items;
@@ -71,6 +73,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
 
   @override
   Widget build(BuildContext context) {
+    final c = GetIt.I.get<CardsController>();
     return SizedBox(
         height: widget.height,
         width: widget.width,
@@ -83,8 +86,13 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                   right: 0,
                   bottom: 0,
                   child: CustomPaint(
-                      painter: NavCustomPainter(_pos, _length,
-                          widget.backgroundColor, Directionality.of(context)),
+                      painter: NavCustomPainter(
+                          _pos,
+                          _length,
+                          c.card != null
+                              ? c.card.color
+                              : widget.backgroundColor,
+                          Directionality.of(context)),
                       child: Container(height: widget.height * 0.60))),
               Positioned(
                   left: 0,
@@ -110,7 +118,9 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                                                 ? 20
                                                 : 0),
                                     child: CircleAvatar(
-                                      backgroundColor: widget.backgroundColor,
+                                      backgroundColor: c.card != null
+                                          ? c.card.color
+                                          : widget.backgroundColor,
                                       child: Center(child: item),
                                     ),
                                     duration: Duration(milliseconds: 200),

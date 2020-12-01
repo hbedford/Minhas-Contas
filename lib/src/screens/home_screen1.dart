@@ -52,6 +52,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    final c = GetIt.I.get<CardsController>();
     size = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -91,11 +92,16 @@ class _HomeScreen1State extends State<HomeScreen1> {
                           Icons.home,
                           color: Theme.of(context).accentColor,
                         ),
-                        Text('A'),
+                        Text(
+                          'A',
+                        ),
                         IconButton(
                             onPressed: () => Navigator.pushNamedAndRemoveUntil(
                                 context, '/login', (route) => route.isFirst),
-                            icon: Icon(Icons.logout))
+                            icon: Icon(
+                              Icons.logout,
+                              color: Theme.of(context).accentColor,
+                            ))
                       ],
                       height: Platform.isIOS
                           ? constraint.maxHeight * 0.12

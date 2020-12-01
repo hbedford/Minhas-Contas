@@ -31,9 +31,9 @@ class _HomePageCardsState extends State<HomePageCards> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: LayoutBuilder(
-          builder: (context, constraints) => Stack(children: [
-                Observer(
-                  builder: (_) => Column(
+        builder: (context, constraints) => Observer(
+            builder: (_) => Stack(children: [
+                  Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -48,16 +48,14 @@ class _HomePageCardsState extends State<HomePageCards> {
                         Visibility(
                             visible: cc.cardView, child: CardViewWidget())
                       ]),
-                ),
-                bubbleButton(constraints),
-                Observer(
-                  builder: (_) => c.payment != null
+                  bubbleButton(constraints),
+                  c.payment != null
                       ? Positioned.fill(
                           child: InkWell(onTap: () => c.cancelPayment(context)))
                       : Container(),
-                ),
-                PaymentPopUpWidget(constraints: constraints)
-              ])),
+                  PaymentPopUpWidget(constraints: constraints)
+                ])),
+      ),
     );
   }
 
