@@ -24,10 +24,9 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
 
   final Color colorGreen = Color(0xff00D39A);
   List<String> titles = ['Cartão', 'Nova Despesa', 'Categoria', 'Testando'];
-  double percent = 0;
   Animation<double> animation;
   /* Animation animationLeft; */
-  double v = 0;
+  double v = 10;
   AnimationController controller;
   /* 
   AnimationController controllerLeft; */
@@ -42,11 +41,10 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
 
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
-    animation = Tween<double>(begin: 2, end: 100).animate(controller)
+    animation = Tween<double>(begin: 1, end: 100).animate(controller)
       ..addListener(() {
         setState(() {
-          print(v);
-          v = p.percent / animation.value;
+          v = p.percent + (animation.value / 10);
         });
       });
   }
@@ -328,14 +326,13 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
         children: [
           Positioned.fill(
             child: SizedBox(
-              child: ClipPath(
-                clipper: CircleClipper(),
-                child: CustomPaint(
-                    size: Size(
-                        constraint.maxWidth * 0.15, constraint.maxWidth * 0.15),
-                    painter: WaveButton(percent: v, color: colorGreen)),
-              ),
-            ),
+                child: ClipPath(
+              clipper: CircleClipper(),
+              child: CustomPaint(
+                  size: Size(
+                      constraint.maxWidth * 0.15, constraint.maxWidth * 0.15),
+                  painter: WaveButton(percent: v, color: colorGreen)),
+            )),
           ),
           Positioned.fill(
             child: IconButton(

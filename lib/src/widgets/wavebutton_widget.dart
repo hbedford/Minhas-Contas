@@ -10,7 +10,8 @@ class WaveButton extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final path = Path();
-    double w = size.width * percent;
+    print(percent);
+    double w = size.width * (percent / 10);
     path.moveTo(w * 0.2, -size.height * 0.2);
     /* if (percent == 0) { */
     path.quadraticBezierTo(

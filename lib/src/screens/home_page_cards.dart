@@ -184,13 +184,13 @@ class _HomePageCardsState extends State<HomePageCards> {
                 margin(
                     t: 3,
                     child: Text('Informações',
-                        style: Theme.of(context).textTheme.subtitle1),
+                        style: Theme.of(ctxt).textTheme.subtitle1),
                     constraint: constraint),
                 margin(
                     t: 4,
                     child: loadContainer(
                         enable: cc.card.name == null,
-                        bColor: Theme.of(context).textTheme.subtitle2.color,
+                        bColor: Theme.of(ctxt).textTheme.subtitle2.color,
                         child: Text('Saldo em conta',
                             style: Theme.of(context).textTheme.subtitle2)),
                     constraint: constraint),
@@ -199,7 +199,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                     child: loadContainer(
                         child: Text(
                           'R\$ ${cc.card.balance.toString().padLeft(2, '0')}',
-                          style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(ctxt).textTheme.headline1,
                         ),
                         enable: cc.card.name == null,
                         bColor: Color(0xFF222059)),
@@ -298,9 +298,10 @@ class _HomePageCardsState extends State<HomePageCards> {
                                 ),
                                 height: constraint.maxHeight * 0.01,
                                 width: cc.card.name != null
-                                    ? (cc.card.totalThisMonthCredit /
-                                            cc.card.limit) *
-                                        (constraint.maxWidth * 0.9)
+                                    ?
+                                    // ? (cc.card.totalThisMonthCredit /
+                                    //         cc.card.limit) *
+                                    (constraint.maxWidth * 0.9)
                                     : 0.0)
                           ])),
                     constraint: constraint),
@@ -313,22 +314,22 @@ class _HomePageCardsState extends State<HomePageCards> {
                         Text('Ultimas compras',
                             style: Theme.of(context).textTheme.subtitle2),
                         /*  Observer(
-                                builder: (_) => Visibility(
-                                  visible: cc.card.id != null && cc.editCard == null,
-                                  child: InkWell(
-                                      child: Icon(Icons.add),
-                                      onTap: () {
-                                        final p = GetIt.I.get<PaymentController>();
-                                        p.initiatePayment();
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          context: ctxt,
-                                          builder: (context) => AddNewPaymentWidget(),
-                                        );
-                                      }),
-                                ),
-                              ) */
+                                  builder: (_) => Visibility(
+                                    visible: cc.card.id != null && cc.editCard == null,
+                                    child: InkWell(
+                                        child: Icon(Icons.add),
+                                        onTap: () {
+                                          final p = GetIt.I.get<PaymentController>();
+                                          p.initiatePayment();
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            context: ctxt,
+                                            builder: (context) => AddNewPaymentWidget(),
+                                          );
+                                        }),
+                                  ),
+                                ) */
                       ],
                     ),
                     constraint: constraint),
@@ -380,7 +381,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                         )),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -35,7 +35,7 @@ abstract class _PaymentControllerBase with Store {
   initiatePayment() {
     final c = GetIt.I.get<CardsController>();
     final cc = GetIt.I.get<PaymentsController>();
-    changePercent(0);
+    changePercent(10);
     if (c.card != null && c.card.debitAndCredit) {
       changeStep(1);
       startStep = 1;
@@ -51,6 +51,7 @@ abstract class _PaymentControllerBase with Store {
           ),
           time: TimeOfDay.now());
     } else if (c.card != null && c.card.onlyDebitOrCredit) {
+      //TODO CORRIGIR PARA VERIFICAR DEBITO E CREDITO
       if (!c.card.debit) {
         changeStep(2);
         startStep = 2;
