@@ -35,27 +35,21 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
 
-    animation =
-        Tween<double>(begin: percent, end: percent + 40).animate(controller)
+    animation = Tween<double>(
+            begin: p.percent.toDouble(), end: p.percent.toDouble() + 40)
+        .animate(controller)
           ..addListener(() {
             setState(() {
               v = animation.value;
             });
-            percent = percent + 40;
           });
   }
 
-  start() {
-    controller.forward()
-      ..whenComplete(() => animation =
-          Tween<double>(begin: percent, end: percent + 40).animate(controller)
-            ..addListener(() {
-              setState(() {
-                v = animation.value;
-              });
-              percent = percent + 40;
-            }));
-  }
+  start() => controller.forward()
+    ..whenComplete(() => animation = Tween<double>(
+            begin: p.percent.toDouble(), end: p.percent.toDouble() + 40)
+        .animate(controller)
+          ..addListener(() => setState(() => v = animation.value)));
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +99,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                       borderRadius:
                           BorderRadius.only(topLeft: Radius.circular(20))),
                   child: Center(
-                    child: Text(
-                      'Fixa',
-                      style: titleStyle,
-                    ),
+                    child: Text('Fixa', style: titleStyle),
                   ),
                 ),
                 Container(
@@ -119,10 +110,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                       borderRadius:
                           BorderRadius.only(bottomLeft: Radius.circular(20))),
                   child: Center(
-                    child: Text(
-                      'Eventual',
-                      style: titleStyle,
-                    ),
+                    child: Text('Eventual', style: titleStyle),
                   ),
                 ),
               ],
@@ -131,27 +119,24 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
           Expanded(
             child: Column(
               children: [
-                title(
-                  'Nova despesa',
-                  () => p.cancelPayment(context),
-                ),
+                title('Nova despesa', () => p.cancelPayment(context)),
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.all(widget.constraints.maxWidth * 0.02),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: p.typesCard
                               .map<Widget>((e) => Observer(
-                                    builder: (_) => buttonSelect(
-                                        f: () => p.payment.changeTypePayment(e),
-                                        title: e.name,
-                                        constraint: widget.constraints,
-                                        selected: p.payment.type != null &&
-                                            p.payment.type.name == e.name),
-                                  ))
+                                  builder: (_) => buttonSelect(
+                                      f: () => p.payment.changeTypePayment(e),
+                                      title: e.name,
+                                      constraint: widget.constraints,
+                                      selected: p.payment.type != null &&
+                                          p.payment.type.name == e.name)))
                               .toList(),
                         ),
                         buttonNext(context, constraint)
@@ -165,9 +150,25 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
         ],
       );
 
-  step2(BuildContext context, BoxConstraints constraint) => Column(
-        children: [title('Categoria', () => p.cancelPayment(context))],
-      );
+  step2(BuildContext context, BoxConstraints constraint) => Column(children: [
+        title('Categoria', () => p.cancelPayment(context)),
+        Expanded(
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: ['Alimentação', 'Compras', 'Churrasco', 'Limpeza']
+                  .map<Widget>((e) => buttonSelect(
+                      constraint: constraint,
+                      f: () => null,
+                      selected: false,
+                      title: e))
+                  .toList(),
+            ),
+            buttonNext(context, constraint)
+          ]),
+        )
+      ]);
 
   title(String title, Function f) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -179,20 +180,11 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
               children: [
                 Container(
                     margin: EdgeInsets.all(widget.constraints.maxWidth * 0.02),
-                    child: Text(
-                      title,
-                      style: titleStyle,
-                    )),
+                    child: Text(title, style: titleStyle)),
               ],
             ),
           ),
-          InkWell(
-            onTap: f,
-            child: Icon(
-              Icons.close,
-              color: Colors.white,
-            ),
-          ),
+          InkWell(onTap: f, child: Icon(Icons.close, color: Colors.white)),
         ],
       );
 
@@ -207,17 +199,15 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
           duration: Duration(milliseconds: 200),
           margin: EdgeInsets.only(
               bottom: constraint.maxHeight * 0.01,
-              left: selected ? constraint.maxWidth * 0.02 : 0.0),
+              left: selected ? constraint.maxWidth * 0.05 : 0.0),
           padding: EdgeInsets.symmetric(
               vertical: constraint.maxHeight * 0.005,
               horizontal: constraint.maxWidth * 0.02),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               color: selected ? Colors.white24 : null),
-          child: Text(
-            title,
-            style: titleStyle.copyWith(fontWeight: FontWeight.bold),
-          ),
+          child: Text(title,
+              style: titleStyle.copyWith(fontWeight: FontWeight.bold)),
         ),
       );
 
@@ -229,34 +219,23 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
       child: Stack(
         children: [
           Positioned.fill(
-            /* left: -constraint.maxWidth * 0.2, */
             child: SizedBox(
-              /* 
-              height: constraint.maxWidth * 0.15,
-              width: constraint.maxWidth * 0.15, */
-
               child: ClipPath(
-                clipper: CircleClipper(),
-                child: CustomPaint(
-                  size: Size(
-                      constraint.maxWidth * 0.15, constraint.maxWidth * 0.15),
-                  painter: WaveButton(percent: v, color: colorGreen),
-                  /*  child: SizedBox(
-                      height: constraint.maxWidth * 0.15,
-                      width: constraint.maxWidth * 0.15,
-                    ), */
-                ),
-              ),
+                  clipper: CircleClipper(),
+                  child: CustomPaint(
+                      size: Size(constraint.maxWidth * 0.15,
+                          constraint.maxWidth * 0.15),
+                      painter: WaveButton(percent: v, color: colorGreen))),
             ),
           ),
           Positioned.fill(
             child: IconButton(
-              onPressed: () => start(),
-              icon: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 40,
-              ),
+              onPressed: () {
+                p.nextStep();
+                start();
+              },
+              icon:
+                  Icon(Icons.arrow_forward_ios, color: Colors.white, size: 40),
             ),
           ),
         ],

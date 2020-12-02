@@ -52,16 +52,9 @@ class _HomeScreen1State extends State<HomeScreen1> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    final c = GetIt.I.get<CardsController>();
     size = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      /* appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text('Dashboard', style: TextStyle(color: Colors.grey[400])),
-      ), */
       body: LayoutBuilder(
         builder: (context, constraint) => Stack(children: [
           _page == 0
@@ -83,25 +76,20 @@ class _HomeScreen1State extends State<HomeScreen1> {
                       onTap: (index) => setState(() => _page = index),
                       items: [
                         Icon(
-                          Platform.isAndroid
-                              ? Icons.credit_card
-                              : CupertinoIcons.creditcard,
-                          color: Theme.of(context).accentColor,
-                        ),
+                            Platform.isAndroid
+                                ? Icons.credit_card
+                                : CupertinoIcons.creditcard,
+                            color: Theme.of(context).accentColor),
                         Icon(
                           Icons.home,
                           color: Theme.of(context).accentColor,
                         ),
-                        Text(
-                          'A',
-                        ),
+                        Text('A', style: TextStyle(color: Colors.white)),
                         IconButton(
                             onPressed: () => Navigator.pushNamedAndRemoveUntil(
                                 context, '/login', (route) => route.isFirst),
-                            icon: Icon(
-                              Icons.logout,
-                              color: Theme.of(context).accentColor,
-                            ))
+                            icon: Icon(Icons.logout,
+                                color: Theme.of(context).accentColor))
                       ],
                       height: Platform.isIOS
                           ? constraint.maxHeight * 0.12

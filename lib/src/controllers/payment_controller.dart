@@ -20,9 +20,15 @@ abstract class _PaymentControllerBase with Store {
   int startStep;
   @observable
   PaymentModel payment;
-  _PaymentControllerBase({this.step, this.payment, this.startStep = 0});
+  @observable
+  int percent;
+  _PaymentControllerBase(
+      {this.step, this.payment, this.startStep = 0, this.percent = 0});
   @action
   changeStep(int i) => step = i;
+  @action
+  changePercent(int p) => percent = p;
+
   @action
   changePayment(PaymentModel p) => payment = p;
   @action
@@ -79,6 +85,12 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
+  nextStep() {
+    changeStep(step + 1);
+    changePercent(percent + 10);
+  }
+
+  @action
   selectCard(int v) {
     changeStep(2);
     payment.changeCardId(v);
@@ -86,9 +98,9 @@ abstract class _PaymentControllerBase with Store {
 
   @action
   backStep(BuildContext context) {
-    if (step == startStep) {
+    if (step == startStep)
       Navigator.pop(context);
-    } else {
+    else {
       if (step == 1) {
         payment.changeCardId(null);
         changeStep(0);
@@ -96,13 +108,12 @@ abstract class _PaymentControllerBase with Store {
       if (step == 2) {
         payment.changeTypePayment(null);
         changeStep(1);
-      } else if (step == 0) {
+      } else if (step == 0)
         Navigator.pop(context);
-      } else if (step == 4) {
+      else if (step == 4)
         changeStep(2);
-      } else {
+      else
         changeStep(step - 1);
-      }
     }
   }
 
@@ -130,7 +141,6 @@ abstract class _PaymentControllerBase with Store {
       final c = GetIt.I.get<CardsController>();
       c.card.changePayments(ObservableList<PaymentModel>.of(
           await PaymentDB().getPayments(cardId: payment.cardId)));
-      print(c.card.payments.length);
     } else
       flushBar(color: Colors.red, title: payment.isNotValidWithCard)
           .show(context);
