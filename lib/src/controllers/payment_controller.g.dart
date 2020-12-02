@@ -69,6 +69,21 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
     });
   }
 
+  final _$percentAtom = Atom(name: '_PaymentControllerBase.percent');
+
+  @override
+  int get percent {
+    _$percentAtom.reportRead();
+    return super.percent;
+  }
+
+  @override
+  set percent(int value) {
+    _$percentAtom.reportWrite(value, super.percent, () {
+      super.percent = value;
+    });
+  }
+
   final _$registerPaymentAsyncAction =
       AsyncAction('_PaymentControllerBase.registerPayment');
 
@@ -93,6 +108,17 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   }
 
   @override
+  dynamic changePercent(int p) {
+    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
+        name: '_PaymentControllerBase.changePercent');
+    try {
+      return super.changePercent(p);
+    } finally {
+      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changePayment(PaymentModel p) {
     final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
         name: '_PaymentControllerBase.changePayment');
@@ -109,6 +135,17 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
         name: '_PaymentControllerBase.initiatePayment');
     try {
       return super.initiatePayment();
+    } finally {
+      _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic nextStep() {
+    final _$actionInfo = _$_PaymentControllerBaseActionController.startAction(
+        name: '_PaymentControllerBase.nextStep');
+    try {
+      return super.nextStep();
     } finally {
       _$_PaymentControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -164,6 +201,7 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
 step: ${step},
 startStep: ${startStep},
 payment: ${payment},
+percent: ${percent},
 sizeBottom: ${sizeBottom},
 typesCard: ${typesCard}
     ''';

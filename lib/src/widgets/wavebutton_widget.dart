@@ -4,12 +4,13 @@ import 'dart:math';
 
 class WaveButton extends CustomPainter {
   final double percent;
+  final double total;
   final Color color;
-  WaveButton({this.percent, this.color});
+  WaveButton({this.percent, this.total, this.color});
   @override
   void paint(Canvas canvas, Size size) {
     final path = Path();
-    double w = size.width + percent;
+    double w = size.width * percent;
     path.moveTo(w * 0.2, -size.height * 0.2);
     /* if (percent == 0) { */
     path.quadraticBezierTo(

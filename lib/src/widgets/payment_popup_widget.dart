@@ -15,7 +15,7 @@ class PaymentPopUpWidget extends StatefulWidget {
 }
 
 class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final c = GetIt.I.get<CardsController>();
 
   final p = GetIt.I.get<PaymentController>();
@@ -23,33 +23,38 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
   TextStyle titleStyle;
 
   final Color colorGreen = Color(0xff00D39A);
-
+  List<String> titles = ['Cartão', 'Nova Despesa', 'Categoria', 'Testando'];
   double percent = 0;
   Animation<double> animation;
+  /* Animation animationLeft; */
   double v = 0;
   AnimationController controller;
+  /* 
+  AnimationController controllerLeft; */
   @override
   void initState() {
     super.initState();
+    /* controllerLeft =
+        AnimationController(duration: Duration(milliseconds: 400), vsync: this);
+
+    animationLeft = IntTween(begin: 3, end: 0).animate(controllerLeft)
+      ..addListener(() => setState(() {})); */
 
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
-
-    animation = Tween<double>(
-            begin: p.percent.toDouble(), end: p.percent.toDouble() + 40)
-        .animate(controller)
-          ..addListener(() {
-            setState(() {
-              v = animation.value;
-            });
-          });
+    animation = Tween<double>(begin: 2, end: 100).animate(controller)
+      ..addListener(() {
+        setState(() {
+          print(v);
+          v = p.percent / animation.value;
+        });
+      });
   }
 
-  start() => controller.forward()
-    ..whenComplete(() => animation = Tween<double>(
-            begin: p.percent.toDouble(), end: p.percent.toDouble() + 40)
-        .animate(controller)
-          ..addListener(() => setState(() => v = animation.value)));
+  start() {
+    /* controllerLeft.forward(); */
+    controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,23 +73,110 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                 borderRadius:
                     BorderRadius.horizontal(left: Radius.circular(20))),
             child: LayoutBuilder(
-                builder: (context, constraint) => Observer(
+                builder: (context, constraint) => steps(
+                    constraint) /* Observer(
                       builder: (_) => p.step == 0
                           ? step0(context, constraint)
                           : p.step == 1
                               ? step1(context, constraint)
                               : step2(context, constraint),
-                    )),
+                    ) */
+                ),
           ),
           duration: Duration(milliseconds: 100)),
     );
   }
 
-  step0(BuildContext context, BoxConstraints constraint) => Column(
-        children: [],
+  step0() => Column();
+  steps(BoxConstraints constraint) => Observer(
+        builder: (_) => Row(
+          children: [
+            step1Left(constraint),
+            Observer(
+              builder: (_) => AnimatedContainer(
+                width: p.step == 1
+                    ? constraint.maxWidth * 0.7
+                    : constraint.maxWidth,
+                height: constraint.maxHeight,
+                duration: Duration(milliseconds: 400),
+                child: Column(
+                  children: [
+                    title(context),
+                    Expanded(
+                      /* flex: animationLeft.value + 3, */
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Observer(
+                              builder: (_) => p.step == 0
+                                  ? step0()
+                                  : p.step == 1
+                                      ? step1()
+                                      : step2(constraint)),
+                          buttonNext(context, constraint)
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       );
 
-  step1(BuildContext context, BoxConstraints constraint) => Row(
+  step1Left(BoxConstraints constraint) => AnimatedOpacity(
+        duration: Duration(milliseconds: p.step == 1 ? 400 : 100),
+        opacity: p.step == 1 ? 1.0 : 0.0,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 400),
+          width: p.step == 1 ? constraint.maxWidth * 0.3 : 0.0,
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () => p.changeStep(2),
+                child: Container(
+                  height: constraint.maxHeight * 0.5,
+                  width: constraint.maxWidth * 0.3,
+                  decoration: BoxDecoration(
+                      color: colorGreen,
+                      borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(20))),
+                  child: Center(
+                    child: Text('Fixa', style: titleStyle),
+                  ),
+                ),
+              ),
+              Container(
+                height: constraint.maxHeight * 0.5,
+                width: constraint.maxWidth * 0.3,
+                decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(20))),
+                child: Center(
+                  child: Text('Eventual', style: titleStyle),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+  step1() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: p.typesCard
+            .map<Widget>((e) => Observer(
+                builder: (_) => buttonSelect(
+                    f: () => p.payment.changeTypePayment(e),
+                    title: e.name,
+                    constraint: widget.constraints,
+                    selected: p.payment.type != null &&
+                        p.payment.type.name == e.name)))
+            .toList(),
+      );
+  /* step1(BuildContext context, BoxConstraints constraint) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
@@ -119,7 +211,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
           Expanded(
             child: Column(
               children: [
-                title('Nova despesa', () => p.cancelPayment(context)),
+                /* title('Nova despesa', () => p.cancelPayment(context)), */
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.all(widget.constraints.maxWidth * 0.02),
@@ -148,10 +240,19 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
             ),
           )
         ],
+      ); */
+  step2(BoxConstraints constraint) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: ['Alimentação', 'Compras', 'Churrasco', 'Limpeza']
+            .map<Widget>((e) => buttonSelect(
+                constraint: constraint,
+                f: () => null,
+                selected: false,
+                title: e))
+            .toList(),
       );
-
-  step2(BuildContext context, BoxConstraints constraint) => Column(children: [
-        title('Categoria', () => p.cancelPayment(context)),
+  /* step2(BuildContext context, BoxConstraints constraint) => Column(children: [
+        /* title('Categoria', () => p.cancelPayment(context)), */
         Expanded(
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -168,9 +269,9 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
             buttonNext(context, constraint)
           ]),
         )
-      ]);
+      ]); */
 
-  title(String title, Function f) => Row(
+  title(BuildContext context) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -180,11 +281,18 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
               children: [
                 Container(
                     margin: EdgeInsets.all(widget.constraints.maxWidth * 0.02),
-                    child: Text(title, style: titleStyle)),
+                    child: Observer(
+                        builder: (_) =>
+                            Text(titles[p.step ?? 0], style: titleStyle))),
               ],
             ),
           ),
-          InkWell(onTap: f, child: Icon(Icons.close, color: Colors.white)),
+          InkWell(
+              onTap: () {
+                v = 0;
+                p.cancelPayment(context);
+              },
+              child: Icon(Icons.close, color: Colors.white)),
         ],
       );
 
@@ -221,11 +329,12 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
           Positioned.fill(
             child: SizedBox(
               child: ClipPath(
-                  clipper: CircleClipper(),
-                  child: CustomPaint(
-                      size: Size(constraint.maxWidth * 0.15,
-                          constraint.maxWidth * 0.15),
-                      painter: WaveButton(percent: v, color: colorGreen))),
+                clipper: CircleClipper(),
+                child: CustomPaint(
+                    size: Size(
+                        constraint.maxWidth * 0.15, constraint.maxWidth * 0.15),
+                    painter: WaveButton(percent: v, color: colorGreen)),
+              ),
             ),
           ),
           Positioned.fill(
