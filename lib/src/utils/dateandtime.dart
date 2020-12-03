@@ -8,7 +8,8 @@ class DateOrTimePicker {
       {BuildContext context,
       DateTime initial,
       DateTime first,
-      DateTime last}) async {
+      DateTime last,
+      ThemeData theme}) async {
     if (Platform.isIOS)
       CupertinoDatePicker(
           initialDateTime: initial,
@@ -24,12 +25,17 @@ class DateOrTimePicker {
           initialDate: initial,
           firstDate: first,
           builder: (context, child) {
-            return Theme(data: Theme.of(context), child: child);
+            return Theme(
+              data: theme ?? Theme.of(context),
+              child: child,
+              isMaterialAppTheme: false,
+            );
           },
           lastDate: last);
   }
 
-  Future<TimeOfDay> timePicker({BuildContext context, Duration initial}) async {
+  Future<TimeOfDay> timePicker(
+      {BuildContext context, Duration initial, ThemeData theme}) async {
     if (Platform.isIOS) {
       CupertinoTimerPicker(
           mode: CupertinoTimerPickerMode.hm,
@@ -41,7 +47,7 @@ class DateOrTimePicker {
     } else
       return await showTimePicker(
           builder: (context, child) => Theme(
-                data: Theme.of(context),
+                data: theme ?? Theme.of(context),
                 child: child,
               ),
           context: context,

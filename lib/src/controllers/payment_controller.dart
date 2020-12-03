@@ -94,7 +94,7 @@ abstract class _PaymentControllerBase with Store {
       else
         flushBar(
                 title: 'Opção necessaria',
-                message: 'Necessario selecionar uma forma de pagamento',
+                message: 'Necessario selecionar um cartão',
                 color: Colors.red)
             .show(context);
     } else if (step == 1) {
@@ -103,7 +103,17 @@ abstract class _PaymentControllerBase with Store {
       else
         flushBar(
                 title: 'Opção necessaria',
-                message: 'Necessario selecionar uma categoria')
+                message: 'Necessario selecionar uma forma de pagamento',
+                color: Colors.red)
+            .show(context);
+    } else if (step == 2) {
+      if (checkStep2)
+        goNextStep();
+      else
+        flushBar(
+                title: 'Opção necessaria',
+                message: 'Necessario selecionar uma categoria',
+                color: Colors.red)
             .show(context);
     }
   }

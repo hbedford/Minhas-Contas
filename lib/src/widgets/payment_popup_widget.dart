@@ -193,6 +193,16 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                 selected: true,
                 f: () async {
                   DateTime d = await DateOrTimePicker().datePicker(
+                      theme: ThemeData(
+                        secondaryHeaderColor: Colors.red,
+                        colorScheme: Theme.of(context).colorScheme.copyWith(
+                              secondary: Colors.white,
+                              primary: c.card.color,
+                              onSurface: c.card.color.withOpacity(1.0),
+                              onPrimary: Colors.white,
+                            ),
+                        dialogBackgroundColor: Colors.white,
+                      ),
                       context: context,
                       first: DateTime.now().subtract(Duration(days: 90)),
                       initial: p.payment.date ?? DateTime.now(),
@@ -213,6 +223,18 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                 constraint: constraint,
                 selected: true,
                 f: () => DateOrTimePicker().timePicker(
+                    theme: ThemeData(
+                        colorScheme: Theme.of(context)
+                            .colorScheme
+                            .copyWith(primary: Colors.white),
+                        timePickerTheme: TimePickerThemeData(
+                            backgroundColor: c.card.color,
+                            hourMinuteColor: c.card.color.withOpacity(0.8),
+                            hourMinuteTextColor: Colors.white,
+                            dialHandColor: c.card.color,
+                            entryModeIconColor: Colors.white,
+                            helpTextStyle: TextStyle(color: Colors.white),
+                            dialTextColor: Colors.white)),
                     context: context,
                     initial: Duration(
                         hours: p.payment.time.hour ?? TimeOfDay.now().hour,
@@ -233,10 +255,10 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
         children: [
           Row(
             children: [
-              Container(
+              /* Container(
                 width: constraint.maxWidth * 0.3,
                 child: textField(),
-              )
+              ) */
             ],
           )
         ],
