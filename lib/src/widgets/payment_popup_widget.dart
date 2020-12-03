@@ -6,6 +6,8 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/widgets/wavebutton_widget.dart';
 
+import 'buttonnext_widget.dart';
+
 class PaymentPopUpWidget extends StatefulWidget {
   final BoxConstraints constraints;
   PaymentPopUpWidget({this.constraints});
@@ -24,35 +26,8 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
 
   final Color colorGreen = Color(0xff00D39A);
   List<String> titles = ['Cartão', 'Nova Despesa', 'Categoria', 'Testando'];
-  Animation<double> animation;
-  /* Animation animationLeft; */
-  double v = 10;
-  AnimationController controller;
   /* 
   AnimationController controllerLeft; */
-  @override
-  void initState() {
-    super.initState();
-    /* controllerLeft =
-        AnimationController(duration: Duration(milliseconds: 400), vsync: this);
-
-    animationLeft = IntTween(begin: 3, end: 0).animate(controllerLeft)
-      ..addListener(() => setState(() {})); */
-
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    animation = Tween<double>(begin: 1, end: 100).animate(controller)
-      ..addListener(() {
-        setState(() {
-          v = p.percent + (animation.value / 10);
-        });
-      });
-  }
-
-  start() {
-    /* controllerLeft.forward(); */
-    controller.forward();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +87,8 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                                   : p.step == 1
                                       ? step1()
                                       : step2(constraint)),
-                          buttonNext(context, constraint)
+                          ButtonNextWidget(
+                              constraint: constraint, color: colorGreen)
                         ],
                       ),
                     )
@@ -287,7 +263,6 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
           ),
           InkWell(
               onTap: () {
-                v = 0;
                 p.cancelPayment(context);
               },
               child: Icon(Icons.close, color: Colors.white)),
@@ -317,7 +292,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
         ),
       );
 
-  buttonNext(BuildContext context, BoxConstraints constraint) => Container(
+  /* buttonNext(BuildContext context, BoxConstraints constraint) => Container(
       height: constraint.maxWidth * 0.2,
       width: constraint.maxWidth * 0.2,
       decoration: BoxDecoration(
@@ -345,5 +320,5 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
             ),
           ),
         ],
-      ));
+      )); */
 }

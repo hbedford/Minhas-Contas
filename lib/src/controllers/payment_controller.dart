@@ -21,13 +21,13 @@ abstract class _PaymentControllerBase with Store {
   @observable
   PaymentModel payment;
   @observable
-  int percent;
+  double percent;
   _PaymentControllerBase(
-      {this.step, this.payment, this.startStep = 0, this.percent = 10});
+      {this.step, this.payment, this.startStep = 0, this.percent = 20});
   @action
   changeStep(int i) => step = i;
   @action
-  changePercent(int p) => percent = p;
+  changePercent(double p) => percent = p;
 
   @action
   changePayment(PaymentModel p) => payment = p;
@@ -35,7 +35,7 @@ abstract class _PaymentControllerBase with Store {
   initiatePayment() {
     final c = GetIt.I.get<CardsController>();
     final cc = GetIt.I.get<PaymentsController>();
-    changePercent(10);
+    changePercent(20);
     if (c.card != null && c.card.debitAndCredit) {
       changeStep(1);
       startStep = 1;
@@ -87,9 +87,15 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
-  nextStep() {
+  nextStep() async {
     changeStep(step + 1);
-    changePercent(percent + 10);
+    print(percent);
+    for (double i = 1; i < 100; i++) {
+      await Future.delayed(Duration(milliseconds: 10), () {
+        changePercent(percent + (i / 100));
+        /*  print(percent); */
+      });
+    }
   }
 
   @action
@@ -123,7 +129,7 @@ abstract class _PaymentControllerBase with Store {
   cancelPayment(BuildContext context) {
     changePayment(null);
     changeStep(null);
-    changePercent(10);
+    changePercent(20);
   }
 
   @action
