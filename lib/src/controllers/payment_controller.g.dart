@@ -23,6 +23,27 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
           Computed<List<PaymentTypeModel>>(() => super.typesCard,
               name: '_PaymentControllerBase.typesCard'))
       .value;
+  Computed<bool> _$checkStep0Computed;
+
+  @override
+  bool get checkStep0 =>
+      (_$checkStep0Computed ??= Computed<bool>(() => super.checkStep0,
+              name: '_PaymentControllerBase.checkStep0'))
+          .value;
+  Computed<bool> _$checkStep1Computed;
+
+  @override
+  bool get checkStep1 =>
+      (_$checkStep1Computed ??= Computed<bool>(() => super.checkStep1,
+              name: '_PaymentControllerBase.checkStep1'))
+          .value;
+  Computed<bool> _$checkStep2Computed;
+
+  @override
+  bool get checkStep2 =>
+      (_$checkStep2Computed ??= Computed<bool>(() => super.checkStep2,
+              name: '_PaymentControllerBase.checkStep2'))
+          .value;
 
   final _$stepAtom = Atom(name: '_PaymentControllerBase.step');
 
@@ -87,8 +108,16 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   final _$nextStepAsyncAction = AsyncAction('_PaymentControllerBase.nextStep');
 
   @override
-  Future nextStep() {
-    return _$nextStepAsyncAction.run(() => super.nextStep());
+  Future nextStep(BuildContext context) {
+    return _$nextStepAsyncAction.run(() => super.nextStep(context));
+  }
+
+  final _$goNextStepAsyncAction =
+      AsyncAction('_PaymentControllerBase.goNextStep');
+
+  @override
+  Future goNextStep() {
+    return _$goNextStepAsyncAction.run(() => super.goNextStep());
   }
 
   final _$registerPaymentAsyncAction =
@@ -199,7 +228,10 @@ startStep: ${startStep},
 payment: ${payment},
 percent: ${percent},
 sizeBottom: ${sizeBottom},
-typesCard: ${typesCard}
+typesCard: ${typesCard},
+checkStep0: ${checkStep0},
+checkStep1: ${checkStep1},
+checkStep2: ${checkStep2}
     ''';
   }
 }

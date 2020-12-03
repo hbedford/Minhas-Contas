@@ -324,6 +324,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   }
 
   @override
+  dynamic changeCategory(CategoryModel c) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeCategory');
+    try {
+      return super.changeCategory(c);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeName(String n) {
     final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
         name: '_PaymentModelBase.changeName');

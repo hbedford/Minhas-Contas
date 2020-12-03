@@ -87,7 +87,29 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @action
-  nextStep() async {
+  nextStep(BuildContext context) async {
+    if (step == 0) {
+      if (checkStep0)
+        goNextStep();
+      else
+        flushBar(
+                title: 'Opção necessaria',
+                message: 'Necessario selecionar uma forma de pagamento',
+                color: Colors.red)
+            .show(context);
+    } else if (step == 1) {
+      if (checkStep1)
+        goNextStep();
+      else
+        flushBar(
+                title: 'Opção necessaria',
+                message: 'Necessario selecionar uma categoria')
+            .show(context);
+    }
+  }
+
+  @action
+  goNextStep() async {
     changeStep(step + 1);
     for (double i = 0; i < 100; i++) {
       await Future.delayed(Duration(milliseconds: 10), () {
@@ -179,4 +201,11 @@ abstract class _PaymentControllerBase with Store {
     if (c.card.credit) l.add(p.getTypeWithName('Credito'));
     return l;
   }
+
+  @computed
+  bool get checkStep0 => step == 0 && payment.cardId != null;
+  @computed
+  bool get checkStep1 => step == 1 && payment.type != null;
+  @computed
+  bool get checkStep2 => step == 2 && payment.category != null;
 }
