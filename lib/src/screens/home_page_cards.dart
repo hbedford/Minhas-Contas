@@ -53,7 +53,9 @@ class _HomePageCardsState extends State<HomePageCards> {
                       ? Positioned.fill(
                           child: InkWell(onTap: () => c.cancelPayment(context)))
                       : Container(),
-                  PaymentPopUpWidget(constraints: constraints)
+                  PaymentPopUpWidget(
+                    constraints: constraints,
+                  )
                 ])),
       ),
     );

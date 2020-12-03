@@ -73,6 +73,8 @@ abstract class _PaymentModelBase with Store {
   }
 
   @action
+  changeCategory(CategoryModel c) => category = c;
+  @action
   changeName(String n) => name = n;
   @action
   changeValue(double v) => value = v;

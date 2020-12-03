@@ -31,7 +31,7 @@ class CardWidget extends StatelessWidget {
                 horizontal: constraints.maxWidth * 0.01,
                 vertical: constraints.maxHeight * 0.07),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(15),
                 color: bottomSheet ? Colors.grey : card.color),
             child: card.name == null
                 ? InkWell(

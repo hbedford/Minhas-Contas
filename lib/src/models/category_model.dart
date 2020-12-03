@@ -15,7 +15,7 @@ abstract class _CategoryModelBase with Store {
   Color color;
   @observable
   ObservableList subCategories = [].asObservable();
-  _CategoryModelBase({this.name, this.payments, this.color});
+  _CategoryModelBase({this.id, this.name, this.payments, this.color});
   _CategoryModelBase.fromMap(Map m)
       : this.name = m['name'],
         this.id = m['id'],

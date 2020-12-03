@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class WaveButton extends CustomPainter {
   final double percent;
@@ -10,23 +9,36 @@ class WaveButton extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final path = Path();
-    double w = size.width * (percent / 20);
-    path.moveTo(w * 0.2, -size.height * 0.2);
-    /* if (percent == 0) { */
+    double w = size.width;
+    print(percent);
+    if (percent < 20) {
+      /* path.moveTo(x, y) */
+    } else if (percent >= 20 && percent < 25) {
+      path.moveTo(w * (percent / 100), -size.height * 0.2);
+
+      path.quadraticBezierTo(w * ((percent + 10) / 100), size.height * 0.25,
+          w * (percent / 100), size.height * 0.5);
+      path.quadraticBezierTo(w * ((percent - 10) / 100), size.height * 0.75,
+          w * ((percent - 10) / 100), size.height);
+    } else if (percent >= 25 && percent < 60) {
+      path.moveTo(w * ((percent - 10) / 100), -size.height * 0.2);
+
+      path.quadraticBezierTo(w * ((percent + 10) / 100), size.height * 0.25,
+          w * (percent / 100), size.height * 0.5);
+      path.quadraticBezierTo(w * ((percent - 10) / 100), size.height * 0.75,
+          w * ((percent + 5) / 100), size.height);
+    } else if (percent >= 60 && percent < 80) {}
+    path.lineTo(-w, size.height);
+    path.lineTo(-w, 0);
+
+    /* path.moveTo(w * (0.2), -size.height * 0.2);
+
     path.quadraticBezierTo(
         w * 0.3, size.height * 0.25, w * 0.2, size.height * 0.5);
     path.quadraticBezierTo(w * 0.1, size.height * 0.75, w * 0.3, size.height);
-    /* } else {
-      path.quadraticBezierTo(
-          w * 0.2, size.height * 0.25, w * 0.4, size.height * 0.5);
-      path.quadraticBezierTo(w * 0.6, size.height * 0.75, w * 0.3, size.height); */
-    /* path.lineTo(size.width * 0.5, size.height);
-    path.quadraticBezierTo(size.height * 0.3, w * 0.2, -size.height, w * 0.5);
-    path.lineTo(0, size.width);*/
-    /* } */
 
     path.lineTo(-w, size.height);
-    path.lineTo(-w, 0);
+    path.lineTo(-w, 0); */
     canvas.drawPath(path, Paint()..color = color);
   }
 

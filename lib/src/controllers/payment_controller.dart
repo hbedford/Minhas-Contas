@@ -89,11 +89,10 @@ abstract class _PaymentControllerBase with Store {
   @action
   nextStep() async {
     changeStep(step + 1);
-    print(percent);
-    for (double i = 1; i < 100; i++) {
+    for (double i = 0; i < 100; i++) {
       await Future.delayed(Duration(milliseconds: 10), () {
-        changePercent(percent + (i / 100));
-        /*  print(percent); */
+        changePercent(double.parse((percent + 0.2).toStringAsFixed(2)));
+        print(percent);
       });
     }
   }
