@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/controllers/payments_controller.dart';
 import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/utils/converting_util.dart';

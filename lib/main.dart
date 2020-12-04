@@ -9,7 +9,6 @@ import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/card_model.dart';
-import 'package:minhasconta/src/models/payment_type_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
 import 'src/app.dart';

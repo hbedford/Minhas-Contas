@@ -5,7 +5,6 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/utils/compare.dart';
-import 'package:minhasconta/src/widgets/addnewpayment_widget.dart';
 import 'dart:ui' as ui;
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';

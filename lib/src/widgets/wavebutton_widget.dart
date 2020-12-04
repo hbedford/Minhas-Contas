@@ -20,14 +20,14 @@ class WaveButton extends CustomPainter {
           w * (percent / 100), size.height * 0.5);
       path.quadraticBezierTo(w * ((percent - 10) / 100), size.height * 0.75,
           w * ((percent - 10) / 100), size.height);
-    } else if (percent >= 25 && percent < 60) {
+    } else if (percent >= 25 && percent <= 100) {
       path.moveTo(w * ((percent - 10) / 100), -size.height * 0.2);
 
       path.quadraticBezierTo(w * ((percent + 10) / 100), size.height * 0.25,
           w * (percent / 100), size.height * 0.5);
       path.quadraticBezierTo(w * ((percent - 10) / 100), size.height * 0.75,
           w * ((percent + 5) / 100), size.height);
-    } else if (percent >= 60 && percent < 80) {}
+    } /* else if (percent >= 60 && percent < 80) {} */
     path.lineTo(-w, size.height);
     path.lineTo(-w, 0);
 

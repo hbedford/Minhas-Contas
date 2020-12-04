@@ -9,13 +9,6 @@ part of 'payment_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PaymentController on _PaymentControllerBase, Store {
-  Computed<double> _$sizeBottomComputed;
-
-  @override
-  double get sizeBottom =>
-      (_$sizeBottomComputed ??= Computed<double>(() => super.sizeBottom,
-              name: '_PaymentControllerBase.sizeBottom'))
-          .value;
   Computed<List<PaymentTypeModel>> _$typesCardComputed;
 
   @override
@@ -43,6 +36,13 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
   bool get checkStep2 =>
       (_$checkStep2Computed ??= Computed<bool>(() => super.checkStep2,
               name: '_PaymentControllerBase.checkStep2'))
+          .value;
+  Computed<bool> _$checkStep3Computed;
+
+  @override
+  bool get checkStep3 =>
+      (_$checkStep3Computed ??= Computed<bool>(() => super.checkStep3,
+              name: '_PaymentControllerBase.checkStep3'))
           .value;
 
   final _$stepAtom = Atom(name: '_PaymentControllerBase.step');
@@ -227,11 +227,11 @@ step: ${step},
 startStep: ${startStep},
 payment: ${payment},
 percent: ${percent},
-sizeBottom: ${sizeBottom},
 typesCard: ${typesCard},
 checkStep0: ${checkStep0},
 checkStep1: ${checkStep1},
-checkStep2: ${checkStep2}
+checkStep2: ${checkStep2},
+checkStep3: ${checkStep3}
     ''';
   }
 }

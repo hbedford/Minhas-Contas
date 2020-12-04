@@ -115,6 +115,16 @@ abstract class _PaymentControllerBase with Store {
                 message: 'Necessario selecionar uma categoria',
                 color: Colors.red)
             .show(context);
+    } else if (step == 3) {
+      if (checkStep3)
+        goNextStep();
+      else
+        flushBar(
+            title: payment.dateIsValid
+                ? payment.timeIsValid
+                    ? ''
+                    : 'Necessario selecionar um horario'
+                : 'Necessario selecionar uma data');
     }
   }
 
@@ -187,19 +197,6 @@ abstract class _PaymentControllerBase with Store {
   }
 
   @computed
-  double get sizeBottom {
-    if (step == 0) return 0.3;
-    if (step == 1)
-      return 0.35;
-    else if (step == 2)
-      return 0.25;
-    else if (step == 4)
-      return 0.7;
-    else
-      return 0.3;
-  }
-
-  @computed
   List<PaymentTypeModel> get typesCard {
     final p = GetIt.I.get<PaymentsController>();
     final c = GetIt.I.get<CardsController>();
@@ -218,4 +215,7 @@ abstract class _PaymentControllerBase with Store {
   bool get checkStep1 => step == 1 && payment.type != null;
   @computed
   bool get checkStep2 => step == 2 && payment.category != null;
+  @computed
+  bool get checkStep3 =>
+      step == 3 && payment.dateIsValid && payment.timeIsValid;
 }
