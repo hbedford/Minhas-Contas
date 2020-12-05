@@ -24,20 +24,22 @@ abstract class _CardsControllerBase with Store {
   @observable
   ScrollController scrollEditCard = ScrollController();
   @observable
+  bool cardFullInfo;
+  @observable
   bool cardView;
   @observable
   ObservableList cards = [].asObservable();
   @observable
   double scroll;
-  _CardsControllerBase({
-    this.card,
-    this.cValidate,
-    this.cBestDate,
-    this.cLimit,
-    this.cards,
-    this.scroll = 0,
-    this.cardView = false,
-  });
+  _CardsControllerBase(
+      {this.card,
+      this.cValidate,
+      this.cBestDate,
+      this.cLimit,
+      this.cards,
+      this.scroll = 0,
+      this.cardView = false,
+      this.cardFullInfo = false});
   @action
   changeValidate(bool v) => cValidate = v;
   @action
@@ -50,6 +52,8 @@ abstract class _CardsControllerBase with Store {
   changeCard(CardModel c) => card = c;
   @action
   changeScroll(double s) => scroll = s;
+  @action
+  changeCardFullInfo(bool v) => cardFullInfo = v;
   @action
   addNewCard() => editCard = CardModel.emptyCard();
   @action

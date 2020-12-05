@@ -498,6 +498,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                         child: textField(
                             label: 'Limite',
                             controller: limit,
+                            type: TextInputType.numberWithOptions(),
                             prefixText: 'R\$ ',
                             suffix: IconButton(
                                 icon: Icon(Icons.save),

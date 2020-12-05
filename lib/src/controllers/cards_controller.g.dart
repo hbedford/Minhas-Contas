@@ -122,6 +122,21 @@ mixin _$CardsController on _CardsControllerBase, Store {
     });
   }
 
+  final _$cardFullInfoAtom = Atom(name: '_CardsControllerBase.cardFullInfo');
+
+  @override
+  bool get cardFullInfo {
+    _$cardFullInfoAtom.reportRead();
+    return super.cardFullInfo;
+  }
+
+  @override
+  set cardFullInfo(bool value) {
+    _$cardFullInfoAtom.reportWrite(value, super.cardFullInfo, () {
+      super.cardFullInfo = value;
+    });
+  }
+
   final _$cardViewAtom = Atom(name: '_CardsControllerBase.cardView');
 
   @override
@@ -244,6 +259,17 @@ mixin _$CardsController on _CardsControllerBase, Store {
   }
 
   @override
+  dynamic changeCardFullInfo(bool v) {
+    final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
+        name: '_CardsControllerBase.changeCardFullInfo');
+    try {
+      return super.changeCardFullInfo(v);
+    } finally {
+      _$_CardsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic addNewCard() {
     final _$actionInfo = _$_CardsControllerBaseActionController.startAction(
         name: '_CardsControllerBase.addNewCard');
@@ -318,6 +344,7 @@ cValidate: ${cValidate},
 cBestDate: ${cBestDate},
 cLimit: ${cLimit},
 scrollEditCard: ${scrollEditCard},
+cardFullInfo: ${cardFullInfo},
 cardView: ${cardView},
 cards: ${cards},
 scroll: ${scroll},

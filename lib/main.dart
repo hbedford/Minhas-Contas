@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/card_controller.dart';
 import 'package:minhasconta/src/controllers/category_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/home_controller.dart';
@@ -31,6 +32,7 @@ void main() async {
   getIt.registerSingleton<ProjectController>(ProjectController());
   getIt.registerSingleton<ProjectsController>(
       ProjectsController(projects: [].asObservable()));
+  getIt.registerSingleton<CardController>(CardController());
   getIt.registerSingleton<CardsController>(
     CardsController(
       card: CardModel(),

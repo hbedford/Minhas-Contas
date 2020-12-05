@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/models/card_model.dart';
+import 'package:minhasconta/src/screens/page_card.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'dart:ui' as ui;
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
@@ -21,7 +22,7 @@ class HomePageCards extends StatefulWidget {
 class _HomePageCardsState extends State<HomePageCards> {
   ScrollController controller;
   final cc = GetIt.I.get<CardsController>();
-  final c = GetIt.I.get<PaymentController>();
+  final p = GetIt.I.get<PaymentController>();
   double v = 0;
   double size = 0;
   double pointer = 0;
@@ -31,35 +32,41 @@ class _HomePageCardsState extends State<HomePageCards> {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) => Observer(
-            builder: (_) => Stack(children: [
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        appBar(constraints),
-                        title(constraints),
-                        Visibility(child: cardsWidget(), visible: !cc.cardView),
-                        Visibility(
-                            visible: !cc.cardView,
-                            child: cc.editCard != null
-                                ? EditCardWidget()
-                                : cardInfos(context)),
-                        /* Visibility(
+            builder: (_) => cc.cardFullInfo
+                ? PageCard(
+                    constraint: constraints,
+                  )
+                : Stack(children: [
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          appBar(constraints),
+                          title(constraints),
+                          Visibility(
+                              child: cardsWidget(), visible: !cc.cardView),
+                          Visibility(
+                              visible: !cc.cardView,
+                              child: cc.editCard != null
+                                  ? EditCardWidget()
+                                  : cardInfos(context)),
+                          /* Visibility(
                             visible: cc.cardView, child: CardViewWidget()) */
-                      ]),
-                  bubbleButton(constraints),
-                  c.payment != null
-                      ? Positioned.fill(
-                          child: InkWell(onTap: () => c.cancelPayment(context)))
-                      : Container(),
-                  PaymentPopUpWidget(constraints: constraints, context: ctxt)
-                ])),
+                        ]),
+                    bubbleButton(constraints),
+                    p.payment != null
+                        ? Positioned.fill(
+                            child:
+                                InkWell(onTap: () => p.cancelPayment(context)))
+                        : Container(),
+                    PaymentPopUpWidget(constraints: constraints, context: ctxt)
+                  ])),
       ),
     );
   }
 
   bubbleButton(BoxConstraints constraints) => Visibility(
-        visible: c.payment == null,
+        visible: p.payment == null,
         child: Positioned(
           right: 0,
           top: constraints.maxHeight * 0.68,
@@ -72,22 +79,7 @@ class _HomePageCardsState extends State<HomePageCards> {
                   height: constraints.maxWidth * 0.18,
                   child: CustomPaint(
                       child: GestureDetector(
-                        onTap: () {
-                          final p = GetIt.I.get<PaymentController>();
-                          p.initiatePayment();
-                        },
-                        /* onVerticalDragUpdate: (d) => setState(() {
-                          print(pos + d.delta.dy);
-                          if (pos + d.delta.dy >
-                                  MediaQuery.of(context).size.height * 0.0 &&
-                              pos + d.delta.dy <
-                                  MediaQuery.of(context).size.height -
-                                      MediaQuery.of(context)
-                                          .viewInsets
-                                          .bottom) {
-                            pos = pos + d.delta.dy;
-                          }
-                        }), */
+                        onTap: () => p.initiatePayment(),
                         child: Container(
                           margin: EdgeInsets.only(
                               left: constraints.maxWidth * 0.02),
@@ -365,7 +357,7 @@ class _HomePageCardsState extends State<HomePageCards> {
               ]),
               Observer(
                 builder: (_) => Visibility(
-                  visible: c.payment != null,
+                  visible: p.payment != null,
                   child: ClipRect(
                     child: BackdropFilter(
                         filter: ui.ImageFilter.blur(
@@ -446,7 +438,7 @@ class _HomePageCardsState extends State<HomePageCards> {
             onLongPress: () => cc.changeCardView(true),
             onTap: () {
               cc.changeCard(card);
-              Navigator.pushNamed(context, '/card');
+              cc.changeCardFullInfo(true);
             },
             onHorizontalDragStart: (d) {
               if (cc.editCard == null) {

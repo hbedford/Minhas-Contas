@@ -9,6 +9,13 @@ part of 'payment_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PaymentModel on _PaymentModelBase, Store {
+  Computed<Duration> _$timeIOSComputed;
+
+  @override
+  Duration get timeIOS =>
+      (_$timeIOSComputed ??= Computed<Duration>(() => super.timeIOS,
+              name: '_PaymentModelBase.timeIOS'))
+          .value;
   Computed<String> _$dateToStringComputed;
 
   @override
@@ -434,6 +441,17 @@ mixin _$PaymentModel on _PaymentModelBase, Store {
   }
 
   @override
+  dynamic changeTimeIOS(Duration d) {
+    final _$actionInfo = _$_PaymentModelBaseActionController.startAction(
+        name: '_PaymentModelBase.changeTimeIOS');
+    try {
+      return super.changeTimeIOS(d);
+    } finally {
+      _$_PaymentModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 id: ${id},
@@ -449,6 +467,7 @@ nameEdit: ${nameEdit},
 amountEdit: ${amountEdit},
 valueEdit: ${valueEdit},
 category: ${category},
+timeIOS: ${timeIOS},
 dateToString: ${dateToString},
 dateBr: ${dateBr},
 timeToString: ${timeToString},
