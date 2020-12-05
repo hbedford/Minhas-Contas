@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -170,59 +172,86 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
   step3(BuildContext context, BoxConstraints constraint) =>
       Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         Column(children: [
-          buttonSelectOverSize(
-              constraint: constraint,
-              selected: true,
-              f: () async {
-                DateTime d = await DateOrTimePicker().datePicker(
-                    theme: ThemeData(
-                      secondaryHeaderColor: Colors.red,
-                      colorScheme: Theme.of(context).colorScheme.copyWith(
-                            secondary: Colors.white,
-                            primary: c.card.color,
-                            onSurface: c.card.color.withOpacity(1.0),
-                            onPrimary: Colors.white,
-                          ),
-                      dialogBackgroundColor: Colors.white,
-                    ),
-                    context: context,
-                    first: DateTime.now().subtract(Duration(days: 90)),
-                    initial: p.payment.date ?? DateTime.now(),
-                    last: DateTime.now());
-                if (d != null) p.payment.changeDate(d);
-              },
-              title: p.payment != null
-                  ? p.payment.dateBr.replaceAll('-', '/') ?? 'DD/MM/AAAA'
-                  : 'DD/MM/AAAA'),
+          Observer(
+            builder: (_) => buttonSelectOverSize(
+                constraint: constraint,
+                selected: true,
+                f: () async {
+                  if (Platform.isIOS) {
+                    showDialog(
+                        context: widget.context,
+                        child: DateOrTimePicker().datePickerIOS(
+                            constraint: widget.constraints,
+                            context: widget.context,
+                            first: DateTime.now().subtract(Duration(days: 30)),
+                            last: DateTime.now(),
+                            color: c.card != null ? c.card.color : null,
+                            initial: p.payment.date,
+                            f: p.payment.changeDate));
+                  } else {
+                    DateTime d = await DateOrTimePicker().datePicker(
+                        theme: ThemeData(
+                          secondaryHeaderColor: Colors.red,
+                          colorScheme: Theme.of(context).colorScheme.copyWith(
+                                secondary: Colors.white,
+                                primary: c.card.color,
+                                onSurface: c.card.color.withOpacity(1.0),
+                                onPrimary: Colors.white,
+                              ),
+                          dialogBackgroundColor: Colors.white,
+                        ),
+                        context: context,
+                        first: DateTime.now().subtract(Duration(days: 90)),
+                        initial: p.payment.date ?? DateTime.now(),
+                        last: DateTime.now());
+                    if (d != null) p.payment.changeDate(d);
+                  }
+                },
+                title: p.payment != null
+                    ? p.payment.dateBr.replaceAll('-', '/') ?? 'DD/MM/AAAA'
+                    : 'DD/MM/AAAA'),
+          ),
           Text('Toque para definir a data',
               style: TextStyle(color: Colors.white54, fontSize: 12))
         ]),
         Column(children: [
-          buttonSelectOverSize(
-              constraint: constraint,
-              selected: true,
-              f: () => DateOrTimePicker().timePicker(
-                  theme: ThemeData(
-                      colorScheme: Theme.of(context)
-                          .colorScheme
-                          .copyWith(primary: Colors.white),
-                      timePickerTheme: TimePickerThemeData(
-                          backgroundColor: c.card.color,
-                          hourMinuteColor: c.card.color.withOpacity(0.8),
-                          hourMinuteTextColor: Colors.white,
-                          dialHandColor: c.card.color,
-                          entryModeIconColor: Colors.white,
-                          helpTextStyle: TextStyle(color: Colors.white),
-                          dialTextColor: Colors.white)),
-                  context: context,
-                  initial: Duration(
-                      hours: p.payment.time.hour ?? TimeOfDay.now().hour,
-                      minutes:
-                          p.payment.time.minute ?? TimeOfDay.now().minute)),
-              title: 'Horas: ' +
-                  (p.payment != null
-                      ? p.payment.timeToString ?? '12:00'
-                      : '12:00')),
+          Observer(
+            builder: (_) => buttonSelectOverSize(
+                constraint: constraint,
+                selected: true,
+                f: () {
+                  if (Platform.isIOS) {
+                    DateOrTimePicker().timePickerIOS(
+                        color: c.card != null ? c.card.color : null,
+                        context: widget.context,
+                        f: p.payment.changeTimeIOS,
+                        initial: p.payment.timeIOS,
+                        constraint: widget.constraints);
+                  } else
+                    DateOrTimePicker().timePicker(
+                        theme: ThemeData(
+                            colorScheme: Theme.of(context)
+                                .colorScheme
+                                .copyWith(primary: Colors.white),
+                            timePickerTheme: TimePickerThemeData(
+                                backgroundColor: c.card.color,
+                                hourMinuteColor: c.card.color.withOpacity(0.8),
+                                hourMinuteTextColor: Colors.white,
+                                dialHandColor: c.card.color,
+                                entryModeIconColor: Colors.white,
+                                helpTextStyle: TextStyle(color: Colors.white),
+                                dialTextColor: Colors.white)),
+                        context: context,
+                        initial: Duration(
+                            hours: p.payment.time.hour ?? TimeOfDay.now().hour,
+                            minutes: p.payment.time.minute ??
+                                TimeOfDay.now().minute));
+                },
+                title: 'Horas: ' +
+                    (p.payment != null
+                        ? p.payment.timeToString ?? '12:00'
+                        : '12:00')),
+          ),
           Text('Toque para definir a data',
               style: TextStyle(color: Colors.white54, fontSize: 12))
         ])
@@ -248,6 +277,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                 ),
               ),
               textField(
+                  type: TextInputType.number,
                   controller: p.payment.valueEdit,
                   hint: 'Valor',
                   width: constraint.maxWidth * 0.4,
@@ -339,6 +369,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                       fontWeight: FontWeight.bold, fontSize: 18))));
   textField(
           {TextEditingController controller,
+          TextInputType type,
           double width,
           double height,
           String hint}) =>
@@ -351,6 +382,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
             color: Colors.white54, borderRadius: BorderRadius.circular(20)),
         child: Center(
           child: TextField(
+              keyboardType: type,
               controller: controller,
               style: titleStyle.copyWith(
                   fontStyle: FontStyle.italic, fontWeight: FontWeight.w700),

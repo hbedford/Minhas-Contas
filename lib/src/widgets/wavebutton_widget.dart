@@ -10,7 +10,6 @@ class WaveButton extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = Path();
     double w = size.width;
-    print(percent);
     if (percent < 20) {
       /* path.moveTo(x, y) */
     } else if (percent >= 20 && percent < 25) {

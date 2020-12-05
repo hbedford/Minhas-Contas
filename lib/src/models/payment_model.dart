@@ -93,6 +93,12 @@ abstract class _PaymentModelBase with Store {
   changeCardId(int i) => cardId = i;
   @action
   changeToToday() => date = DateTime.now();
+  @action
+  changeTimeIOS(Duration d) =>
+      changeTime(TimeOfDay(hour: d.inHours, minute: d.inMinutes.remainder(60)));
+  @computed
+  Duration get timeIOS =>
+      Duration(hours: time.hour, minutes: time.minute.round());
   @computed
   String get dateToString => Converting().dateToString(date);
   @computed
