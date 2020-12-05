@@ -86,20 +86,28 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                                             ? step2(constraint)
                                             : p.step == 3
                                                 ? step3(context, constraint)
-                                                : step4(constraint)),
+                                                : p.step == 4
+                                                    ? step4(constraint)
+                                                    : Container()),
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ButtonNextWidget(
-                                      constraint: constraint,
-                                      color: colorGreen),
+                                    constraint: constraint,
+                                    color: colorGreen,
+                                  ),
                                   Container(
                                       margin: EdgeInsets.only(
                                           top: constraint.maxHeight * 0.03),
-                                      child: Text('Próximo',
-                                          style: TextStyle(
-                                              color: Colors.white54,
-                                              fontWeight: FontWeight.w700)))
+                                      child: Observer(
+                                        builder: (_) => Text(
+                                            p.step == 4
+                                                ? 'Finalizar'
+                                                : 'Próximo',
+                                            style: TextStyle(
+                                                color: Colors.white54,
+                                                fontWeight: FontWeight.w700)),
+                                      ))
                                 ])
                           ]))
                     ])))
@@ -221,6 +229,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
       ]);
   step4(BoxConstraints constraint) => Column(children: [
         textField(
+            controller: p.payment.nameEdit,
             hint: 'Nome do produto',
             width: constraint.maxWidth * 0.6,
             height: constraint.maxWidth * 0.1),
@@ -239,6 +248,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                 ),
               ),
               textField(
+                  controller: p.payment.valueEdit,
                   hint: 'Valor',
                   width: constraint.maxWidth * 0.4,
                   height: constraint.maxWidth * 0.08)
@@ -256,9 +266,9 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                   Icons.arrow_back_ios,
                   color: Colors.white,
                 ),
-                onPressed: null),
+                onPressed: () => p.payment.changeAmount(p.payment.amount - 1)),
             Text(
-              '1',
+              p.payment.amount.toString(),
               style: titleStyle.copyWith(fontSize: 20),
             ),
             IconButton(
@@ -266,7 +276,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                   Icons.arrow_forward_ios,
                   color: Colors.white,
                 ),
-                onPressed: null),
+                onPressed: () => p.payment.changeAmount(p.payment.amount + 1)),
           ],
         )
       ]);
@@ -341,6 +351,9 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
             color: Colors.white54, borderRadius: BorderRadius.circular(20)),
         child: Center(
           child: TextField(
+              controller: controller,
+              style: titleStyle.copyWith(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.w700),
               decoration: InputDecoration.collapsed(
                   hoverColor: Colors.white54,
                   fillColor: Colors.white54,

@@ -382,11 +382,6 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                   ),
                 ),
               ),
-              /* ListTile(
-                      onTap: () => setState(
-                          () => showTxtEditingNumber = !showTxtEditingNumber),
-                      title: Text('Número'),
-                      trailing: Text((cc.editCard.limit.toStringAsFixed(2))))), */
               duration: duration,
               left: showTxtEditingBalance ? -constraint.maxWidth : 0,
             ),
@@ -402,7 +397,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                       controller: balance,
                       suffix: IconButton(
                           icon: Icon(Icons.save),
-                          onPressed: () => number.text.length > 0
+                          onPressed: () => balance.text.length > 0
                               ? setState(() {
                                   cc.editCard.changeBalance(double.parse(
                                       balance.text.replaceAll(',', '.')));

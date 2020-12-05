@@ -36,7 +36,7 @@ abstract class _PaymentControllerBase with Store {
     final c = GetIt.I.get<CardsController>();
     final cc = GetIt.I.get<PaymentsController>();
     changePercent(20);
-    if (c.card != null && c.card.debitAndCredit) {
+    if (c.card != null && c.card.debit) {
       changeStep(1);
       startStep = 1;
       payment = PaymentModel(
@@ -120,11 +120,28 @@ abstract class _PaymentControllerBase with Store {
         goNextStep();
       else
         flushBar(
-            title: payment.dateIsValid
-                ? payment.timeIsValid
-                    ? ''
-                    : 'Necessario selecionar um horario'
-                : 'Necessario selecionar uma data');
+                color: Colors.red,
+                title: 'Necessario Selecionar opção',
+                message: payment.dateIsValid
+                    ? payment.timeIsValid
+                        ? ''
+                        : 'Necessario selecionar um horario'
+                    : 'Necessario selecionar uma data')
+            .show(context);
+    } else if (step == 4) {
+      payment.checkInfos();
+      if (checkStep4)
+        registerPayment(context);
+      else
+        flushBar(
+                color: Colors.red,
+                title: 'Necessario preencher campo',
+                message: payment.nameIsValid
+                    ? payment.valueIsValid
+                        ? ''
+                        : 'Necessario colocar o preço por produto'
+                    : 'Necessario dar um nome para o produto')
+            .show(context);
     }
   }
 
@@ -185,15 +202,16 @@ abstract class _PaymentControllerBase with Store {
 
   @action
   registerPayment(BuildContext context) async {
-    payment.checkInfos();
-    if (payment.isAllValidWithCard) {
-      PaymentDB().registerPayment(payment.map);
-      final c = GetIt.I.get<CardsController>();
-      c.card.changePayments(ObservableList<PaymentModel>.of(
-          await PaymentDB().getPayments(cardId: payment.cardId)));
-    } else
+    /* payment.checkInfos(); */
+    /* if (payment.isAllValidWithCard) { */
+    PaymentDB().registerPayment(payment.map);
+    final c = GetIt.I.get<CardsController>();
+    c.card.changePayments(ObservableList<PaymentModel>.of(
+        await PaymentDB().getPayments(cardId: payment.cardId)));
+    cancelPayment(context);
+    /* } else
       flushBar(color: Colors.red, title: payment.isNotValidWithCard)
-          .show(context);
+          .show(context); */
   }
 
   @computed
@@ -218,4 +236,7 @@ abstract class _PaymentControllerBase with Store {
   @computed
   bool get checkStep3 =>
       step == 3 && payment.dateIsValid && payment.timeIsValid;
+  @computed
+  bool get checkStep4 =>
+      step == 4 && payment.nameIsValid && payment.valueIsValid;
 }

@@ -44,6 +44,13 @@ mixin _$PaymentController on _PaymentControllerBase, Store {
       (_$checkStep3Computed ??= Computed<bool>(() => super.checkStep3,
               name: '_PaymentControllerBase.checkStep3'))
           .value;
+  Computed<bool> _$checkStep4Computed;
+
+  @override
+  bool get checkStep4 =>
+      (_$checkStep4Computed ??= Computed<bool>(() => super.checkStep4,
+              name: '_PaymentControllerBase.checkStep4'))
+          .value;
 
   final _$stepAtom = Atom(name: '_PaymentControllerBase.step');
 
@@ -231,7 +238,8 @@ typesCard: ${typesCard},
 checkStep0: ${checkStep0},
 checkStep1: ${checkStep1},
 checkStep2: ${checkStep2},
-checkStep3: ${checkStep3}
+checkStep3: ${checkStep3},
+checkStep4: ${checkStep4}
     ''';
   }
 }

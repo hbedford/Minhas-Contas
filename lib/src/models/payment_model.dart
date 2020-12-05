@@ -48,7 +48,7 @@ abstract class _PaymentModelBase with Store {
       this.nameEdit,
       this.value = 0,
       this.valueEdit,
-      this.amount = 0,
+      this.amount = 1,
       this.typePrice = false,
       this.type,
       this.cardId});
@@ -66,7 +66,6 @@ abstract class _PaymentModelBase with Store {
   @action
   checkInfos() {
     if (nameEdit.text.isNotEmpty) changeName(nameEdit.text);
-    if (amountEdit.text.isNotEmpty) changeAmount(int.parse(amountEdit.text));
     if (valueEdit.text.isNotEmpty)
       changeValue(double.parse(valueEdit.text.replaceAll(',', '.')));
   }
@@ -78,7 +77,10 @@ abstract class _PaymentModelBase with Store {
   @action
   changeValue(double v) => value = v;
   @action
-  changeAmount(int a) => amount = a;
+  changeAmount(int a) {
+    if (a >= 1) amount = a;
+  }
+
   @action
   changeDate(DateTime d) => date = d;
   @action
@@ -104,7 +106,7 @@ abstract class _PaymentModelBase with Store {
         'date': dateToString,
         'value': value,
         'card_id': cardId,
-        /* 'time': timeToString, */
+        'time': timeToString,
         'type_id': type.id,
         'amount': amount,
         'type_price': typePrice ? 1 : 0,
