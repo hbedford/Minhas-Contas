@@ -89,7 +89,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                       painter: NavCustomPainter(
                           _pos,
                           _length,
-                          c.card != null
+                          c.card.id != null
                               ? c.card.color
                               : widget.backgroundColor,
                           Directionality.of(context)),
@@ -118,7 +118,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
                                                 ? 20
                                                 : 0),
                                     child: CircleAvatar(
-                                      backgroundColor: c.card != null
+                                      backgroundColor: c.card.id != null
                                           ? c.card.color
                                           : widget.backgroundColor,
                                       child: Center(child: item),

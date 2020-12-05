@@ -8,7 +8,7 @@ import 'package:minhasconta/src/utils/compare.dart';
 import 'dart:ui' as ui;
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
-import 'package:minhasconta/src/widgets/cardview_widget.dart';
+
 import 'package:minhasconta/src/widgets/editcard_widget.dart';
 import 'package:minhasconta/src/widgets/payment_popup_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -27,7 +27,7 @@ class _HomePageCardsState extends State<HomePageCards> {
   double pointer = 0;
   double pos = 0;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctxt) {
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) => Observer(
@@ -44,17 +44,15 @@ class _HomePageCardsState extends State<HomePageCards> {
                             child: cc.editCard != null
                                 ? EditCardWidget()
                                 : cardInfos(context)),
-                        Visibility(
-                            visible: cc.cardView, child: CardViewWidget())
+                        /* Visibility(
+                            visible: cc.cardView, child: CardViewWidget()) */
                       ]),
                   bubbleButton(constraints),
                   c.payment != null
                       ? Positioned.fill(
                           child: InkWell(onTap: () => c.cancelPayment(context)))
                       : Container(),
-                  PaymentPopUpWidget(
-                    constraints: constraints,
-                  )
+                  PaymentPopUpWidget(constraints: constraints, context: ctxt)
                 ])),
       ),
     );

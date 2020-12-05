@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/cards_controller.dart';
-import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/screens/home_page_cards.dart';
 import 'package:minhasconta/src/screens/projects_screen1.dart';
 import 'package:minhasconta/src/screens/schedules_screen.dart';
@@ -10,43 +7,13 @@ import 'package:minhasconta/src/utils/bottomnavigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
 
-class HomeScreen1 extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomeScreen1State createState() => _HomeScreen1State();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreen1State extends State<HomeScreen1> {
-  List<CardModel> list = [
-    CardModel(color: Colors.green),
-    CardModel(color: Colors.blue),
-    CardModel(color: Colors.red),
-    CardModel(color: Colors.orange),
-    null
-  ];
-  List cardsPositions;
-  bool drag = false;
-  ScrollController controller;
-  final cc = GetIt.I.get<CardsController>();
-  double v = 0;
+class _HomeScreenState extends State<HomeScreen> {
   double size = 0;
-  double pointer = 0;
-  @override
-  void initState() {
-    super.initState();
-    controller = ScrollController()
-      ..addListener(() {
-        if (controller.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          controller.animateTo(v - size,
-              duration: Duration(milliseconds: 800), curve: Curves.easeOut);
-        } else if (controller.position.userScrollDirection ==
-            ScrollDirection.reverse) {
-          controller.animateTo(v + size,
-              duration: Duration(milliseconds: 800), curve: Curves.easeOut);
-        }
-        if (controller.offset != v) setState(() => v = controller.offset);
-      });
-  }
 
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();

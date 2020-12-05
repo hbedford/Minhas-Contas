@@ -11,7 +11,8 @@ import 'buttonnext_widget.dart';
 
 class PaymentPopUpWidget extends StatefulWidget {
   final BoxConstraints constraints;
-  PaymentPopUpWidget({this.constraints});
+  final BuildContext context;
+  PaymentPopUpWidget({this.constraints, this.context});
 
   @override
   _PaymentPopUpWidgetState createState() => _PaymentPopUpWidgetState();
@@ -39,7 +40,10 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
     titleStyle = Theme.of(context).textTheme.headline3;
     return Observer(
         builder: (_) => AnimatedPositioned(
-            bottom: widget.constraints.maxHeight * 0.2,
+            bottom: WidgetsBinding.instance.window.viewInsets.bottom > 0
+                ? MediaQuery.of(context).viewInsets.bottom +
+                    widget.constraints.maxHeight * 0.02
+                : widget.constraints.maxHeight * 0.2,
             left: p.payment == null
                 ? widget.constraints.maxWidth
                 : widget.constraints.maxWidth * 0.05,
@@ -216,12 +220,55 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
         ])
       ]);
   step4(BoxConstraints constraint) => Column(children: [
-        Row(children: [
-          /* Container(
-                width: constraint.maxWidth * 0.3,
-                child: textField(),
-              ) */
-        ])
+        textField(
+            hint: 'Nome do produto',
+            width: constraint.maxWidth * 0.6,
+            height: constraint.maxWidth * 0.1),
+        Flexible(
+          flex: 2,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                height: constraint.maxHeight * 0.1,
+                margin: EdgeInsets.only(right: constraint.maxWidth * 0.02),
+                child: Text(
+                  'R\$',
+                  style: titleStyle.copyWith(fontSize: 24),
+                ),
+              ),
+              textField(
+                  hint: 'Valor',
+                  width: constraint.maxWidth * 0.4,
+                  height: constraint.maxWidth * 0.08)
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Text(
+              'Quantos?',
+              style: titleStyle.copyWith(fontSize: 20),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                onPressed: null),
+            Text(
+              '1',
+              style: titleStyle.copyWith(fontSize: 20),
+            ),
+            IconButton(
+                icon: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
+                onPressed: null),
+          ],
+        )
       ]);
   title(BuildContext context) => Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -280,12 +327,28 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
               child: Text(title,
                   style: titleStyle.copyWith(
                       fontWeight: FontWeight.bold, fontSize: 18))));
-  textField({TextEditingController controller}) => Flexible(
-      child: TextField(
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white54)),
-              hoverColor: Colors.white54,
-              fillColor: Colors.white54,
-              hintText: 'Nome do item')));
+  textField(
+          {TextEditingController controller,
+          double width,
+          double height,
+          String hint}) =>
+      Container(
+        margin: EdgeInsets.symmetric(vertical: height * 0.2),
+        padding: EdgeInsets.only(left: width * 0.05),
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+            color: Colors.white54, borderRadius: BorderRadius.circular(20)),
+        child: Center(
+          child: TextField(
+              decoration: InputDecoration.collapsed(
+                  hoverColor: Colors.white54,
+                  fillColor: Colors.white54,
+                  hintText: hint,
+                  hintStyle: titleStyle.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.w700))),
+        ),
+      );
 }

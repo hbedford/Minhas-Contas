@@ -3,9 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/screens/categories_screen.dart';
 import 'package:minhasconta/src/screens/creditcards_screen.dart';
-import 'package:minhasconta/src/screens/home_screen1.dart';
+import 'package:minhasconta/src/screens/home_screen.dart';
 import 'package:minhasconta/src/screens/loading_screen.dart';
-import 'package:minhasconta/src/screens/login_screen1.dart';
+import 'package:minhasconta/src/screens/login_screen.dart';
 
 import 'controllers/home_controller.dart';
 import 'controllers/user_controller.dart';
@@ -33,8 +33,8 @@ class App extends StatelessWidget {
         /* 
         '/test': (context) => Testing(), */
         '/': (context) => LoadingScreen(),
-        '/login': (context) => LoginScreen1(),
-        '/home': (context) => HomeScreen1(),
+        '/login': (context) => LoginScreen(),
+        '/home': (context) => HomeScreen(),
         '/categories': (context) => CategoriesScreen(),
         '/card': (context) => CardScreen(),
         '/cards': (context) => CreditCardsScreen(),

@@ -3,8 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
 
-import 'addcreditcard_screen.dart';
-
 class CreditCardsScreen extends StatelessWidget {
   final c = GetIt.instance<CardsController>();
   @override
@@ -43,10 +41,7 @@ class CreditCardsScreen extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: Icon(Icons.add),
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddCreditCardScreen())),
+                          onPressed: () => null,
                         ),
                       ],
                     ),

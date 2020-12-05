@@ -17,7 +17,7 @@ class CardWidget extends StatelessWidget {
       this.editing = false,
       this.bottomSheet = false});
   final c = GetIt.I.get<CardsController>();
-  TextEditingController remove = TextEditingController();
+  /* final TextEditingController remove = TextEditingController(); */
   @override
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (context, constraints) => Observer(
@@ -95,7 +95,8 @@ class CardWidget extends StatelessWidget {
                               )
                             ]),
                         Observer(
-                          builder: (_) => !editing && card.removeOption
+                          builder: (_) =>
+                              /* !editing && card.removeOption
                               ? Row(children: [
                                   Expanded(
                                     flex: 2,
@@ -119,60 +120,56 @@ class CardWidget extends StatelessWidget {
                                     ),
                                   ))
                                 ])
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                              : */
+                              Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Observer(
-                                            builder: (_) => Visibility(
-                                              visible: card.debit,
-                                              child: Text(
-                                                'Debito',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
-                                            ),
-                                          ),
-                                          Observer(
-                                            builder: (_) => Visibility(
-                                              visible: card.credit,
-                                              child: Text(
-                                                'Credito',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3,
-                                              ),
-                                            ),
-                                          )
-                                        ]),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Limite:',
+                                    Observer(
+                                      builder: (_) => Visibility(
+                                        visible: card.debit,
+                                        child: Text(
+                                          'Debito',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline3,
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            'R\$ ${card.limit.toStringAsFixed(2)}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3,
-                                          ),
+                                      ),
+                                    ),
+                                    Observer(
+                                      builder: (_) => Visibility(
+                                        visible: card.credit,
+                                        child: Text(
+                                          'Credito',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline3,
                                         ),
-                                      ],
+                                      ),
                                     )
-                                  ],
-                                ),
+                                  ]),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Limite:',
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      'R\$ ${card.limit.toStringAsFixed(2)}',
+                                      style:
+                                          Theme.of(context).textTheme.headline3,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,

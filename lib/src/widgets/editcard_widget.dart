@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/widgets/flushbar_widget.dart';
 
@@ -39,10 +41,14 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   TextEditingController balance = MoneyMaskedTextController(precision: 2);
 
   TextEditingController name = TextEditingController();
-
-  TextEditingController number = MaskedTextController(
+  TextEditingController number = TextEditingController();
+  var numberMask = new MaskTextInputFormatter(
+      initialText: '0000 0000 0000 0000',
+      mask: '#### #### #### ####',
+      filter: {"#": RegExp(r'[0-9]')});
+  /* MaskedTextController(
     mask: '0000 0000 0000 0000',
-  );
+  ); */
   Duration duration = Duration(milliseconds: 200);
   dismissKeyboard(BuildContext context) {
     if (FocusScope.of(context).hasFocus) {
@@ -57,8 +63,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
       limit = MoneyMaskedTextController(
           precision: 2, initialValue: cc.editCard.limit);
       name = TextEditingController(text: cc.editCard.name);
-      number = MaskedTextController(
-          mask: '0000 0000 0000 0000', text: cc.editCard.numbers);
+      /* number = MaskedTextController(
+          mask: '0000 0000 0000 0000', text: cc.editCard.numbers); */
       balance = MoneyMaskedTextController(
           precision: 2, initialValue: cc.editCard.balance);
     }
@@ -223,14 +229,11 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                       margin(
                           child: numberCard(constraint),
                           constraint: constraint,
-                          /* t: 1, */
                           r: 5,
                           l: 5),
                       margin(
                           l: 5,
                           r: 5,
-                          /* 
-                          t: 1, */
                           child: limitCredit(constraint),
                           constraint: constraint),
                       margin(
@@ -241,9 +244,6 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                     value: cc.editCard.debit,
                                     onChanged: cc.editCard.changeDebit,
                                   )),
-                          /* ListTile(
-                            title: Text('Debito'),trailing: SwitchListTile(value: null, onChanged: null),
-                          ), */
                           constraint: constraint,
                           l: 5,
                           r: 5,
@@ -315,11 +315,6 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                   ),
                 ),
               ),
-              /* ListTile(
-                      onTap: () => setState(
-                          () => showTxtEditingNumber = !showTxtEditingNumber),
-                      title: Text('Número'),
-                      trailing: Text((cc.editCard.limit.toStringAsFixed(2))))), */
               duration: duration,
               left: showTxtEditingNumber ? -constraint.maxWidth : 0,
             ),
@@ -329,6 +324,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                   height: constraints.maxHeight - 5,
                   width: constraints.maxWidth,
                   child: textField(
+                      mask: [numberMask],
                       type: TextInputType.numberWithOptions(),
                       label: 'Número',
                       controller: number,
@@ -549,12 +545,14 @@ class _EditCardWidgetState extends State<EditCardWidget> {
           String label,
           String prefixText,
           TextInputType type,
-          Function onChanged}) =>
+          Function onChanged,
+          List<TextInputFormatter> mask}) =>
       Container(
         child: TextField(
           keyboardType: type,
           onChanged: onChanged,
           controller: controller,
+          inputFormatters: mask,
           decoration: InputDecoration(
               prefixText: prefixText,
               labelText: label,
