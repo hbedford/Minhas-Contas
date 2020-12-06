@@ -8,6 +8,7 @@ import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/screens/page_card.dart';
 import 'package:minhasconta/src/utils/compare.dart';
+import 'package:minhasconta/src/widgets/appbar_change_widget.dart';
 import 'dart:ui' as ui;
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
 import 'package:minhasconta/src/widgets/card_widget.dart';
@@ -43,7 +44,11 @@ class _HomePageCardsState extends State<HomePageCards> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          appBar(constraints),
+                          AppBarChangeWidget(
+                              constraint: constraints,
+                              title: 'Cartões',
+                              back: () => null,
+                              foward: () => null),
                           title(constraints),
                           Visibility(
                               child: cardsWidget(), visible: !cc.cardView),
@@ -96,7 +101,7 @@ class _HomePageCardsState extends State<HomePageCards> {
           ),
         ),
       );
-  appBar(BoxConstraints constraints) => AnimatedContainer(
+  /* appBar(BoxConstraints constraints) => AnimatedContainer(
         duration: Duration(milliseconds: 200),
         child: Center(
           child: Text(
@@ -108,7 +113,7 @@ class _HomePageCardsState extends State<HomePageCards> {
         height: WidgetsBinding.instance.window.viewInsets.bottom == 0
             ? constraints.maxHeight * 0.08
             : 0,
-      );
+      ); */
   title(BoxConstraints constraints) => Container(
       height: constraints.maxHeight *
           0.05 /*  +
@@ -306,23 +311,6 @@ class _HomePageCardsState extends State<HomePageCards> {
                       children: [
                         Text('Ultimas compras',
                             style: Theme.of(context).textTheme.subtitle2),
-                        /*  Observer(
-                                  builder: (_) => Visibility(
-                                    visible: cc.card.id != null && cc.editCard == null,
-                                    child: InkWell(
-                                        child: Icon(Icons.add),
-                                        onTap: () {
-                                          final p = GetIt.I.get<PaymentController>();
-                                          p.initiatePayment();
-                                          showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            context: ctxt,
-                                            builder: (context) => AddNewPaymentWidget(),
-                                          );
-                                        }),
-                                  ),
-                                ) */
                       ],
                     ),
                     constraint: constraint),

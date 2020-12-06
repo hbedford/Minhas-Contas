@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/card_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
+import 'package:minhasconta/src/widgets/appbar_change_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PageCard extends StatelessWidget {
@@ -14,7 +15,11 @@ class PageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        appBar(),
+        AppBarChangeWidget(
+            constraint: constraint,
+            title: 'Cartões',
+            back: () => null,
+            foward: () => null),
         Divider(
           color: Colors.white,
         ),
@@ -64,6 +69,20 @@ class PageCard extends StatelessWidget {
                             .copyWith(color: Colors.white),
                       ),
                     ),
+                    margin(
+                        t: 3,
+                        r: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Ultimas compras',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2
+                                    .copyWith(color: Colors.white)),
+                          ],
+                        ),
+                        constraints: constraint),
                     listPayments()
                   ],
                 ))),
@@ -71,7 +90,7 @@ class PageCard extends StatelessWidget {
     );
   }
 
-  appBar() => Container(
+  /*  appBar() => Container(
         height: constraint.maxHeight * 0.08,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +100,7 @@ class PageCard extends StatelessWidget {
             IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null),
           ],
         ),
-      );
+      ); */
   listPayments() => margin(
         constraints: constraint,
         t: 2,

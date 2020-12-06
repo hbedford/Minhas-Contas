@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:minhasconta/src/screens/home_page_cards.dart';
-import 'package:minhasconta/src/screens/projects_screen1.dart';
+import 'package:minhasconta/src/screens/home_page_projects.dart';
 import 'package:minhasconta/src/screens/schedules_screen.dart';
 import 'package:minhasconta/src/utils/bottomnavigation.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _page == 0
               ? HomePageCards()
               : _page == 1
-                  ? ProjectsScreen1()
+                  ? HomePageProjects()
                   : SchedulesScreen(),
           WidgetsBinding.instance.window.viewInsets.bottom > 0.0
               ? Container()
