@@ -32,7 +32,6 @@ void main() async {
   getIt.registerSingleton<ProjectController>(ProjectController());
   getIt.registerSingleton<ProjectsController>(
       ProjectsController(projects: [].asObservable()));
-  getIt.registerSingleton<CardController>(CardController());
   getIt.registerSingleton<CardsController>(
     CardsController(
       card: CardModel(),
@@ -93,6 +92,8 @@ void main() async {
       ), */
     ),
   );
+
+  getIt.registerSingleton<CardController>(CardController());
   final c = GetIt.I.get<CardsController>();
   c.startScroll();
   runApp(App());

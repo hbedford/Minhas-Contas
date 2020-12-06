@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/card_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PageCard extends StatelessWidget {
   final BoxConstraints constraint;
@@ -13,17 +14,7 @@ class PageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: constraint.maxHeight * 0.08,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: null),
-              Text('Cartões'),
-              IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null),
-            ],
-          ),
-        ),
+        appBar(),
         Divider(
           color: Colors.white,
         ),
@@ -42,9 +33,9 @@ class PageCard extends StatelessWidget {
                             c.cards.length.toString()))
               ],
             ),
-            constraint: constraint),
+            constraints: constraint),
         margin(
-            constraint: constraint,
+            constraints: constraint,
             l: 0,
             t: 2,
             child: Container(
@@ -59,23 +50,105 @@ class PageCard extends StatelessWidget {
                     margin(
                         t: 0,
                         child: cardBasicInfo(constraint, context),
-                        constraint: constraint),
+                        constraints: constraint),
                     barDays(constraint, context),
+                    margin(
+                      constraints: constraint,
+                      l: 0,
+                      t: 2,
+                      child: Text(
+                        'Classificar por',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
+                    listPayments()
                   ],
                 ))),
       ],
     );
   }
 
+  appBar() => Container(
+        height: constraint.maxHeight * 0.08,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: null),
+            Text('Cartões'),
+            IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null),
+          ],
+        ),
+      );
+  listPayments() => margin(
+        constraints: constraint,
+        t: 2,
+        child: Container(
+            height: constraint.maxHeight * 0.3,
+            child: c.card.name != null && c.card.pThisMonth.length == 0
+                ? Center(
+                    child: Text(
+                      'Nenhuma compra efetuada esse mês',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: c.card.name == null ? 3 : cc.payments.length,
+                    itemBuilder: (context, int index) => c.card.name == null
+                        ? paymentWidget(constraint, 'Testando testando',
+                            'Testando', 'testando', true)
+                        : paymentWidget(
+                            constraint,
+                            cc.payments[index].name,
+                            cc.payments[index].type.name,
+                            'R\$ ' + cc.payments[index].value.toString(),
+                            false))),
+      );
+  paymentWidget(BoxConstraints constraint, String title, String type,
+          String price, bool loading) =>
+      Container(
+          height: constraint.maxHeight * 0.05,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+                flex: 4,
+                child: Row(children: [
+                  loadContainer(
+                      child: Text(
+                        title,
+                      ),
+                      enable: loading,
+                      bColor: Colors.grey[700])
+                ])),
+            Flexible(
+                flex: 2,
+                child: Row(children: [
+                  loadContainer(
+                      child: Text(type), enable: loading, bColor: Colors.grey)
+                ])),
+            Flexible(
+                flex: 2,
+                child: Row(children: [
+                  loadContainer(
+                      enable: loading, child: Text(price), bColor: Colors.green)
+                ]))
+          ]));
+  loadContainer({Color bColor, bool enable = false, Widget child}) => Container(
+      child: Shimmer.fromColors(
+          baseColor: bColor,
+          highlightColor: bColor.withOpacity(0.8),
+          child: Container(
+            color: enable ? bColor : Colors.transparent,
+            child: child,
+          ),
+          enabled: enable,
+          direction: ShimmerDirection.ltr));
   cardBasicInfo(BoxConstraints constraints, BuildContext context) => Container(
-      height: constraints.maxHeight * 0.3,
-      width: constraints.maxWidth * 0.8,
       padding: EdgeInsets.symmetric(
-          vertical: constraints.maxHeight * 0.05,
-          horizontal: constraints.maxWidth * 0.05),
-      /* margin: EdgeInsets.symmetric(
-          horizontal: constraints.maxWidth * 0.01,
-          vertical: constraints.maxHeight * 0.07), */
+          vertical: constraints.maxHeight * 0.02,
+          horizontal: constraints.maxWidth * 0.15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: c.card.color),
       child: Column(
@@ -93,117 +166,41 @@ class PageCard extends StatelessWidget {
                 children: [
                   IconButton(
                       color: Colors.white,
-                      icon:
-                          /* editing
-                                          ? Icon(Icons.save)
-                                          :  */
-                          Icon(Icons.settings),
-                      onPressed: () =>
-                          null /* editing
-                                          ? () => c.saveCard(context)
-                                          :  f*/ /* c.changeCard(card) */),
-                  /*  Visibility(
-                                    visible: editing && card.id == null,
-                                    child: IconButton(
-                                        color: Colors.white,
-                                        icon: Icon(Icons.close),
-                                        onPressed: c.cancelCard
-                                        /* c.changeCard(card) */),
-                                  ), */
-                  /*  Visibility(
-                                      visible: editing && c.editCard.id != null,
-                                      child: IconButton(
-                                        color: Colors.white,
-                                        icon: Icon(Icons.close),
-                                        onPressed: () => c.changeEditCard(null),
-                                      )),
-                                  Visibility(
-                                      visible: !editing,
-                                      child: IconButton(
-                                        color: Colors.red[800],
-                                        icon: Icon(Icons.close),
-                                        onPressed: () => card.changeCheckRemove(
-                                            !card.removeOption),
-                                      )) */
+                      icon: Icon(Icons.settings),
+                      onPressed: () => null),
                   IconButton(
                       icon: Icon(
                         Icons.close,
                         color: Colors.white,
                       ),
-                      onPressed: null)
+                      onPressed: () => c.changeCardFullInfo(false))
                 ],
               )
             ]),
-            Observer(
-              builder: (_) =>
-                  /* !editing && card.removeOption
-                              ? Row(children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: TextField(
-                                      controller: remove,
-                                      decoration: InputDecoration(
-                                          hintText: 'Digite o nome do cartão',
-                                          hintStyle: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 14,
-                                          )),
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Flexible(
-                                      child: InkWell(
-                                    onTap: null,
-                                    child: Text(
-                                      'Remover',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ))
-                                ])
-                              : */
-                  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Observer(
-                          builder: (_) => Visibility(
-                            visible: c.card.debit,
-                            child: Text(
-                              'Debito',
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                          ),
-                        ),
-                        Observer(
-                          builder: (_) => Visibility(
-                            visible: c.card.credit,
-                            child: Text(
-                              'Credito',
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                          ),
-                        )
-                      ]),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Limite:',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Observer(
+                    builder: (_) => Visibility(
+                      visible: c.card.debit,
+                      child: Text(
+                        'Debito',
                         style: Theme.of(context).textTheme.headline3,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        child: Text(
-                          'R\$ ${c.card.limit.toStringAsFixed(2)}',
-                          style: Theme.of(context).textTheme.headline3,
-                        ),
+                    ),
+                  ),
+                  Observer(
+                    builder: (_) => Visibility(
+                      visible: c.card.credit,
+                      child: Text(
+                        'Credito',
+                        style: Theme.of(context).textTheme.headline3,
                       ),
-                    ],
+                    ),
                   )
-                ],
-              ),
+                ]),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -265,37 +262,52 @@ class PageCard extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.grey[400],
                   borderRadius: BorderRadius.circular(8)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: cc.days
-                    .map((e) => InkWell(
-                          onTap: () => cc.changeDay(e),
-                          child: Container(
-                            height: constraint.maxHeight * 0.05,
-                            width: constraint.maxWidth * 0.89 / 5,
-                            child: Center(
-                              child: Text(
-                                e,
-                                style: TextStyle(color: Colors.grey[600]),
+              child: Observer(
+                builder: (_) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: cc.days
+                      .map((e) => InkWell(
+                            onTap: () => cc.changeDay(e),
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 100),
+                              height: constraint.maxHeight * 0.05,
+                              width: (constraint.maxWidth * 0.8 / 6) +
+                                  (e == cc.day
+                                      ? constraint.maxWidth * 0.15
+                                      : 0.0),
+                              child: Center(
+                                child: AnimatedOpacity(
+                                  opacity: cc.day == e ? 0.0 : 1.0,
+                                  duration: Duration(microseconds: 2000),
+                                  child: Text(
+                                    e,
+                                    style: TextStyle(color: Colors.grey[600]),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ))
-                    .toList(),
+                          ))
+                      .toList(),
+                ),
               ),
             )),
             Observer(
               builder: (_) => AnimatedPositioned(
-                  left: (constraint.maxWidth / 5) * cc.days.indexOf(cc.day),
+                  left: (constraint.maxWidth * 1.8) *
+                      cc.days.indexOf(cc.day) /
+                      13.3,
                   child: Container(
                     height: constraint.maxHeight * 0.05,
-                    width: constraint.maxWidth * 0.89 / 5,
-                    child: Center(child: Text(cc.day + ' dias')),
+                    width: constraint.maxWidth * 1.8 / 6,
+                    child: Center(
+                        child: Text((cc.day != 'Ano' ? 'Ultimos ' : 'Ultimo ') +
+                            cc.day +
+                            (cc.day == 'Ano' ? '' : ' dias'))),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.horizontal(
                             left: Radius.circular(cc.day == '7' ? 8 : 20),
-                            right: Radius.circular(cc.day == '90' ? 8 : 20))),
+                            right: Radius.circular(cc.day == 'Ano' ? 8 : 20))),
                   ),
                   duration: Duration(milliseconds: 200)),
             )
@@ -307,13 +319,13 @@ class PageCard extends StatelessWidget {
           double l,
           double r = 0,
           Widget child,
-          BoxConstraints constraint}) =>
+          BoxConstraints constraints}) =>
       Container(
           margin: EdgeInsets.only(
-              right: (r / 100) * constraint.maxWidth ?? 0,
+              right: (r / 100) * constraints.maxWidth ?? 0,
               left: l == null
-                  ? constraint.maxWidth * 0.05
-                  : constraint.maxWidth * (l / 100),
-              top: constraint.maxHeight * (t / 100)),
+                  ? constraints.maxWidth * 0.05
+                  : constraints.maxWidth * (l / 100),
+              top: constraints.maxHeight * (t / 100)),
           child: child);
 }

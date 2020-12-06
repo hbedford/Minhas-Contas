@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/card_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
+import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/screens/page_card.dart';
 import 'package:minhasconta/src/utils/compare.dart';
@@ -439,6 +441,8 @@ class _HomePageCardsState extends State<HomePageCards> {
             onTap: () {
               cc.changeCard(card);
               cc.changeCardFullInfo(true);
+              final c = GetIt.I.get<CardController>();
+              c.paymentsDays();
             },
             onHorizontalDragStart: (d) {
               if (cc.editCard == null) {

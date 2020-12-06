@@ -1,4 +1,5 @@
 import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:mobx/mobx.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../database.dart';
@@ -33,5 +34,16 @@ class PaymentDB {
         where: "card_id = ? and strftime('%m',date) = ?",
         whereArgs: [id, month]);
     return list.map((e) => PaymentModel.fromMap(e)).toList();
+  }
+
+  Future<List<PaymentModel>> getPaymentsOfDays({String day, int id}) async {
+    Database db = await DatabaseHelper.instance.database;
+
+    List<Map> list = await db.query('payments',
+        where: "card_id = ? and date('now') and date(?)", whereArgs: [id, day]);
+    list.forEach((element) {
+      print(element);
+    });
+    return ObservableList.of(list.map((e) => PaymentModel.fromMap(e)).toList());
   }
 }
