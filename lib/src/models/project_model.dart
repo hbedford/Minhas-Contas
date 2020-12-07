@@ -24,6 +24,8 @@ abstract class _ProjectModelBase with Store {
   @observable
   CategoryModel category;
   @observable
+  String image;
+  @observable
   ObservableList expenses = [].asObservable();
   _ProjectModelBase(
       {this.id,
@@ -34,9 +36,12 @@ abstract class _ProjectModelBase with Store {
       this.endDate,
       this.expenses,
       this.spendingExpectation,
-      this.category});
+      this.category,
+      this.image});
   @action
   changeName(String n) => name = n;
+  @action
+  changeImage(String i) => image = i;
   @action
   changeDescription(String d) => description = d;
   @action
