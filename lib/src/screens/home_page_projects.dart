@@ -8,6 +8,11 @@ class HomePageProjects extends StatefulWidget {
 }
 
 class _HomePageProjectsState extends State<HomePageProjects> {
+  List list = [
+    'assets/wallpaper1.jpg',
+    'assets/wallpaper2.jpg',
+    'assets/wallpaper3.jpg'
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,23 +27,36 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                           title: 'Projetos',
                           back: () => null,
                           foward: () => null),
-                      SizedBox(
-                          child: CustomPaint(
-                        size: Size(
-                            constraints.maxWidth, constraints.maxWidth * 0.5),
-                        painter: ProjectClipper(),
-                        /* child: */ /* Container(
-                                  height: 500,
-                                  width: 500,
-                                  color: Colors
-                                      .blue) */ /* Observer(
-                      builder: (_) => CustomPaint(
-                          size: Size(constraint.maxWidth * 0.15,
-                              constraint.maxWidth * 0.15),
-                          painter:
-                              WaveButton(percent: p.percent, color: color)),
-                    ) */
-                      )),
+                      Expanded(
+                          child: Container(
+                        color: Colors.blue,
+                        child: Stack(
+                          children: list
+                              .map((e) {
+                                return AnimatedPositioned(
+                                  duration: Duration(milliseconds: 200),
+                                  top: (list.indexOf(e) * 1.2) *
+                                      (constraints.maxHeight * 0.1),
+                                  child: SizedBox(
+                                    height: list.indexOf(e) == 0
+                                        ? constraints.maxHeight * 0.3
+                                        : constraints.maxHeight * 0.5,
+                                    width: constraints.maxWidth,
+                                    child: ClipPath(
+                                      clipper: ProjectClipper(),
+                                      child: Image.asset(
+                                        e,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              })
+                              .toList()
+                              .reversed
+                              .toList(),
+                        ),
+                      ))
                     ],
                   ),
                 )));
