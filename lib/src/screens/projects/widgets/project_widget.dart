@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/widgets/waveproject_widget.dart';
 
-class ProjectWidget extends StatelessWidget {
+class ProjectWidget extends StatefulWidget {
   final ProjectModel project;
-  final double wave;
+  final bool wave;
   /* 
   final BoxConstraints constraints; */
   final double height;
@@ -15,28 +15,51 @@ class ProjectWidget extends StatelessWidget {
       {this.project /* ,this.constraints */,
       this.height,
       this.width,
-      this.wave,
+      this.wave = false,
       this.last = false});
+
+  @override
+  _ProjectWidgetState createState() => _ProjectWidgetState();
+}
+
+class _ProjectWidgetState extends State<ProjectWidget>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation animation;
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: Duration(seconds: 4), vsync: this);
+    animation = Tween<double>(begin: 0, end: 1).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.wave) {
+      controller.forward();
+    }
     return Material(
       type: MaterialType.transparency,
       color: Colors.transparent,
       child: SizedBox(
-        height: height,
+        height: widget.height,
         /* list.indexOf(e) == 0
                                           ? constraints.maxHeight * 0.4
                                           : constraints.maxHeight * 0.4, */
-        width: width,
+        width: widget.width,
         child: Stack(
           children: [
             SizedBox(
-              height: height,
-              width: width,
+              height: widget.height,
+              width: widget.width,
               child: ClipPath(
-                clipper: ProjectClipper(wave: wave),
+                clipper: ProjectClipper(wave: animation.value),
                 child: Image.network(
-                  project.image,
+                  widget.project.image,
                   colorBlendMode: BlendMode.darken,
                   color: Colors.black26.withOpacity(0.5),
                   /* filterQuality: FilterQuality.high, */
@@ -45,10 +68,10 @@ class ProjectWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: last ? height / 2 : height,
+              height: widget.last ? widget.height / 2 : widget.height,
               child: Center(
                 child: Text(
-                  project.name,
+                  widget.project.name,
                   style: Theme.of(context)
                       .textTheme
                       .headline6

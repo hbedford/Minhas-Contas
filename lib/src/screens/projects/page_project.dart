@@ -14,7 +14,7 @@ class PageProject extends StatelessWidget {
       builder: (context, constraints) => Column(
         children: [
           ProjectWidget(
-            wave: 1,
+            wave: true,
             height: 300,
             width: 400,
             project: p.project,

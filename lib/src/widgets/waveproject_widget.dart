@@ -2,16 +2,42 @@ import 'package:flutter/material.dart';
 
 class ProjectClipper extends CustomClipper<Path> {
   final double wave;
-  ProjectClipper({this.wave});
+  ProjectClipper({this.wave = 0.0});
   @override
   Path getClip(Size size) {
     double w = size.width;
     return Path()
       ..lineTo(0, size.height)
-      ..quadraticBezierTo(w * 0.2, size.height * (wave ?? 0.75), w * 0.5,
-          size.height * (wave ?? 0.75))
-      ..quadraticBezierTo(w * 0.85, size.height * (wave ?? 0.75), w,
-          size.height * (wave ?? 0.55))
+      ..quadraticBezierTo(
+          w * 0.2,
+          size.height *
+              (wave == 0
+                  ? 0.75
+                  : 0.75 + wave > 1
+                      ? 1
+                      : 0.75 + wave),
+          w * 0.5,
+          size.height *
+              (wave == 0
+                  ? 0.75
+                  : 0.75 + wave > 1
+                      ? 1
+                      : 0.75 + wave))
+      ..quadraticBezierTo(
+          w * 0.85,
+          size.height *
+              (wave == 0
+                  ? 0.75
+                  : 0.75 + wave > 1
+                      ? 1
+                      : 0.75 + wave),
+          w,
+          size.height *
+              (wave == 0
+                  ? 0.55
+                  : 0.55 + wave > 1
+                      ? 1
+                      : 0.55 + wave))
       ..lineTo(w, size.height)
       ..lineTo(w, 0);
 
