@@ -5,9 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Minhas Contas",
-            "request": "launch",
-            "type": "dart"
+          "name": "Flutter",
+          "request": "launch",
+          "type": "dart",
         }
-    ]
+      ]
 }

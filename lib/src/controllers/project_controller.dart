@@ -20,4 +20,6 @@ abstract class _ProjectControllerBase with Store {
   _ProjectControllerBase()
       : editName = TextEditingController(),
         editTitle = false;
+  @action
+  changeProject(ProjectModel p) => project = p;
 }

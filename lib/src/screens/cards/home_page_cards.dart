@@ -6,14 +6,14 @@ import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
 import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
-import 'package:minhasconta/src/screens/page_card.dart';
+import 'package:minhasconta/src/screens/cards/page_card.dart';
 import 'package:minhasconta/src/utils/compare.dart';
 import 'package:minhasconta/src/widgets/appbar_change_widget.dart';
 import 'dart:ui' as ui;
 import 'package:minhasconta/src/widgets/bubble_button_widget.dart';
-import 'package:minhasconta/src/widgets/card_widget.dart';
+import 'package:minhasconta/src/screens/cards/widgets/card_widget.dart';
 
-import 'package:minhasconta/src/widgets/editcard_widget.dart';
+import 'package:minhasconta/src/screens/cards/widgets/editcard_widget.dart';
 import 'package:minhasconta/src/widgets/payment_popup_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
