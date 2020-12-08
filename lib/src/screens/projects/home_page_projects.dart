@@ -48,41 +48,47 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                           title: 'Projetos',
                           back: () => null,
                           foward: () => null),
-                      Observer(
-                        builder: (_) => p.project != null
-                            ? PageProject()
-                            : Expanded(
-                                child: Container(
-                                child: Stack(
-                                    children: list
-                                        .map((e) {
-                                          return AnimatedPositioned(
-                                              duration:
-                                                  Duration(milliseconds: 200),
-                                              top: list.indexOf(e) *
-                                                  constraints.maxHeight *
-                                                  0.15,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  p.changeProject(e);
-                                                },
-                                                child: ProjectWidget(
-                                                  project: e,
-                                                  height: list.indexOf(e) == 0
-                                                      ? constraints.maxHeight *
-                                                          0.3
-                                                      : constraints.maxHeight *
-                                                          0.4,
-                                                  width: constraints.maxWidth,
-                                                  last: list.first == e,
-                                                ),
-                                              ));
-                                        })
-                                        .toList()
-                                        .reversed
-                                        .toList()),
-                              )),
-                      )
+                      Expanded(
+                          child: Container(
+                        child: Stack(
+                            children: list
+                                .map((e) {
+                                  return AnimatedPositioned(
+                                      duration: Duration(milliseconds: 200),
+                                      top: list.indexOf(e) *
+                                          constraints.maxHeight *
+                                          0.15,
+                                      child: InkWell(
+                                        onTap: () {
+                                          if (p.project == null)
+                                            p.changeProject(e);
+                                        },
+                                        child: Observer(
+                                          builder: (_) => AnimatedOpacity(
+                                            opacity: p.project == null
+                                                ? 1.0
+                                                : e == p.project
+                                                    ? 1.0
+                                                    : 0.0,
+                                            duration: Duration(seconds: 1),
+                                            child: ProjectWidget(
+                                              project: e,
+                                              wave: e == p.project,
+                                              constraint: constraints,
+                                              height: list.indexOf(e) == 0
+                                                  ? constraints.maxHeight * 0.3
+                                                  : constraints.maxHeight * 0.4,
+                                              width: constraints.maxWidth,
+                                              last: list.first == e,
+                                            ),
+                                          ),
+                                        ),
+                                      ));
+                                })
+                                .toList()
+                                .reversed
+                                .toList()),
+                      )),
                     ],
                   ),
                 )));

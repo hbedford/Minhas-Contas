@@ -8,12 +8,14 @@ class ProjectWidget extends StatefulWidget {
   /* 
   final BoxConstraints constraints; */
   final double height;
+  final BoxConstraints constraint;
   final double width;
   final bool last;
 
   ProjectWidget(
       {this.project /* ,this.constraints */,
       this.height,
+      this.constraint,
       this.width,
       this.wave = false,
       this.last = false});
@@ -45,16 +47,20 @@ class _ProjectWidgetState extends State<ProjectWidget>
     return Material(
       type: MaterialType.transparency,
       color: Colors.transparent,
-      child: SizedBox(
-        height: widget.height,
+      child: AnimatedContainer(
+        duration: Duration(seconds: 2),
+        height: widget.wave ? widget.constraint.maxHeight * 0.8 : widget.height,
         /* list.indexOf(e) == 0
                                           ? constraints.maxHeight * 0.4
                                           : constraints.maxHeight * 0.4, */
         width: widget.width,
         child: Stack(
           children: [
-            SizedBox(
-              height: widget.height,
+            AnimatedContainer(
+              duration: Duration(seconds: 2),
+              height: widget.wave
+                  ? widget.constraint.maxHeight * 0.8
+                  : widget.height,
               width: widget.width,
               child: ClipPath(
                 clipper: ProjectClipper(wave: animation.value),
