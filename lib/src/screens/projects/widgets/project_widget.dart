@@ -32,7 +32,7 @@ class _ProjectWidgetState extends State<ProjectWidget>
   void initState() {
     super.initState();
     controller =
-        AnimationController(duration: Duration(seconds: 4), vsync: this);
+        AnimationController(duration: Duration(seconds: 1), vsync: this);
     animation = Tween<double>(begin: 0, end: 1).animate(controller)
       ..addListener(() {
         setState(() {});
@@ -48,7 +48,7 @@ class _ProjectWidgetState extends State<ProjectWidget>
       type: MaterialType.transparency,
       color: Colors.transparent,
       child: AnimatedContainer(
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
         height: widget.wave ? widget.constraint.maxHeight * 0.8 : widget.height,
         /* list.indexOf(e) == 0
                                           ? constraints.maxHeight * 0.4
@@ -57,7 +57,7 @@ class _ProjectWidgetState extends State<ProjectWidget>
         child: Stack(
           children: [
             AnimatedContainer(
-              duration: Duration(seconds: 2),
+              duration: Duration(seconds: 1),
               height: widget.wave
                   ? widget.constraint.maxHeight * 0.8
                   : widget.height,
@@ -84,7 +84,7 @@ class _ProjectWidgetState extends State<ProjectWidget>
                       .copyWith(color: Colors.white),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
