@@ -20,18 +20,24 @@ class _HomePageProjectsState extends State<HomePageProjects> {
     ProjectModel(
         id: 0,
         name: 'Pintura do predio/escritório',
+        color: Colors.blue,
+        icon: Icon(Icons.format_paint),
         image:
             'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
     ProjectModel(
         id: 1,
         name: 'Monitor para o RH',
+        color: Colors.yellow,
+        icon: Icon(Icons.monitor),
         image:
             'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
     ProjectModel(
         id: 2,
         name: 'Viajem no fim de ano',
+        color: Colors.green,
+        icon: Icon(Icons.card_travel),
         image:
-            'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
+            "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1308&q=80"),
   ];
   @override
   Widget build(BuildContext context) {

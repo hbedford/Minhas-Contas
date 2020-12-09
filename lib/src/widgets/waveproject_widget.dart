@@ -63,3 +63,19 @@ class ProjectClipper extends CustomClipper<Path> {
     return true;
   }
 }
+
+class WaveProjectPaint extends CustomPainter {
+  CustomClipper clipper;
+  WaveProjectPaint({this.clipper});
+  @override
+  void paint(Canvas canvas, Size size) {
+    var clipRect = clipper.getClip(size).shift(Offset(0, 0));
+    canvas.drawShadow(clipRect, Colors.black, 10.0, true);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return true;
+  }
+}

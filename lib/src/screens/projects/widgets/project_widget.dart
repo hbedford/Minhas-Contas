@@ -62,29 +62,68 @@ class _ProjectWidgetState extends State<ProjectWidget>
                   ? widget.constraint.maxHeight * 0.8
                   : widget.height,
               width: widget.width,
-              child: ClipPath(
-                clipper: ProjectClipper(wave: animation.value),
-                child: Image.network(
-                  widget.project.image,
-                  colorBlendMode: BlendMode.darken,
-                  color: Colors.black26.withOpacity(0.5),
-                  /* filterQuality: FilterQuality.high, */
-                  fit: BoxFit.cover,
+              child: CustomPaint(
+                painter: WaveProjectPaint(
+                    clipper: ProjectClipper(wave: animation.value)),
+                child: ClipPath(
+                  clipper: ProjectClipper(wave: animation.value),
+                  child: widget.project.image == null
+                      ? Container(
+                          color: widget.project.color,
+                        )
+                      : Image.network(
+                          widget.project.image,
+                          colorBlendMode: BlendMode.darken,
+                          color: Colors.black26.withOpacity(0.5),
+                          filterQuality: FilterQuality.high,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
-            SizedBox(
-              height: widget.last ? widget.height / 2 : widget.height,
-              child: Center(
-                child: Text(
-                  widget.project.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(color: Colors.white),
-                ),
-              ),
-            ),
+            Container(
+              height: widget.constraint.maxHeight,
+              width: widget.constraint.maxWidth,
+              child: AnimatedCrossFade(
+                  firstChild: SizedBox(
+                    height: widget.last ? widget.height / 2 : widget.height,
+                    child: Center(
+                      child: Text(
+                        widget.project.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  secondChild: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              icon: Icon(
+                                Icons.more_horiz,
+                                color: Colors.white,
+                                size: 40,
+                              ),
+                              onPressed: null)
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(widget.project.name),
+                          widget.project.icon,
+                        ],
+                      )
+                    ],
+                  ),
+                  crossFadeState: !widget.wave
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: Duration(milliseconds: 200)),
+            )
           ],
         ),
       ),
