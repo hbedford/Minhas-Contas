@@ -24,6 +24,8 @@ abstract class _ProjectModelBase with Store {
   @observable
   CategoryModel category;
   @observable
+  ObservableList categories = [].asObservable();
+  @observable
   Icon icon;
   @observable
   String image;
@@ -40,6 +42,7 @@ abstract class _ProjectModelBase with Store {
       this.icon,
       this.spendingExpectation,
       this.category,
+      this.categories,
       this.image});
   @action
   changeName(String n) => name = n;
@@ -57,6 +60,8 @@ abstract class _ProjectModelBase with Store {
   changeColor(Color c) => color = c;
   @action
   changeCategory(CategoryModel c) => category = c;
+  @action
+  changeCategories(ObservableList l) => categories = l;
   @action
   addExpense(PaymentModel p) => expenses.add(p);
 }

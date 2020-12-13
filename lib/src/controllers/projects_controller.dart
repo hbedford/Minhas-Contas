@@ -16,4 +16,6 @@ abstract class _ProjectsControllerBase with Store {
   addProject(ProjectModel p) => projects.add(p);
   @action
   removeProject(ProjectModel p) => projects.remove(p);
+  @action
+  changeProjects(ObservableList l) => projects = l;
 }

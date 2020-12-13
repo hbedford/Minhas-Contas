@@ -14,8 +14,11 @@ abstract class _CategoryModelBase with Store {
   @observable
   Color color;
   @observable
+  double percent;
+  @observable
   ObservableList subCategories = [].asObservable();
-  _CategoryModelBase({this.id, this.name, this.payments, this.color});
+  _CategoryModelBase(
+      {this.id, this.name, this.payments, this.color, this.percent = 0.0});
   _CategoryModelBase.fromMap(Map m)
       : this.name = m['name'],
         this.id = m['id'],
@@ -28,6 +31,8 @@ abstract class _CategoryModelBase with Store {
     print(color.value.toString());
   }
 
+  @action
+  changePercent(double p) => percent = p;
   @action
   changeName(String n) => name = n;
   @action

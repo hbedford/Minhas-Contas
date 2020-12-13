@@ -97,27 +97,112 @@ class _ProjectWidgetState extends State<ProjectWidget>
                       ),
                     ),
                   ),
-                  secondChild: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.more_horiz,
-                                color: Colors.white,
-                                size: 40,
+                  secondChild: LayoutBuilder(
+                    builder: (context, constraint) => Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.more_horiz,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                                onPressed: null)
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.project.name,
+                            ),
+                            widget.project.icon,
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: constraint.maxWidth * 0.1),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Gastos até agora',
+                                  )
+                                ],
                               ),
-                              onPressed: null)
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(widget.project.name),
-                          widget.project.icon,
-                        ],
-                      )
-                    ],
+                              Column(
+                                children: [
+                                  {
+                                    'title': 'Descrição de gasto',
+                                    'value': 'R\$50,99'
+                                  },
+                                  {
+                                    'title': 'Descrição de gasto',
+                                    'value': 'R\$50,99'
+                                  },
+                                  {
+                                    'title': 'Descrição de gasto',
+                                    'value': 'R\$50,99'
+                                  },
+                                  {
+                                    'title': 'Descrição de gasto',
+                                    'value': 'R\$50,99'
+                                  }
+                                ]
+                                    .map((e) => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              e['title'],
+                                            ),
+                                            Text(
+                                              e['value'],
+                                            )
+                                          ],
+                                        ))
+                                    .toList(),
+                              ),
+                              FlatButton(
+                                  onPressed: () => null,
+                                  child: Text('ver mais')),
+                              Container(
+                                child: Divider(),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: constraint.maxWidth * 0.2),
+                              ),
+                              Text('Valor total do projeto até agora...'),
+                              Column(
+                                children: widget.project.categories
+                                    .map(
+                                      (e) => Row(
+                                        children: [
+                                          Text(e.name),
+                                          Container(
+                                            height:
+                                                constraint.maxHeight * 0.025,
+                                            width: (constraint.maxWidth * 0.8) *
+                                                ((e.percent) / 100),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                color: Colors.blue),
+                                          ),
+                                          Text('R\$' + e.value),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   crossFadeState: !widget.wave
                       ? CrossFadeState.showFirst

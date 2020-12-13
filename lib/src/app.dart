@@ -45,24 +45,28 @@ class App extends StatelessWidget {
         accentColor: Colors.white,
         bottomAppBarColor: menuPurple,
         backgroundColor: Color(0xffA2A0F2),
+        iconTheme: IconThemeData(color: Colors.white),
         textTheme: TextTheme(
-            subtitle1: TextStyle(
-              color: Colors.grey[500],
-            ),
-            subtitle2:
-                TextStyle(color: accentPurple, fontWeight: FontWeight.w600),
-            headline1: TextStyle(
-                color: menuPurple, fontSize: 26, fontWeight: FontWeight.w700),
-            headline6: TextStyle(
-                color: menuPurple, fontWeight: FontWeight.w700, fontSize: 18),
-            button: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
-            headline2: TextStyle(
-                color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
-            headline3: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-            )),
+          subtitle1: TextStyle(
+            color: Colors.grey[500],
+          ),
+          subtitle2:
+              TextStyle(color: accentPurple, fontWeight: FontWeight.w600),
+          headline1: TextStyle(
+              color: menuPurple, fontSize: 26, fontWeight: FontWeight.w700),
+          headline6: TextStyle(
+              color: menuPurple, fontWeight: FontWeight.w700, fontSize: 18),
+          button: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          headline2: TextStyle(
+              color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+          headline3: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+          ),
+          bodyText1: TextStyle(color: Colors.white),
+          bodyText2: TextStyle(color: Colors.white),
+        ),
         primaryTextTheme: TextTheme(
             headline6: TextStyle(color: menuPurple),
             button: TextStyle(
