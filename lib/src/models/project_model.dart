@@ -26,6 +26,8 @@ abstract class _ProjectModelBase with Store {
   @observable
   ObservableList categories = [].asObservable();
   @observable
+  ObservableList payments = [].asObservable();
+  @observable
   Icon icon;
   @observable
   String image;
@@ -39,6 +41,7 @@ abstract class _ProjectModelBase with Store {
       this.initialDate,
       this.endDate,
       this.expenses,
+      this.payments,
       this.icon,
       this.spendingExpectation,
       this.category,

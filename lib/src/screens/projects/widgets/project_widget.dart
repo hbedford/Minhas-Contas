@@ -56,154 +56,165 @@ class _ProjectWidgetState extends State<ProjectWidget>
         width: widget.width,
         child: Stack(
           children: [
-            AnimatedContainer(
-              duration: Duration(seconds: 1),
-              height: widget.wave
-                  ? widget.constraint.maxHeight * 0.8
-                  : widget.height,
-              width: widget.width,
-              child: CustomPaint(
-                painter: WaveProjectPaint(
-                    clipper: ProjectClipper(wave: animation.value)),
-                child: ClipPath(
-                  clipper: ProjectClipper(wave: animation.value),
-                  child: widget.project.image == null
-                      ? Container(
-                          color: widget.project.color,
-                        )
-                      : Image.network(
-                          widget.project.image,
-                          colorBlendMode: BlendMode.darken,
-                          color: Colors.black26.withOpacity(0.5),
-                          filterQuality: FilterQuality.high,
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
-            ),
+            widget.project == null
+                ? Container(
+                    color: Colors.grey,
+                    height: widget.constraint.maxHeight,
+                    width: widget.constraint.maxWidth,
+                  )
+                : AnimatedContainer(
+                    duration: Duration(seconds: 1),
+                    height: widget.wave
+                        ? widget.constraint.maxHeight * 0.8
+                        : widget.height,
+                    width: widget.width,
+                    child: CustomPaint(
+                      painter: WaveProjectPaint(
+                          clipper: ProjectClipper(wave: animation.value)),
+                      child: ClipPath(
+                        clipper: ProjectClipper(wave: animation.value),
+                        child: widget.project.image == null
+                            ? Container(
+                                color: widget.project.color,
+                              )
+                            : Image.network(
+                                widget.project.image,
+                                colorBlendMode: BlendMode.darken,
+                                color: Colors.black26.withOpacity(0.5),
+                                filterQuality: FilterQuality.high,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                  ),
             Container(
               height: widget.constraint.maxHeight,
               width: widget.constraint.maxWidth,
               child: AnimatedCrossFade(
                   firstChild: SizedBox(
                     height: widget.last ? widget.height / 2 : widget.height,
-                    child: Center(
-                      child: Text(
-                        widget.project.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  secondChild: LayoutBuilder(
-                    builder: (context, constraint) => Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.more_horiz,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                                onPressed: null)
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              widget.project.name,
+                    width: widget.width,
+                    child: widget.project == null
+                        ? Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: widget.height * 0.2),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Adicionar Projeto'),
+                                Icon(Icons.add),
+                              ],
                             ),
-                            widget.project.icon,
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: constraint.maxWidth * 0.1),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
+                          )
+                        : Center(
+                            child: Text(
+                              widget.project.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                  ),
+                  secondChild: widget.project == null ||
+                          widget.project.id == null
+                      ? Container()
+                      : Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.more_horiz,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                    onPressed: null)
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.project.name,
+                                ),
+                                widget.project.icon,
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: widget.constraint.maxWidth * 0.1),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Text(
-                                    'Gastos até agora',
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Gastos até agora',
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    children: widget.project.payments
+                                        .map((e) => Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  e.name,
+                                                ),
+                                                Text(
+                                                  e.value.toString() ?? '',
+                                                )
+                                              ],
+                                            ))
+                                        .toList(),
+                                  ),
+                                  FlatButton(
+                                      onPressed: () => null,
+                                      child: Text('ver mais')),
+                                  Container(
+                                    child: Divider(),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            widget.constraint.maxWidth * 0.2),
+                                  ),
+                                  Text('Valor total do projeto até agora...'),
+                                  Column(
+                                    children: widget.project.categories
+                                        .map(
+                                          (e) => Row(
+                                            children: [
+                                              Text(e.name),
+                                              Container(
+                                                height: widget
+                                                        .constraint.maxHeight *
+                                                    0.025,
+                                                width: (widget.constraint
+                                                            .maxWidth *
+                                                        0.8) *
+                                                    ((e.percent) / 100),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: Colors.blue),
+                                              ),
+                                              Text('R\$' +
+                                                  (e.total.toString() ?? '')),
+                                            ],
+                                          ),
+                                        )
+                                        .toList(),
                                   )
                                 ],
                               ),
-                              Column(
-                                children: [
-                                  {
-                                    'title': 'Descrição de gasto',
-                                    'value': 'R\$50,99'
-                                  },
-                                  {
-                                    'title': 'Descrição de gasto',
-                                    'value': 'R\$50,99'
-                                  },
-                                  {
-                                    'title': 'Descrição de gasto',
-                                    'value': 'R\$50,99'
-                                  },
-                                  {
-                                    'title': 'Descrição de gasto',
-                                    'value': 'R\$50,99'
-                                  }
-                                ]
-                                    .map((e) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              e['title'],
-                                            ),
-                                            Text(
-                                              e['value'],
-                                            )
-                                          ],
-                                        ))
-                                    .toList(),
-                              ),
-                              FlatButton(
-                                  onPressed: () => null,
-                                  child: Text('ver mais')),
-                              Container(
-                                child: Divider(),
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: constraint.maxWidth * 0.2),
-                              ),
-                              Text('Valor total do projeto até agora...'),
-                              Column(
-                                children: widget.project.categories
-                                    .map(
-                                      (e) => Row(
-                                        children: [
-                                          Text(e.name),
-                                          Container(
-                                            height:
-                                                constraint.maxHeight * 0.025,
-                                            width: (constraint.maxWidth * 0.8) *
-                                                ((e.percent) / 100),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Colors.blue),
-                                          ),
-                                          Text('R\$' + e.value),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                            )
+                          ],
+                        ),
                   crossFadeState: !widget.wave
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
