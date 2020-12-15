@@ -2,8 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('testando', () {
-    for (double i = 0; i < 10; i++) {
-      print(i + 0.7);
+    int t = 10 * 1;
+    for (int i = 0; i < 10; i++) {
+      t -= 10;
+      print(i.toString() + ' ' + t.toString());
     }
   });
 }

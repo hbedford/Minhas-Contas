@@ -130,6 +130,66 @@ mixin _$ProjectModel on _ProjectModelBase, Store {
     });
   }
 
+  final _$categoriesAtom = Atom(name: '_ProjectModelBase.categories');
+
+  @override
+  ObservableList<dynamic> get categories {
+    _$categoriesAtom.reportRead();
+    return super.categories;
+  }
+
+  @override
+  set categories(ObservableList<dynamic> value) {
+    _$categoriesAtom.reportWrite(value, super.categories, () {
+      super.categories = value;
+    });
+  }
+
+  final _$paymentsAtom = Atom(name: '_ProjectModelBase.payments');
+
+  @override
+  ObservableList<dynamic> get payments {
+    _$paymentsAtom.reportRead();
+    return super.payments;
+  }
+
+  @override
+  set payments(ObservableList<dynamic> value) {
+    _$paymentsAtom.reportWrite(value, super.payments, () {
+      super.payments = value;
+    });
+  }
+
+  final _$iconAtom = Atom(name: '_ProjectModelBase.icon');
+
+  @override
+  Icon get icon {
+    _$iconAtom.reportRead();
+    return super.icon;
+  }
+
+  @override
+  set icon(Icon value) {
+    _$iconAtom.reportWrite(value, super.icon, () {
+      super.icon = value;
+    });
+  }
+
+  final _$imageAtom = Atom(name: '_ProjectModelBase.image');
+
+  @override
+  String get image {
+    _$imageAtom.reportRead();
+    return super.image;
+  }
+
+  @override
+  set image(String value) {
+    _$imageAtom.reportWrite(value, super.image, () {
+      super.image = value;
+    });
+  }
+
   final _$expensesAtom = Atom(name: '_ProjectModelBase.expenses');
 
   @override
@@ -154,6 +214,17 @@ mixin _$ProjectModel on _ProjectModelBase, Store {
         name: '_ProjectModelBase.changeName');
     try {
       return super.changeName(n);
+    } finally {
+      _$_ProjectModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeImage(String i) {
+    final _$actionInfo = _$_ProjectModelBaseActionController.startAction(
+        name: '_ProjectModelBase.changeImage');
+    try {
+      return super.changeImage(i);
     } finally {
       _$_ProjectModelBaseActionController.endAction(_$actionInfo);
     }
@@ -226,6 +297,17 @@ mixin _$ProjectModel on _ProjectModelBase, Store {
   }
 
   @override
+  dynamic changeCategories(ObservableList<dynamic> l) {
+    final _$actionInfo = _$_ProjectModelBaseActionController.startAction(
+        name: '_ProjectModelBase.changeCategories');
+    try {
+      return super.changeCategories(l);
+    } finally {
+      _$_ProjectModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic addExpense(PaymentModel p) {
     final _$actionInfo = _$_ProjectModelBaseActionController.startAction(
         name: '_ProjectModelBase.addExpense');
@@ -247,6 +329,10 @@ endDate: ${endDate},
 spendingExpectation: ${spendingExpectation},
 color: ${color},
 category: ${category},
+categories: ${categories},
+payments: ${payments},
+icon: ${icon},
+image: ${image},
 expenses: ${expenses}
     ''';
   }

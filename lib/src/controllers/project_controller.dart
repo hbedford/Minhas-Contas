@@ -22,4 +22,8 @@ abstract class _ProjectControllerBase with Store {
         editTitle = false;
   @action
   changeProject(ProjectModel p) => project = p;
+  @action
+  newProject() {
+    changeProject(ProjectModel(color: Colors.grey, name: 'Novo projeto'));
+  }
 }

@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/card_controller.dart';
 import 'package:minhasconta/src/controllers/cards_controller.dart';
 import 'package:minhasconta/src/controllers/payment_controller.dart';
-import 'package:minhasconta/src/db/models/payment_db_model.dart';
 import 'package:minhasconta/src/models/card_model.dart';
 import 'package:minhasconta/src/screens/cards/page_card.dart';
 import 'package:minhasconta/src/utils/compare.dart';
@@ -101,19 +100,7 @@ class _HomePageCardsState extends State<HomePageCards> {
           ),
         ),
       );
-  /* appBar(BoxConstraints constraints) => AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        child: Center(
-          child: Text(
-            'DASHBOARD',
-            style:
-                TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w700),
-          ),
-        ),
-        height: WidgetsBinding.instance.window.viewInsets.bottom == 0
-            ? constraints.maxHeight * 0.08
-            : 0,
-      ); */
+
   title(BoxConstraints constraints) => Container(
       height: constraints.maxHeight *
           0.05 /*  +
@@ -146,33 +133,21 @@ class _HomePageCardsState extends State<HomePageCards> {
       flex: 1,
       child: LayoutBuilder(
           builder: (context, constraints) => Observer(
-              builder: (_) => cc.cForList.length == 1 || cc.editCard != null
-                  ? Container(
-                      width: constraints.maxWidth,
-                      margin: EdgeInsets.symmetric(
-                          vertical: constraints.maxHeight * 0.02,
-                          horizontal: constraints.maxWidth * 0.1),
-                      child: Observer(
-                        builder: (_) => CardWidget(
-                          card: cc.editCard != null
-                              ? cc.editCard
-                              : cc.cForList.first,
-                          f: () => cc.addNewCard(),
-                          title: 'Novo cartão',
-                          editing: true,
-                        ),
-                      ))
-                  : SizedBox(
-                      height: constraints.maxHeight * 0.3,
-                      width: constraints.maxWidth,
-                      child: Stack(
-                          children: cc.cForList
-                              .map<Widget>((e) =>
-                                  card(cc.cForList.indexOf(e), constraints, e))
-                              .toList()
-                              .reversed
-                              .toList()),
-                    ))));
+              builder: (_) => cc.editCard != null
+                  ? editCard(constraints)
+                  : cc.cForList.length == 1
+                      ? newCard(constraints)
+                      : SizedBox(
+                          height: constraints.maxHeight * 0.3,
+                          width: constraints.maxWidth,
+                          child: Stack(
+                              children: cc.cForList
+                                  .map<Widget>((e) => card(
+                                      cc.cForList.indexOf(e), constraints, e))
+                                  .toList()
+                                  .reversed
+                                  .toList()),
+                        ))));
   cardInfos(BuildContext ctxt) => Expanded(
         flex: 2,
         child: LayoutBuilder(
@@ -365,6 +340,30 @@ class _HomePageCardsState extends State<HomePageCards> {
               ),
             ],
           ),
+        ),
+      );
+  newCard(BoxConstraints constraints) => Container(
+        width: constraints.maxWidth,
+        margin: EdgeInsets.symmetric(
+            vertical: constraints.maxHeight * 0.02,
+            horizontal: constraints.maxWidth * 0.1),
+        child: CardWidget(
+          card: CardModel.addNew(),
+          f: () => cc.addNewCard(),
+          title: 'Novo cartão',
+          editing: true,
+        ),
+      );
+  editCard(BoxConstraints constraints) => Container(
+        width: constraints.maxWidth,
+        margin: EdgeInsets.symmetric(
+            vertical: constraints.maxHeight * 0.02,
+            horizontal: constraints.maxWidth * 0.1),
+        child: CardWidget(
+          card: cc.editCard,
+          f: () => null,
+          title: '',
+          editing: true,
         ),
       );
   paymentWidget(BoxConstraints constraint, String title, String type,

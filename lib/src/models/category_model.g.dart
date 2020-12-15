@@ -92,6 +92,21 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
     });
   }
 
+  final _$percentAtom = Atom(name: '_CategoryModelBase.percent');
+
+  @override
+  double get percent {
+    _$percentAtom.reportRead();
+    return super.percent;
+  }
+
+  @override
+  set percent(double value) {
+    _$percentAtom.reportWrite(value, super.percent, () {
+      super.percent = value;
+    });
+  }
+
   final _$subCategoriesAtom = Atom(name: '_CategoryModelBase.subCategories');
 
   @override
@@ -133,6 +148,17 @@ mixin _$CategoryModel on _CategoryModelBase, Store {
   }
 
   @override
+  dynamic changePercent(double p) {
+    final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
+        name: '_CategoryModelBase.changePercent');
+    try {
+      return super.changePercent(p);
+    } finally {
+      _$_CategoryModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeName(String n) {
     final _$actionInfo = _$_CategoryModelBaseActionController.startAction(
         name: '_CategoryModelBase.changeName');
@@ -161,6 +187,7 @@ id: ${id},
 name: ${name},
 payments: ${payments},
 color: ${color},
+percent: ${percent},
 subCategories: ${subCategories},
 total: ${total},
 registerToMapCategory: ${registerToMapCategory},

@@ -10,6 +10,9 @@ import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/db/database.dart';
 import 'package:minhasconta/src/models/card_model.dart';
+import 'package:minhasconta/src/models/category_model.dart';
+import 'package:minhasconta/src/models/payment_model.dart';
+import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/models/user_model.dart';
 import 'package:mobx/mobx.dart';
 import 'src/app.dart';
@@ -30,8 +33,60 @@ void main() async {
   ] */
       ));
   getIt.registerSingleton<ProjectController>(ProjectController());
-  getIt.registerSingleton<ProjectsController>(
-      ProjectsController(projects: [].asObservable()));
+  getIt.registerSingleton<ProjectsController>(ProjectsController(
+      projects: [
+    ProjectModel(
+        id: 0,
+        name: 'Pintura do predio/escritório',
+        color: Colors.blue,
+        icon: Icon(
+          Icons.format_paint,
+        ),
+        payments: [PaymentModel(value: 20.00, name: 'Tinta')].asObservable(),
+        categories: [
+          CategoryModel(
+              name: 'Material',
+              percent: 20,
+              payments: ObservableList.of(
+                  [PaymentModel(name: 'Arroz', value: 20.00)]))
+        ].asObservable(),
+        image:
+            'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
+    ProjectModel(
+        id: 1,
+        name: 'Monitor para o RH',
+        color: Colors.yellow,
+        payments: [].asObservable(),
+        icon: Icon(
+          Icons.monitor,
+        ),
+        categories: [
+          CategoryModel(
+              name: 'Material',
+              percent: 20,
+              payments: ObservableList.of(
+                  [PaymentModel(name: 'Arroz', value: 20.00)]))
+        ].asObservable(),
+        image:
+            'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
+    ProjectModel(
+        id: 2,
+        name: 'Viajem no fim de ano',
+        color: Colors.green,
+        payments: [].asObservable(),
+        icon: Icon(
+          Icons.card_travel,
+        ),
+        categories: [
+          CategoryModel(
+              name: 'Material',
+              percent: 20,
+              payments: ObservableList.of(
+                  [PaymentModel(name: 'Arroz', value: 20.00)]))
+        ].asObservable(),
+        image:
+            "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1308&q=80"),
+  ].asObservable()));
   getIt.registerSingleton<CardsController>(
     CardsController(
       card: CardModel(),

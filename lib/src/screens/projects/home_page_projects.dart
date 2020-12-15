@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
@@ -17,53 +18,10 @@ class HomePageProjects extends StatefulWidget {
 class _HomePageProjectsState extends State<HomePageProjects> {
 /*   final p = GetIt.I.get<ProjectController>(); */
   final p = GetIt.I.get<ProjectsController>();
+  final pNew = GetIt.I.get<ProjectController>();
 
   @override
   Widget build(BuildContext context) {
-    ObservableList pList =
-        [PaymentModel(value: 20.00, name: 'Tinta')].asObservable();
-    ObservableList l = [
-      CategoryModel(
-          name: 'Material',
-          percent: 20,
-          payments:
-              ObservableList.of([PaymentModel(name: 'Arroz', value: 20.00)]))
-    ].asObservable();
-    p.changeProjects(ObservableList.of([
-      ProjectModel(
-          id: 0,
-          name: 'Pintura do predio/escritório',
-          color: Colors.blue,
-          icon: Icon(
-            Icons.format_paint,
-          ),
-          payments: pList,
-          categories: l,
-          image:
-              'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
-      ProjectModel(
-          id: 1,
-          name: 'Monitor para o RH',
-          color: Colors.yellow,
-          payments: [].asObservable(),
-          icon: Icon(
-            Icons.monitor,
-          ),
-          categories: l,
-          image:
-              'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
-      ProjectModel(
-          id: 2,
-          name: 'Viajem no fim de ano',
-          color: Colors.green,
-          payments: [].asObservable(),
-          icon: Icon(
-            Icons.card_travel,
-          ),
-          categories: l,
-          image:
-              "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1308&q=80"),
-    ]));
     /* timeDilation = 5.0; */
     return SafeArea(
         child: LayoutBuilder(
@@ -77,57 +35,95 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                           title: 'Projetos',
                           back: () => null,
                           foward: () => null),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: constraints.maxWidth * 0.6,
+                            child: Divider(
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Projetos em andamento',
+                            style: TextStyle(color: Colors.black26),
+                          )
+                        ],
+                      ),
                       Expanded(
                           child: Container(
-                        child: Stack(
-                            children: (p.projects.map((e) {
-                          return AnimatedPositioned(
-                              duration: Duration(milliseconds: 200),
-                              top: p.projects.indexOf(e) *
-                                  ((constraints.maxHeight * 0.3) * 0.55),
-                              child: InkWell(
-                                onTap: () {
-                                  if (p.project == null) p.changeProject(e);
-                                },
-                                child: Observer(
-                                  builder: (_) => AnimatedOpacity(
-                                    opacity: p.project == null
-                                        ? 1.0
-                                        : e == p.project
-                                            ? 1.0
-                                            : 0.0,
-                                    duration: Duration(seconds: 1),
-                                    child: ProjectWidget(
-                                      project: e,
-                                      wave: e == p.project,
-                                      constraint: constraints,
-                                      height: p.projects.indexOf(e) == 0
-                                          ? constraints.maxHeight * 0.3
-                                          : constraints.maxHeight * 0.4,
-                                      width: constraints.maxWidth,
-                                      last: p.projects.first == e,
-                                    ),
-                                  ),
-                                ),
-                              ));
-                        }).toList()
-                                  ..add(AnimatedPositioned(
-                                      top: (p.projects.length) *
-                                          ((constraints.maxHeight * 0.3) *
-                                              0.55),
-                                      child: InkWell(
-                                        child: ProjectWidget(
-                                          project: null,
-                                          wave: false,
-                                          constraint: constraints,
-                                          height: constraints.maxHeight * 0.3,
-                                          width: constraints.maxWidth,
-                                          last: false,
+                        child: Observer(
+                          builder: (_) => Stack(
+                              children: p.pForList
+                                  .map((e) {
+                                    int i = p.pForList.indexOf(e);
+                                    if (e != null)
+                                      return AnimatedPositioned(
+                                        left: pNew.project == null
+                                            ? 0
+                                            : -constraints.maxWidth,
+                                        duration: Duration(
+                                            milliseconds: p.durations[i] * 15),
+                                        top: i *
+                                            ((constraints.maxHeight * 0.3) *
+                                                0.55),
+                                        child: InkWell(
+                                          onTap: () {
+                                            /*  if (p.project == null) p.changeProject(e); */
+                                          },
+                                          child: Observer(
+                                            builder: (_) => AnimatedOpacity(
+                                              opacity: p.project == null
+                                                  ? 1.0
+                                                  : e == p.project
+                                                      ? 1.0
+                                                      : 0.0,
+                                              duration: Duration(seconds: 1),
+                                              child: ProjectWidget(
+                                                project: e,
+                                                wave: e == p.project,
+                                                constraint: constraints,
+                                                height: i == 0
+                                                    ? constraints.maxHeight *
+                                                        0.3
+                                                    : constraints.maxHeight *
+                                                        0.3,
+                                                width: constraints.maxWidth,
+                                                last: p.projects.first == e,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      duration: Duration(seconds: 2))))
-                                .reversed
-                                .toList()),
+                                      );
+                                    else
+                                      return AnimatedPositioned(
+                                          top: (p.pForList.length - 1) *
+                                              ((constraints.maxHeight * 0.3) *
+                                                  0.55),
+                                          child: InkWell(
+                                            onTap: () => pNew.project == null
+                                                ? pNew.newProject()
+                                                : pNew.changeProject(null),
+                                            child: ProjectWidget(
+                                              project: null,
+                                              wave: false,
+                                              constraint: constraints,
+                                              height:
+                                                  constraints.maxHeight * 0.2,
+                                              width: constraints.maxWidth,
+                                              last: false,
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 2));
+                                  })
+                                  .toList()
+                                  .reversed
+                                  .toList()),
+                        ),
                       )),
                     ],
                   ),

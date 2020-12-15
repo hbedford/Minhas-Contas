@@ -69,7 +69,7 @@ abstract class _CardModelBase with Store {
 
   // ignore: unused_element
   _CardModelBase.addNew()
-      : this.color = Colors.white,
+      : this.color = Colors.black26,
         this.removeOption = false,
         this.show = false;
   _CardModelBase.emptyCard()

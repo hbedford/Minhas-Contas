@@ -79,6 +79,13 @@ class _ProjectWidgetState extends State<ProjectWidget>
                               )
                             : Image.network(
                                 widget.project.image,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) =>
+                                        loadingProgress == null
+                                            ? child
+                                            : Container(
+                                                color: Colors.white,
+                                              ),
                                 colorBlendMode: BlendMode.darken,
                                 color: Colors.black26.withOpacity(0.5),
                                 filterQuality: FilterQuality.high,

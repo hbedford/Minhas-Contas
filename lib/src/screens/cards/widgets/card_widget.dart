@@ -9,13 +9,14 @@ class CardWidget extends StatelessWidget {
   final Function f;
   final String title;
   final bool editing;
-  final bool bottomSheet;
-  CardWidget(
-      {this.card,
-      this.f,
-      this.title = '',
-      this.editing = false,
-      this.bottomSheet = false});
+  /* final bool bottomSheet; */
+  CardWidget({
+    this.card,
+    this.f,
+    this.title = '',
+    this.editing = false,
+    /* this.bottomSheet = false */
+  });
   final c = GetIt.I.get<CardsController>();
   /* final TextEditingController remove = TextEditingController(); */
   @override
@@ -32,7 +33,9 @@ class CardWidget extends StatelessWidget {
                 vertical: constraints.maxHeight * 0.07),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: bottomSheet ? Colors.grey : card.color),
+                color: /*  bottomSheet */ card == null
+                    ? Colors.grey
+                    : card.color),
             child: card.name == null
                 ? InkWell(
                     onTap: f,
@@ -53,7 +56,9 @@ class CardWidget extends StatelessWidget {
                             children: [
                               Observer(
                                   builder: (_) => Text(
-                                      card.name.isEmpty ? 'Nome' : card.name,
+                                      card == null || card.name.isEmpty
+                                          ? 'Nome'
+                                          : card.name,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline2

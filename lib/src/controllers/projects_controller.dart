@@ -18,4 +18,21 @@ abstract class _ProjectsControllerBase with Store {
   removeProject(ProjectModel p) => projects.remove(p);
   @action
   changeProjects(ObservableList l) => projects = l;
+  @computed
+  List get pForList {
+    List l = projects.toList();
+    l.add(null);
+    return l;
+  }
+
+  @computed
+  List get durations {
+    List l = [];
+    int t = 1 * pForList.length;
+    for (int i = 0; i < pForList.length; i++) {
+      t -= 1;
+      l.add(t);
+    }
+    return l;
+  }
 }

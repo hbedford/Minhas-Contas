@@ -87,7 +87,12 @@ class _EditCardWidgetState extends State<EditCardWidget> {
           children: [
             Flexible(
                 child: margin(
-                    child: Text('Informações'), constraint: constraint, t: 3)),
+                    child: Text(
+                      'Informações',
+                      style: titleStyle.copyWith(color: Colors.black26),
+                    ),
+                    constraint: constraint,
+                    t: 3)),
             Expanded(
                 flex: 5,
                 child: Container(
@@ -242,6 +247,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                     title: Text('Debito', style: titleStyle),
                                     activeColor: Theme.of(context).primaryColor,
                                     value: cc.editCard.debit,
+                                    inactiveThumbColor: Colors.grey[400],
                                     onChanged: cc.editCard.changeDebit,
                                   )),
                           constraint: constraint,
@@ -266,6 +272,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                   style: titleStyle,
                                 ),
                                 value: cc.editCard.credit,
+                                inactiveThumbColor: Colors.grey[400],
                                 onChanged: cc.editCard.changeCredit),
                           ),
                           constraint: constraint,
@@ -309,7 +316,10 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                           'Número',
                           style: titleStyle,
                         ),
-                        Text((cc.editCard.numbers))
+                        Text(
+                          cc.editCard.numbers,
+                          style: titleStyle.copyWith(color: Colors.black26),
+                        )
                       ],
                     ),
                   ),
@@ -376,7 +386,8 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                           'Saldo',
                           style: titleStyle,
                         ),
-                        Text(('R\$ ' + cc.editCard.balance.toStringAsFixed(2)))
+                        Text(('R\$ ' + cc.editCard.balance.toStringAsFixed(2)),
+                            style: titleStyle.copyWith(color: Colors.black26))
                       ],
                     ),
                   ),
@@ -419,9 +430,11 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   flex(Widget child) =>
       Flexible(child: LayoutBuilder(builder: (context, constraint) => child));
   actualColor() => AnimatedCrossFade(
-        firstChild: Text('Cor:'),
+        firstChild:
+            Text('Cor:', style: titleStyle.copyWith(color: Colors.black26)),
         duration: Duration(milliseconds: 200),
-        secondChild: Text('Cor atual ->'),
+        secondChild: Text('Cor atual ->',
+            style: titleStyle.copyWith(color: Colors.black26)),
         reverseDuration: Duration(milliseconds: 200),
         crossFadeState:
             editColor ? CrossFadeState.showSecond : CrossFadeState.showFirst,
@@ -481,7 +494,9 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                               style: titleStyle,
                             ),
                             Text(
-                                'R\$ ' + (cc.editCard.limit.toStringAsFixed(2)))
+                                'R\$ ' + (cc.editCard.limit.toStringAsFixed(2)),
+                                style:
+                                    titleStyle.copyWith(color: Colors.black26))
                           ],
                         ),
                       ),
