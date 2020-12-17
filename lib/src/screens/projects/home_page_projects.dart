@@ -6,6 +6,7 @@ import 'package:minhasconta/src/controllers/projects_controller.dart';
 import 'package:minhasconta/src/models/category_model.dart';
 import 'package:minhasconta/src/models/payment_model.dart';
 import 'package:minhasconta/src/models/project_model.dart';
+import 'package:minhasconta/src/screens/projects/widgets/new_project_widget.dart';
 import 'package:minhasconta/src/screens/projects/widgets/project_widget.dart';
 import 'package:minhasconta/src/widgets/appbar_change_widget.dart';
 import 'package:mobx/mobx.dart';
@@ -67,7 +68,7 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                                             ? 0
                                             : -constraints.maxWidth,
                                         duration: Duration(
-                                            milliseconds: p.durations[i] * 15),
+                                            milliseconds: p.durations[i] * 100),
                                         top: i *
                                             ((constraints.maxHeight * 0.3) *
                                                 0.55),
@@ -93,7 +94,7 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                                                     : constraints.maxHeight *
                                                         0.3,
                                                 width: constraints.maxWidth,
-                                                last: p.projects.first == e,
+                                                first: p.projects.first == e,
                                               ),
                                             ),
                                           ),
@@ -101,24 +102,30 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                                       );
                                     else
                                       return AnimatedPositioned(
-                                          top: (p.pForList.length - 1) *
-                                              ((constraints.maxHeight * 0.3) *
-                                                  0.55),
+                                          top: pNew.project != null
+                                              ? 0
+                                              : (p.pForList.length - 1) *
+                                                  ((constraints.maxHeight *
+                                                          0.3) *
+                                                      0.55),
                                           child: InkWell(
                                             onTap: () => pNew.project == null
                                                 ? pNew.newProject()
                                                 : pNew.changeProject(null),
-                                            child: ProjectWidget(
-                                              project: null,
-                                              wave: false,
-                                              constraint: constraints,
-                                              height:
-                                                  constraints.maxHeight * 0.2,
-                                              width: constraints.maxWidth,
-                                              last: false,
+                                            child: Observer(
+                                              builder: (_) => NewProjectWidget(
+                                                project: pNew.project,
+                                                wave: pNew.project != null,
+                                                constraint: constraints,
+                                                height:
+                                                    constraints.maxHeight * 0.2,
+                                                width: constraints.maxWidth,
+                                                last: false,
+                                              ),
                                             ),
                                           ),
-                                          duration: Duration(seconds: 2));
+                                          duration:
+                                              Duration(milliseconds: 200));
                                   })
                                   .toList()
                                   .reversed

@@ -4,31 +4,27 @@ import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/widgets/waveproject_widget.dart';
 
-class ProjectWidget extends StatefulWidget {
+class NewProjectWidget extends StatefulWidget {
   final ProjectModel project;
   final bool wave;
-  final Duration duration;
-  /* 
-  final BoxConstraints constraints; */
   final double height;
   final BoxConstraints constraint;
   final double width;
-  final bool first;
+  final bool last;
 
-  ProjectWidget(
+  NewProjectWidget(
       {this.project /* ,this.constraints */,
       this.height,
       this.constraint,
       this.width,
-      this.duration,
       this.wave = false,
-      this.first = false});
+      this.last = false});
 
   @override
-  _ProjectWidgetState createState() => _ProjectWidgetState();
+  _NewProjectWidgetState createState() => _NewProjectWidgetState();
 }
 
-class _ProjectWidgetState extends State<ProjectWidget>
+class _NewProjectWidgetState extends State<NewProjectWidget>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
@@ -45,7 +41,6 @@ class _ProjectWidgetState extends State<ProjectWidget>
 
   @override
   Widget build(BuildContext context) {
-    final pNew = GetIt.I.get<ProjectController>();
     if (widget.wave) {
       controller.forward();
     }
@@ -53,12 +48,8 @@ class _ProjectWidgetState extends State<ProjectWidget>
       type: MaterialType.transparency,
       color: Colors.transparent,
       child: AnimatedContainer(
-        duration: widget.duration ?? Duration(seconds: 1),
-        color: widget.project != null
-            ? Colors.transparent
-            : widget.wave
-                ? pNew.project.color
-                : Colors.grey,
+        duration: Duration(milliseconds: 200),
+        color: widget.wave ? widget.project.color : Colors.grey,
         height: widget.wave ? widget.constraint.maxHeight * 0.8 : widget.height,
         /* list.indexOf(e) == 0
                                           ? constraints.maxHeight * 0.4
@@ -66,51 +57,46 @@ class _ProjectWidgetState extends State<ProjectWidget>
         width: widget.width,
         child: Stack(
           children: [
-            widget.project == null
-                ? Container(
-                    /* duration: widget.duration,
-                    color:widget.wave?: Colors.grey, */
-                    height: widget.constraint.maxHeight,
-                    width: widget.constraint.maxWidth,
-                  )
-                : AnimatedContainer(
-                    duration: Duration(seconds: 1),
-                    height: widget.wave
-                        ? widget.constraint.maxHeight * 0.8
-                        : widget.height,
-                    width: widget.width,
-                    child: CustomPaint(
-                      painter: WaveProjectPaint(
-                          clipper: ProjectClipper(wave: animation.value)),
-                      child: ClipPath(
-                        clipper: ProjectClipper(wave: animation.value),
-                        child: widget.project.image == null
-                            ? Container(
-                                color: widget.project.color,
-                              )
-                            : Image.network(
-                                widget.project.image,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) =>
-                                        loadingProgress == null
-                                            ? child
-                                            : Container(
-                                                color: Colors.white,
-                                              ),
-                                colorBlendMode: BlendMode.darken,
-                                color: Colors.black26.withOpacity(0.5),
-                                filterQuality: FilterQuality.high,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-                  ),
+            /* AnimatedContainer(
+              duration: Duration(seconds: 1),
+              height: widget.wave
+                  ? widget.constraint.maxHeight * 0.8
+                  : widget.height,
+              width: widget.width,
+              child: CustomPaint(
+                painter: WaveProjectPaint(
+                    clipper: ProjectClipper(wave: animation.value)),
+                child: ClipPath(
+                  clipper: ProjectClipper(wave: animation.value),
+                  child: widget.project == null
+                      ? Container(color: Colors.transparent)
+                      : widget.project.image == null
+                          ? Container(
+                              color: widget.project.color,
+                            )
+                          : Image.network(
+                              widget.project.image,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) =>
+                                      loadingProgress == null
+                                          ? child
+                                          : Container(
+                                              color: Colors.white,
+                                            ),
+                              colorBlendMode: BlendMode.darken,
+                              color: Colors.black26.withOpacity(0.5),
+                              filterQuality: FilterQuality.high,
+                              fit: BoxFit.cover,
+                            ),
+                ),
+              ),
+            ), */
             Container(
               height: widget.constraint.maxHeight,
               width: widget.constraint.maxWidth,
               child: AnimatedCrossFade(
                   firstChild: SizedBox(
-                    height: widget.first ? widget.height / 2 : widget.height,
+                    height: widget.last ? widget.height / 2 : widget.height,
                     width: widget.width,
                     child: widget.project == null
                         ? Container(
