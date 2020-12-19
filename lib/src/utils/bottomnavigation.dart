@@ -168,7 +168,7 @@ class NavCustomPainter extends CustomPainter {
         loc * size.width,
         size.height * 0.60,
         (loc + s * 0.50) * size.width,
-        size.height * 0.60,
+        size.height * 0.650,
       )
       ..cubicTo(
         (loc + s) * size.width,

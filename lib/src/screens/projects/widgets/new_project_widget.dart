@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/models/project_model.dart';
-import 'package:minhasconta/src/widgets/waveproject_widget.dart';
 
 class NewProjectWidget extends StatefulWidget {
   final ProjectModel project;
@@ -48,91 +45,49 @@ class _NewProjectWidgetState extends State<NewProjectWidget>
       type: MaterialType.transparency,
       color: Colors.transparent,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        color: widget.wave ? widget.project.color : Colors.grey,
-        height: widget.wave ? widget.constraint.maxHeight * 0.8 : widget.height,
-        /* list.indexOf(e) == 0
-                                          ? constraints.maxHeight * 0.4
-                                          : constraints.maxHeight * 0.4, */
-        width: widget.width,
-        child: Stack(
-          children: [
-            /* AnimatedContainer(
-              duration: Duration(seconds: 1),
-              height: widget.wave
-                  ? widget.constraint.maxHeight * 0.8
-                  : widget.height,
-              width: widget.width,
-              child: CustomPaint(
-                painter: WaveProjectPaint(
-                    clipper: ProjectClipper(wave: animation.value)),
-                child: ClipPath(
-                  clipper: ProjectClipper(wave: animation.value),
+          duration: Duration(milliseconds: 200),
+          color: widget.wave ? widget.project.color : Colors.grey,
+          height:
+              widget.wave ? widget.constraint.maxHeight * 0.8 : widget.height,
+          width: widget.width,
+          child: Container(
+            height: widget.constraint.maxHeight,
+            width: widget.constraint.maxWidth,
+            child: AnimatedCrossFade(
+                firstChild: SizedBox(
+                  height: widget.last ? widget.height / 2 : widget.height,
+                  width: widget.width,
                   child: widget.project == null
-                      ? Container(color: Colors.transparent)
-                      : widget.project.image == null
-                          ? Container(
-                              color: widget.project.color,
-                            )
-                          : Image.network(
-                              widget.project.image,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) =>
-                                      loadingProgress == null
-                                          ? child
-                                          : Container(
-                                              color: Colors.white,
-                                            ),
-                              colorBlendMode: BlendMode.darken,
-                              color: Colors.black26.withOpacity(0.5),
-                              filterQuality: FilterQuality.high,
-                              fit: BoxFit.cover,
-                            ),
-                ),
-              ),
-            ), */
-            Container(
-              height: widget.constraint.maxHeight,
-              width: widget.constraint.maxWidth,
-              child: AnimatedCrossFade(
-                  firstChild: SizedBox(
-                    height: widget.last ? widget.height / 2 : widget.height,
-                    width: widget.width,
-                    child: widget.project == null
-                        ? Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: widget.height * 0.2),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Adicionar Projeto'),
-                                Icon(Icons.add),
-                              ],
-                            ),
-                          )
-                        : Center(
-                            child: Text(
-                              widget.project.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .copyWith(color: Colors.white),
-                            ),
+                      ? Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: widget.height * 0.2),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Adicionar Projeto'),
+                              Icon(Icons.add),
+                            ],
                           ),
-                  ),
-                  secondChild:
-                      widget.project == null || widget.project.id == null
-                          ? newProject()
-                          : actualProject(),
-                  crossFadeState: !widget.wave
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: Duration(milliseconds: 200)),
-            )
-          ],
-        ),
-      ),
+                        )
+                      : Center(
+                          child: Text(
+                            widget.project.name,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                ),
+                secondChild: widget.project == null || widget.project.id == null
+                    ? newProject()
+                    : actualProject(),
+                crossFadeState: !widget.wave
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+                duration: Duration(milliseconds: 200)),
+          )),
     );
   }
 
