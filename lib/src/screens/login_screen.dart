@@ -224,7 +224,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.grey,
                     ),
                   ),
-                  Container(
+                  textField(
+                      controller: email,
+                      constraints: constraints,
+                      title: 'E-mail'),
+                  /* Container(
                       height: constraints.maxHeight * 0.23,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )),
                           )
                         ],
-                      )),
+                      )), */
                   textField(
                       obscure: true,
                       controller: password,
@@ -317,13 +321,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 margin: EdgeInsets.only(
                     left: constraints.maxWidth * 0.1,
                     bottom: constraints.maxHeight * 0.01),
-                child: Text(title)),
+                child: Text(
+                  title,
+                  style: TextStyle(color: Colors.grey[400]),
+                )),
             Container(
               height: constraints.maxHeight * 0.13,
               child: TextField(
                   obscureText: obscure,
                   controller: controller,
                   decoration: InputDecoration(
+                    hintStyle: TextStyle(color: Colors.grey),
                     border: new OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue),
                       borderRadius: const BorderRadius.all(

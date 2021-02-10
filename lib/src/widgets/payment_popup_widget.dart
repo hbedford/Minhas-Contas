@@ -180,7 +180,7 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                   if (Platform.isIOS) {
                     showDialog(
                         context: widget.context,
-                        child: DateOrTimePicker().datePickerIOS(
+                        builder: (context) => DateOrTimePicker().datePickerIOS(
                             constraint: widget.constraints,
                             context: widget.context,
                             first: DateTime.now().subtract(Duration(days: 30)),

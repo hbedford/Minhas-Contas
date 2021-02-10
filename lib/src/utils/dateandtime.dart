@@ -38,7 +38,7 @@ class DateOrTimePicker {
           return Theme(
             data: theme ?? Theme.of(context),
             child: child,
-            isMaterialAppTheme: false,
+            /* isMaterialAppTheme: false, */
           );
         },
         lastDate: last);
