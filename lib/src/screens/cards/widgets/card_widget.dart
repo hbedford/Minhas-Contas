@@ -26,7 +26,7 @@ class CardWidget extends StatelessWidget {
             height: constraints.maxHeight * 0.3,
             width: constraints.maxWidth * 0.8,
             padding: EdgeInsets.symmetric(
-                vertical: constraints.maxHeight * 0.05,
+                /*  vertical: constraints.maxHeight * 0.02, */
                 horizontal: constraints.maxWidth * 0.05),
             margin: EdgeInsets.symmetric(
                 horizontal: constraints.maxWidth * 0.01,
@@ -55,17 +55,21 @@ class CardWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Observer(
-                                  builder: (_) => Text(
-                                      card == null || card.name.isEmpty
-                                          ? 'Nome'
-                                          : card.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline2
-                                          .copyWith(fontSize: 32))),
+                                  builder: (_) => FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                            card == null || card.name.isEmpty
+                                                ? 'Nome'
+                                                : card.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline2
+                                                .copyWith(fontSize: 20)),
+                                      )),
                               Row(
                                 children: [
                                   IconButton(
+                                      iconSize: 20,
                                       color: Colors.white,
                                       icon: editing
                                           ? Icon(Icons.save)
@@ -76,6 +80,7 @@ class CardWidget extends StatelessWidget {
                                   Visibility(
                                     visible: editing && card.id == null,
                                     child: IconButton(
+                                        iconSize: 20,
                                         color: Colors.white,
                                         icon: Icon(Icons.close),
                                         onPressed: c.cancelCard
@@ -155,24 +160,6 @@ class CardWidget extends StatelessWidget {
                                       ),
                                     )
                                   ]),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Limite:',
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      'R\$ ${card.limit.toStringAsFixed(2)}',
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
-                                    ),
-                                  ),
-                                ],
-                              )
                             ],
                           ),
                         ),

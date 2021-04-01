@@ -356,9 +356,7 @@ class _HomePageCardsState extends State<HomePageCards> {
       );
   editCard(BoxConstraints constraints) => Container(
         width: constraints.maxWidth,
-        margin: EdgeInsets.symmetric(
-            vertical: constraints.maxHeight * 0.02,
-            horizontal: constraints.maxWidth * 0.1),
+        margin: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.1),
         child: CardWidget(
           card: cc.editCard,
           f: () => null,

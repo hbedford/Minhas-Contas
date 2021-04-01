@@ -145,7 +145,7 @@ class _NewProjectWidgetState extends State<NewProjectWidget>
                           ))
                       .toList(),
                 ),
-                FlatButton(onPressed: () => null, child: Text('ver mais')),
+                TextButton(onPressed: () => null, child: Text('ver mais')),
                 Container(
                   child: Divider(),
                   margin: EdgeInsets.symmetric(

@@ -3,13 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/controllers/projects_controller.dart';
-import 'package:minhasconta/src/models/category_model.dart';
-import 'package:minhasconta/src/models/payment_model.dart';
-import 'package:minhasconta/src/models/project_model.dart';
 import 'package:minhasconta/src/screens/projects/widgets/new_project_widget.dart';
 import 'package:minhasconta/src/screens/projects/widgets/project_widget.dart';
 import 'package:minhasconta/src/widgets/appbar_change_widget.dart';
-import 'package:mobx/mobx.dart';
 
 class HomePageProjects extends StatefulWidget {
   @override

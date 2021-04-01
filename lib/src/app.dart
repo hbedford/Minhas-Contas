@@ -45,6 +45,7 @@ class App extends StatelessWidget {
         accentColor: Colors.white,
         bottomAppBarColor: menuPurple,
         backgroundColor: Color(0xffA2A0F2),
+        inputDecorationTheme: InputDecorationTheme(border: InputBorder.none),
         iconTheme: IconThemeData(color: Colors.white),
         textTheme: TextTheme(
           subtitle1: TextStyle(

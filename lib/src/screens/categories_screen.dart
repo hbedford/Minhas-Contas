@@ -75,7 +75,9 @@ class _StepsCategoryState extends State<StepsCategory> {
         child: Observer(
             builder: (_) => c.step == 0
                 ? step0(context, constraints)
-                : c.step == 1 ? step1(context, constraints) : Container()),
+                : c.step == 1
+                    ? step1(context, constraints)
+                    : Container()),
       ),
     );
   }
@@ -91,11 +93,11 @@ class _StepsCategoryState extends State<StepsCategory> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => c.selectTypeStep(true),
                   child: Text('Categoria'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                     onPressed: c.categories.length > 0
                         ? () => c.selectTypeStep(false)
                         : null,
@@ -147,10 +149,10 @@ class _StepsCategoryState extends State<StepsCategory> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    RaisedButton(
+                    ElevatedButton(
                         onPressed: () => c.saveCategory(name.text, context),
                         child: Text('Salvar')),
-                    RaisedButton(
+                    ElevatedButton(
                         onPressed: () => c.cancelCategory(context),
                         child: Text('Cancelar'))
                   ],

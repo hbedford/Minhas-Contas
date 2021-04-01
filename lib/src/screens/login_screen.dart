@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: password,
                       constraints: constraints,
                       title: 'Senha'),
-                  RaisedButton(
+                  ElevatedButton(
                       onPressed: () {
                         c.changeUser(UserModel(
                             email: email.text, password: password.text));
@@ -269,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: Theme.of(context).primaryTextTheme.button,
                       )),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    FlatButton(
+                    TextButton(
                       onPressed: () => c.changeRemember(!c.remember),
                       child: Row(
                         children: [
@@ -333,7 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     hintStyle: TextStyle(color: Colors.grey),
                     border: new OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(30.0),
                       ),
@@ -381,8 +381,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: repeatPassword,
                 title: 'Confirmar senha',
                 constraints: constraint),
-            RaisedButton(
-              color: yellow,
+            ElevatedButton(
+              /* style: Theme.of(context).elevatedButtonTheme.style.copyWith(
+                    backgroundColor: ,
+                  ), */
               onPressed: () async {
                 if (await c.register(email.text, name.text, password.text,
                     repeatPassword.text, ctxt)) c.changeStep(1);
@@ -511,19 +513,19 @@ class _LoginScreenState extends State<LoginScreen> {
           Text('Selecione uma opção'),
           Column(
             children: [
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Esqueci minha senha!'),
                 onPressed: () => null,
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Esqueci meu E-mail de acesso!!'),
                 onPressed: () => null,
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Resgatar PIN!'),
                 onPressed: () => null,
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Mudei meu número de celular!'),
                 onPressed: () => null,
               ),
