@@ -50,7 +50,9 @@ class _PaymentPopUpWidgetState extends State<PaymentPopUpWidget>
                 ? widget.constraints.maxWidth
                 : widget.constraints.maxWidth * 0.05,
             child: Container(
-                height: widget.constraints.maxHeight * 0.25,
+                height: WidgetsBinding.instance.window.viewInsets.bottom > 0
+                    ? widget.constraints.maxHeight * 0.4
+                    : widget.constraints.maxHeight * 0.3,
                 width: widget.constraints.maxWidth * 0.95,
                 decoration: BoxDecoration(
                     color: c.card.color,

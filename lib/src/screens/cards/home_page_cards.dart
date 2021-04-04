@@ -108,27 +108,25 @@ class _HomePageCardsState extends State<HomePageCards> {
       ,
       width: constraints.maxWidth,
       child: LayoutBuilder(
-          builder: (context, constraint) => Column(
+        builder: (context, constraint) =>
+            /* Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AnimatedContainer(
-                      height:
-                          WidgetsBinding.instance.window.viewInsets.bottom == 0
-                              ? null
-                              : 0,
-                      duration: Duration(milliseconds: 200),
-                      child: margin(
-                          t: 0,
-                          child: Text(
-                            cc.editCard == null
-                                ? 'Meus cartões'
-                                : 'Editar cartão',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          constraint: constraint),
-                    ),
-                  ])));
+                  children: [ */
+            AnimatedContainer(
+          height:
+              WidgetsBinding.instance.window.viewInsets.bottom == 0 ? null : 0,
+          duration: Duration(milliseconds: 200),
+          child: margin(
+              t: 0,
+              child: Text(
+                cc.editCard == null ? 'Meus cartões' : 'Editar cartão',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              constraint: constraint),
+        ),
+        /*  ]) */
+      ));
   cardsWidget() => Expanded(
       flex: 1,
       child: LayoutBuilder(
@@ -419,7 +417,9 @@ class _HomePageCardsState extends State<HomePageCards> {
         curve: Curves.easeOut,
         duration: Duration(milliseconds: 200),
         child: Container(
-          height: h * 0.9,
+          height: WidgetsBinding.instance.window.viewInsets.bottom > 0
+              ? h * 1
+              : h * 0.9,
           width: w * 0.75,
           child: GestureDetector(
             onLongPress: () => cc.changeCardView(true),

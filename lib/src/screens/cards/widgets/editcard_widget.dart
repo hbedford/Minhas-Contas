@@ -46,9 +46,6 @@ class _EditCardWidgetState extends State<EditCardWidget> {
       initialText: '0000 0000 0000 0000',
       mask: '#### #### #### ####',
       filter: {"#": RegExp(r'[0-9]')});
-  /* MaskedTextController(
-    mask: '0000 0000 0000 0000',
-  ); */
   Duration duration = Duration(milliseconds: 200);
   dismissKeyboard(BuildContext context) {
     if (FocusScope.of(context).hasFocus) {
@@ -63,8 +60,6 @@ class _EditCardWidgetState extends State<EditCardWidget> {
       limit = MoneyMaskedTextController(
           precision: 2, initialValue: cc.editCard.limit);
       name = TextEditingController(text: cc.editCard.name);
-      /* number = MaskedTextController(
-          mask: '0000 0000 0000 0000', text: cc.editCard.numbers); */
       balance = MoneyMaskedTextController(
           precision: 2, initialValue: cc.editCard.balance);
     }
@@ -85,41 +80,40 @@ class _EditCardWidgetState extends State<EditCardWidget> {
         builder: (context, constraint) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-                child: margin(
-                    child: Text(
-                      'Informações',
-                      style: titleStyle.copyWith(color: Colors.black26),
-                    ),
-                    constraint: constraint,
-                    t: 3)),
+            margin(
+                child: Text(
+                  'Informações',
+                  style: titleStyle.copyWith(color: Colors.black26),
+                ),
+                constraint: constraint,
+                t: 3),
             Expanded(
-                flex: 5,
                 child: Container(
-                  child: ListView(
-                    controller: cc.scrollEditCard,
-                    children: [
-                      margin(
-                          constraint: constraint,
-                          l: 5,
-                          t: 5,
-                          child: SizedBox(
-                              height: constraint.maxHeight * 0.1,
-                              child: Row(children: [
+              child: ListView(
+                controller: cc.scrollEditCard,
+                children: [
+                  margin(
+                      constraint: constraint,
+                      l: 5,
+                      t: 5,
+                      child: SizedBox(
+                          height: 60,
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 AnimatedContainer(
                                     duration: duration,
                                     width: editColor
                                         ? 0
                                         : constraint.maxWidth * 0.65,
-                                    height: constraint.maxHeight * 0.1,
+                                    height: 50,
                                     child: Stack(children: [
                                       AnimatedPositioned(
                                           left: showTxtEditingName
                                               ? -constraint.maxWidth
                                               : 0,
                                           child: SizedBox(
-                                              height:
-                                                  constraint.maxHeight * 0.1,
+                                              height: 50,
                                               width: constraint.maxWidth * 0.6,
                                               child: InkWell(
                                                 onTap: () => setState(() =>
@@ -162,11 +156,10 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                           /*    left: showTxtEditingLimit ? 0 : null, */
                                           duration: duration,
                                           child: SizedBox(
-                                              height:
-                                                  constraint.maxHeight * 0.1,
                                               width: constraint.maxWidth * 0.6,
                                               child: Container(
-                                                margin: EdgeInsets.only(top: 5),
+                                                padding:
+                                                    EdgeInsets.only(top: 8),
                                                 child: textField(
                                                     controller: name,
                                                     onChanged: (v) => cc
@@ -200,7 +193,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                     width: editColor
                                         ? constraint.maxWidth * 0.9
                                         : constraint.maxWidth * 0.25,
-                                    height: constraint.maxHeight * 0.1,
+                                    height: 50,
                                     child: Card(
                                       child: Container(
                                         margin: EdgeInsets.all(5),
@@ -226,64 +219,64 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                       ),
                                     ))
                               ]))),
-                      margin(
-                          l: 5,
-                          r: 5,
-                          child: selectColor(constraint),
-                          constraint: constraint),
-                      margin(
-                          child: numberCard(constraint),
-                          constraint: constraint,
-                          r: 5,
-                          l: 5),
-                      margin(
-                          l: 5,
-                          r: 5,
-                          child: limitCredit(constraint),
-                          constraint: constraint),
-                      margin(
-                          child: Observer(
-                              builder: (_) => SwitchListTile(
-                                    title: Text('Debito', style: titleStyle),
-                                    activeColor: Theme.of(context).primaryColor,
-                                    value: cc.editCard.debit,
-                                    inactiveThumbColor: Colors.grey[400],
-                                    onChanged: cc.editCard.changeDebit,
-                                  )),
-                          constraint: constraint,
-                          l: 5,
-                          r: 5,
-                          t: 1),
-                      Observer(
-                          builder: (_) => Visibility(
-                                visible: cc.editCard.debit,
-                                child: margin(
-                                    r: 5,
-                                    l: 5,
-                                    child: balanceAccountWidget(constraint),
-                                    constraint: constraint),
-                              )),
-                      margin(
-                          child: Observer(
-                            builder: (_) => SwitchListTile(
+                  margin(
+                      t: 5,
+                      l: 5,
+                      r: 5,
+                      child: selectColor(constraint),
+                      constraint: constraint),
+                  margin(
+                      child: numberCard(constraint),
+                      constraint: constraint,
+                      r: 5,
+                      l: 5),
+                  margin(
+                      l: 5,
+                      r: 5,
+                      child: limitCredit(constraint),
+                      constraint: constraint),
+                  margin(
+                      child: Observer(
+                          builder: (_) => SwitchListTile(
+                                title: Text('Debito', style: titleStyle),
                                 activeColor: Theme.of(context).primaryColor,
-                                title: Text(
-                                  'Credito',
-                                  style: titleStyle,
-                                ),
-                                value: cc.editCard.credit,
+                                value: cc.editCard.debit,
                                 inactiveThumbColor: Colors.grey[400],
-                                onChanged: cc.editCard.changeCredit),
-                          ),
-                          constraint: constraint,
-                          l: 5,
-                          r: 5,
-                          t: 1),
-                      Container(
-                          height: MediaQuery.of(context).viewInsets.bottom)
-                    ],
-                  ),
-                ))
+                                onChanged: cc.editCard.changeDebit,
+                              )),
+                      constraint: constraint,
+                      l: 5,
+                      r: 5,
+                      t: 1),
+                  Observer(
+                      builder: (_) => Visibility(
+                            visible: cc.editCard.debit,
+                            child: margin(
+                                r: 5,
+                                l: 5,
+                                child: balanceAccountWidget(constraint),
+                                constraint: constraint),
+                          )),
+                  margin(
+                      child: Observer(
+                        builder: (_) => SwitchListTile(
+                            activeColor: Theme.of(context).primaryColor,
+                            title: Text(
+                              'Credito',
+                              style: titleStyle,
+                            ),
+                            value: cc.editCard.credit,
+                            inactiveThumbColor: Colors.grey[400],
+                            onChanged: cc.editCard.changeCredit),
+                      ),
+                      constraint: constraint,
+                      l: 5,
+                      r: 5,
+                      t: 1),
+                  Container(height: MediaQuery.of(context).viewInsets.bottom)
+                ],
+              ),
+            ))
           ],
         ),
       ),
@@ -291,7 +284,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
   }
 
   numberCard(BoxConstraints constraint) => Container(
-      height: constraint.maxHeight * 0.1,
+      height: 50,
       width: constraint.maxWidth * 0.7,
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(
@@ -360,7 +353,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
         ),
       ));
   balanceAccountWidget(BoxConstraints constraint) => Container(
-      height: constraint.maxHeight * 0.1,
+      height: 50,
       width: constraint.maxWidth * 0.7,
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(
@@ -468,7 +461,7 @@ class _EditCardWidgetState extends State<EditCardWidget> {
           ])));
 
   limitCredit(BoxConstraints constraint) => Container(
-      height: constraint.maxHeight * 0.1,
+      height: 50,
       width: constraint.maxWidth * 0.7,
       child: LayoutBuilder(
           builder: (context, constraints) => Stack(children: [
