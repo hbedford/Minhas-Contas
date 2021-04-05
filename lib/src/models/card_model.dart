@@ -55,7 +55,7 @@ abstract class _CardModelBase with Store {
   _CardModelBase(
       {this.id,
       this.name,
-      this.color = Colors.white,
+      this.color = Colors.grey,
       this.payments,
       this.active = false,
       this.optionsActive = false,

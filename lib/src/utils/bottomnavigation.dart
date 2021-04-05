@@ -77,56 +77,51 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
     return SizedBox(
         height: widget.height,
         width: widget.width,
-        child: Stack(
-            overflow: Overflow.visible,
-            alignment: Alignment.bottomCenter,
-            children: <Widget>[
-              Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: CustomPaint(
-                      painter: NavCustomPainter(
-                          _pos,
-                          _length,
-                          c.card.id != null
-                              ? c.card.color
-                              : widget.backgroundColor,
-                          Directionality.of(context)),
-                      child: Container(height: widget.height * 0.60))),
-              Positioned(
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: widget.items
-                          .map((item) => Expanded(
-                              child: InkWell(
-                                  splashColor: Colors.transparent,
-                                  onTap: () => setState(() =>
-                                      widget.onTap(widget.items.indexOf(item))),
-                                  child: AnimatedContainer(
-                                    margin: EdgeInsets.only(
-                                        bottom: widget.items.indexOf(item) ==
-                                                widget.index
-                                            ? Platform.isIOS
-                                                ? 30
-                                                : 20
-                                            : Platform.isIOS
-                                                ? 20
-                                                : 0),
-                                    child: CircleAvatar(
-                                      backgroundColor: c.card.id != null
-                                          ? c.card.color
-                                          : widget.backgroundColor,
-                                      child: Center(child: item),
-                                    ),
-                                    duration: Duration(milliseconds: 200),
-                                  ))))
-                          .toList()))
-            ]));
+        child: Stack(alignment: Alignment.bottomCenter, children: <Widget>[
+          Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: CustomPaint(
+                  painter: NavCustomPainter(
+                      _pos,
+                      _length,
+                      c.card.id != null ? c.card.color : widget.backgroundColor,
+                      Directionality.of(context)),
+                  child: Container(height: widget.height * 0.65))),
+          Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: widget.items
+                      .map((item) => Expanded(
+                          child: InkWell(
+                              splashColor: Colors.transparent,
+                              onTap: () => setState(() =>
+                                  widget.onTap(widget.items.indexOf(item))),
+                              child: AnimatedContainer(
+                                margin: EdgeInsets.only(
+                                    bottom: widget.items.indexOf(item) ==
+                                            widget.index
+                                        ? Platform.isIOS
+                                            ? 30
+                                            : 20
+                                        : Platform.isIOS
+                                            ? 20
+                                            : 0),
+                                child: CircleAvatar(
+                                  backgroundColor: c.card.id != null
+                                      ? c.card.color
+                                      : widget.backgroundColor,
+                                  child: Center(child: item),
+                                ),
+                                duration: Duration(milliseconds: 200),
+                              ))))
+                      .toList()))
+        ]));
   }
 
   void setPage(int index) => _buttonTap(index);

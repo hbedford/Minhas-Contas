@@ -48,10 +48,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 : CupertinoIcons.creditcard,
                             color: Theme.of(context).accentColor),
                         Icon(
-                          Icons.home,
+                          Icons.bubble_chart_rounded,
                           color: Theme.of(context).accentColor,
                         ),
-                        Text('A', style: TextStyle(color: Colors.white)),
+                        Icon(
+                          Icons.analytics,
+                          color: Theme.of(context).accentColor,
+                        ),
                         IconButton(
                             onPressed: () => Navigator.pushNamedAndRemoveUntil(
                                 context, '/login', (route) => route.isFirst),
