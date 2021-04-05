@@ -43,11 +43,16 @@ class _HomePageCardsState extends State<HomePageCards> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppBarChangeWidget(
-                              constraint: constraints,
-                              title: 'Cartões',
-                              back: () => null,
-                              foward: () => null),
+                          Observer(
+                            builder: (_) => Visibility(
+                              visible: cc.editCard == null,
+                              child: AppBarChangeWidget(
+                                  constraint: constraints,
+                                  title: 'Cartões',
+                                  back: () => null,
+                                  foward: () => null),
+                            ),
+                          ),
                           title(constraints),
                           Visibility(
                               child: cardsWidget(), visible: !cc.cardView),
