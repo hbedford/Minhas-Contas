@@ -17,12 +17,22 @@ class AppBarChangeWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: null),
+          IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: back,
+            color: Colors.grey,
+          ),
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.w700),
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor),
           ),
-          IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: null),
+          IconButton(
+            icon: Icon(Icons.arrow_forward_ios),
+            onPressed: foward,
+            color: Colors.grey,
+          ),
         ],
       ),
     );

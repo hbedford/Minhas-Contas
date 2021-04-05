@@ -104,9 +104,9 @@ class CardWidget extends StatelessWidget {
                                 ],
                               )
                             ]),
-                        Observer(
-                          builder: (_) =>
-                              /* !editing && card.removeOption
+                        // Observer(
+                        //   builder: (_) =>
+                        /* !editing && card.removeOption
                               ? Row(children: [
                                   Expanded(
                                     flex: 2,
@@ -131,38 +131,38 @@ class CardWidget extends StatelessWidget {
                                   ))
                                 ])
                               : */
-                              Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Observer(
-                                      builder: (_) => Visibility(
-                                        visible: card.debit,
-                                        child: Text(
-                                          'Debito',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3,
-                                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Observer(
+                                    builder: (_) => Visibility(
+                                      visible: card.debit,
+                                      child: Text(
+                                        'Debito',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
                                       ),
                                     ),
-                                    Observer(
-                                      builder: (_) => Visibility(
-                                        visible: card.credit,
-                                        child: Text(
-                                          'Credito',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3,
-                                        ),
+                                  ),
+                                  Observer(
+                                    builder: (_) => Visibility(
+                                      visible: card.credit,
+                                      child: Text(
+                                        'Credito',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
                                       ),
-                                    )
-                                  ]),
-                            ],
-                          ),
+                                    ),
+                                  )
+                                ]),
+                          ],
                         ),
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

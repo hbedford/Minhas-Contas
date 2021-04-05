@@ -138,8 +138,13 @@ class _EditCardWidgetState extends State<EditCardWidget> {
                                                                       .name
                                                                       .length >
                                                                   0
-                                                              ? Text(cc.editCard
-                                                                  .name)
+                                                              ? Text(
+                                                                  cc.editCard
+                                                                      .name,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .grey),
+                                                                )
                                                               : Text(
                                                                   'Necessario',
                                                                   style: TextStyle(

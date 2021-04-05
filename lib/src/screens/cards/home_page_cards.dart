@@ -45,13 +45,15 @@ class _HomePageCardsState extends State<HomePageCards> {
                         children: [
                           Observer(
                             builder: (_) => Visibility(
-                              visible: cc.editCard == null,
-                              child: AppBarChangeWidget(
+                                visible: cc.editCard == null,
+                                child: AppBarChangeWidget(
                                   constraint: constraints,
                                   title: 'Cartões',
-                                  back: () => null,
-                                  foward: () => null),
-                            ),
+                                  back: () => cc.changeScroll(
+                                      cc.scroll - constraints.maxWidth * 0.8),
+                                  foward: () => cc.changeScroll(
+                                      cc.scroll + constraints.maxWidth * 0.8),
+                                )),
                           ),
                           title(constraints),
                           Visibility(
