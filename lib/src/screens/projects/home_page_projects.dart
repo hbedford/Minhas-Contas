@@ -43,14 +43,14 @@ class _HomePageProjectsState extends State<HomePageProjects> {
                           )
                         ],
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            'Projetos em andamento',
-                            style: TextStyle(color: Colors.black26),
-                          )
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Text(
+                      //       'Projetos em andamento',
+                      //       style: TextStyle(color: Colors.black26),
+                      //     )
+                      //   ],
+                      // ),
                       Expanded(
                           child: Container(
                         child: Observer(

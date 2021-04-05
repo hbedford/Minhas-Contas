@@ -50,8 +50,7 @@ void main() async {
               payments: ObservableList.of(
                   [PaymentModel(name: 'Arroz', value: 20.00)]))
         ].asObservable(),
-        image:
-            'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
+        image: 'assets/wallpaper4.jpg'),
     ProjectModel(
         id: 1,
         name: 'Monitor para o RH',
@@ -67,8 +66,7 @@ void main() async {
               payments: ObservableList.of(
                   [PaymentModel(name: 'Arroz', value: 20.00)]))
         ].asObservable(),
-        image:
-            'https://images.unsplash.com/photo-1593623671658-6b842c7f9697?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1202&q=80'),
+        image: 'assets/wallpaper1.jpg'),
     ProjectModel(
         id: 2,
         name: 'Viajem no fim de ano',
@@ -84,8 +82,7 @@ void main() async {
               payments: ObservableList.of(
                   [PaymentModel(name: 'Arroz', value: 20.00)]))
         ].asObservable(),
-        image:
-            "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1308&q=80"),
+        image: "assets/wallpaper3.jpg"),
   ].asObservable()));
   getIt.registerSingleton<CardsController>(
     CardsController(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minhasconta/src/controllers/project_controller.dart';
 import 'package:minhasconta/src/models/project_model.dart';
 
 class NewProjectWidget extends StatefulWidget {
@@ -92,7 +94,7 @@ class _NewProjectWidgetState extends State<NewProjectWidget>
   }
 
   newProject() => Column(
-        children: [],
+        children: [Step1Project()],
       );
   actualProject() => Column(
         children: [
@@ -177,4 +179,23 @@ class _NewProjectWidgetState extends State<NewProjectWidget>
           )
         ],
       );
+}
+
+class Step1Project extends StatelessWidget {
+  final controller = GetIt.I.get<ProjectController>();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(children: [
+        Text('O projeto tem algum prazo?'),
+        Row(
+          children: [
+            ElevatedButton(
+                onPressed: () => controller.changeHaveDate(true),
+                child: Text('Sim'.toUpperCase())),ElevatedButton(onPressed: (), child: child)
+          ],
+        )
+      ]),
+    );
+  }
 }
