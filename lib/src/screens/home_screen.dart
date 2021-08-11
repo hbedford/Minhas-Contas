@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:minhasconta/src/screens/cards/home_page_cards.dart';
 import 'package:minhasconta/src/screens/projects/home_page_projects.dart';
 import 'package:minhasconta/src/screens/schedules_screen.dart';

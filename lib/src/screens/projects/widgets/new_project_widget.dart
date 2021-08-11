@@ -192,7 +192,8 @@ class Step1Project extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () => controller.changeHaveDate(true),
-                child: Text('Sim'.toUpperCase())),ElevatedButton(onPressed: (), child: child)
+                child: Text('Sim'.toUpperCase())),
+            ElevatedButton(onPressed: () => null, child: Text('Não'))
           ],
         )
       ]),
